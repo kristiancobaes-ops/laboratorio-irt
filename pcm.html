@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial (PCM).">
+  <title>PCM · Laboratorio IRT</title>
+  <link rel="stylesheet" href="lab-common.css">
+  <style>
+    .rubric { display:grid; gap:8px; margin-top:20px; width:min(420px,90%); }
+    .rubric div { position:relative; z-index:2; padding:10px 13px; border:1px solid rgba(255,255,255,.16); border-radius:11px; background:rgba(255,255,255,.07); font-family:system-ui; font-size:.78rem; text-align:left; }
+    .rubric b { color:var(--gold); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <nav class="site-nav" aria-label="Modelos">
+      <a href="index.html">Inicio</a><a href="rasch.html">Rasch / 1–3PL</a>
+      <a class="active" href="pcm.html">PCM</a><a href="gpcm.html">GPCM</a><a href="grm.html">GRM</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">Modelo de Crédito Parcial</p>
+        <h1>No todo tiene que ser cero o uno.</h1>
+        <p class="lede">El PCM reconoce avances parciales. Un estudiante puede identificar el procedimiento, resolver la ecuación o, además, justificarla con claridad. Cada paso tiene su propia dificultad.</p>
+        <div class="hero-actions"><a class="button primary" href="#laboratorio">Abrir laboratorio</a><a class="button" href="#rubrica">Ver rúbrica</a></div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-equation">2x + 6 = 18
+          <small>Resuelve y justifica cada transformación.</small>
+          <div class="rubric">
+            <div><b>0 puntos</b> · Sin procedimiento pertinente</div>
+            <div><b>1 punto</b> · Identifica que debe aislar x</div>
+            <div><b>2 puntos</b> · Obtiene x = 6</div>
+            <div><b>3 puntos</b> · Resuelve y justifica correctamente</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="rubrica">
+      <div class="section-head">
+        <div><p class="kicker">Lógica del modelo</p><h2>Cada punto se gana cruzando un paso.</h2></div>
+        <p class="section-copy">El PCM compara categorías vecinas. Cuando θ (habilidad) = δ₂ (umbral del segundo paso), obtener 2 puntos y obtener 1 punto tienen la misma probabilidad relativa. a (discriminación) está fijada en 1.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="card-tag">Persona</span><h3>θ (habilidad algebraica)</h3><p>Representa el dominio del estudiante en procedimientos algebraicos y justificación matemática.</p></article>
+        <article class="card"><span class="card-tag">Pasos</span><h3>δ₁, δ₂ y δ₃ (umbrales de paso)</h3><p>Cada umbral indica la dificultad de avanzar un punto adicional en la rúbrica.</p></article>
+        <article class="card"><span class="card-tag">Restricción</span><h3>a (discriminación) = 1</h3><p>El PCM conserva la discriminación fija. Esa restricción facilita una escala común entre ítems.</p></article>
+      </div>
+    </section>
+
+    <section class="formula-strip">
+      <div class="wrap formula-grid">
+        <div><p class="kicker">Probabilidad de k puntos</p><h2>Se acumulan ventajas por cada paso.</h2><p>Para k = 0 la suma vale cero. Para k = 3 se suman las ventajas de superar los tres pasos.</p></div>
+        <div class="formula-box">P(X=k|θ) = exp[Σ<sub>m=1</sub><sup>k</sup>(θ−δ<sub>m</sub>)] / Σ<sub>j=0</sub><sup>3</sup> exp[Σ<sub>m=1</sub><sup>j</sup>(θ−δ<sub>m</sub>)]</div>
+      </div>
+    </section>
+
+    <section class="lab-section" id="laboratorio">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Laboratorio PCM</p><h2>Mueve al estudiante o rediseña la rúbrica.</h2></div>
+          <p class="section-copy">Los pasos pueden quedar desordenados. Si ocurre, el laboratorio lo señalará: puede indicar que una categoría intermedia no funciona como se esperaba.</p>
+        </div>
+        <div class="lab-shell">
+          <div class="lab-head"><h3>Ítem: resolver 2x + 6 = 18 y justificar</h3><span class="model-tab active">PCM · a (discriminación) fija en 1</span></div>
+          <div class="lab-grid">
+            <aside class="controls">
+              <div class="control">
+                <label for="theta">θ (habilidad algebraica) <output id="thetaOut">0.00</output></label>
+                <p class="control-help">Cambia al estudiante hipotético.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
+                <div class="ticks"><span>incipiente</span><span>medio</span><span>alto</span></div>
+                <p class="control-reading" id="thetaRead"></p>
+              </div>
+              <div class="control">
+                <label for="d1">δ₁ (umbral del paso 1) <output id="d1Out">−1.20</output></label>
+                <p class="control-help">De 0 a 1 punto: iniciar un procedimiento pertinente.</p>
+                <input id="d1" type="range" min="-3" max="3" step=".05" value="-1.2">
+                <p class="control-reading" id="d1Read"></p>
+              </div>
+              <div class="control">
+                <label for="d2">δ₂ (umbral del paso 2) <output id="d2Out">0.00</output></label>
+                <p class="control-help">De 1 a 2 puntos: obtener correctamente x = 6.</p>
+                <input id="d2" type="range" min="-3" max="3" step=".05" value="0">
+                <p class="control-reading" id="d2Read"></p>
+              </div>
+              <div class="control">
+                <label for="d3">δ₃ (umbral del paso 3) <output id="d3Out">1.20</output></label>
+                <p class="control-help">De 2 a 3 puntos: justificar con coherencia cada transformación.</p>
+                <input id="d3" type="range" min="-3" max="3" step=".05" value="1.2">
+                <p class="control-reading" id="d3Read"></p>
+              </div>
+            </aside>
+            <div class="main-panel">
+              <div class="interpretation" aria-live="polite">
+                <div><h3 id="generalTitle"></h3><p id="generalText"></p></div>
+                <p class="change" id="changeText"></p>
+              </div>
+              <div class="chart-area">
+                <svg class="chart" id="chart" role="img" aria-label="Curvas de categorías del PCM"></svg>
+                <aside class="side-readout">
+                  <div class="metric"><small>Puntaje esperado</small><strong id="expectedMetric"></strong></div>
+                  <div class="metric"><small>Puntaje más probable</small><strong id="modeMetric"></strong></div>
+                  <div class="metric"><small>Orden de pasos</small><strong id="orderMetric"></strong></div>
+                  <div class="prob-list" id="probList"></div>
+                </aside>
+              </div>
+              <p class="probability-note" id="probabilityNote" aria-live="polite"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap back-next"><a class="button" href="rasch.html">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html">Siguiente: GPCM →</a></div>
+  </main>
+  <footer>Laboratorio IRT · Modelo de Crédito Parcial</footer>
+
+  <script src="lab-utils.js"></script>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const theta = $("theta");
+      const deltas = [$("d1"),$("d2"),$("d3")];
+      let changed = "theta";
+      const labels = ["0 · Sin avance","1 · Procedimiento","2 · Solución","3 · Justificación"];
+
+      function probabilities(t, ds) {
+        const logits = [0];
+        let accumulated = 0;
+        ds.forEach(delta => { accumulated += t - delta; logits.push(accumulated); });
+        return IRT.softmax(logits);
+      }
+
+      function state() { return { t:+theta.value, ds:deltas.map(input => +input.value) }; }
+
+      function stepText(index, delta, t) {
+        const actions = ["iniciar un procedimiento pertinente","obtener x = 6","justificar cada transformación"];
+        const demand = delta < -.8 ? "muy accesible" : delta > .8 ? "exigente" : "de dificultad media";
+        const adjacent = IRT.logistic(t - delta);
+        const relation = t > delta + .05 ? "está por encima" : t < delta - .05 ? "está por debajo" : "está justo en";
+        return `El paso para ${actions[index]} es ${demand}. θ (habilidad) ${relation} de δ${index+1} (umbral del paso); al comparar solo los dos puntajes vecinos, avanzar tiene ${Math.round(adjacent*100)}% de probabilidad. Cuando θ (habilidad) = δ${index+1} (umbral), ambos son igualmente probables.`;
+      }
+
+      function render() {
+        const s = state();
+        const probs = probabilities(s.t,s.ds);
+        const mode = probs.indexOf(Math.max(...probs));
+        const expected = probs.reduce((sum,p,i) => sum+p*i,0);
+        const ordered = s.ds.every((d,i) => i === 0 || d > s.ds[i-1]);
+        $("thetaOut").textContent = IRT.fmt(s.t);
+        deltas.forEach((input,i) => { $(`d${i+1}Out`).textContent = IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent = stepText(i,s.ds[i],s.t); });
+        $("thetaRead").textContent = `${s.t < -1 ? "El estudiante necesita apoyo para organizar el procedimiento." : s.t > 1 ? "El estudiante coordina solución y justificación con solvencia." : "El estudiante domina lo esencial, pero la calidad de la justificación aún puede variar."} Con esta rúbrica, su puntaje esperado es ${expected.toFixed(2)} de 3.`;
+        $("expectedMetric").textContent = `${expected.toFixed(2)} / 3`;
+        $("modeMetric").textContent = `${mode} ${mode === 1 ? "punto" : "puntos"}`;
+        $("orderMetric").textContent = ordered ? "Ordenados" : "Desordenados";
+        $("orderMetric").style.color = ordered ? "#2aa89a" : "#f46f5f";
+        $("generalTitle").innerHTML = `El puntaje más probable es <b>${mode} ${mode === 1 ? "punto" : "puntos"}</b> (${Math.round(probs[mode]*100)}%).`;
+        $("generalText").textContent = ordered
+          ? `La rúbrica progresa de pasos accesibles a exigentes. El puntaje esperado del estudiante es ${expected.toFixed(2)}.`
+          : "Algún paso posterior es más fácil que uno anterior. Esto puede hacer que una categoría intermedia casi nunca sea la más probable y merece revisión.";
+        const lowerScore = mode - 1;
+        const upperScore = mode + 1;
+        const lower = mode > 0 ? `${lowerScore} ${lowerScore === 1 ? "punto" : "puntos"} (${Math.round(probs[lowerScore] * 100)}%)` : "ningún puntaje inferior";
+        const upper = mode < probs.length - 1 ? `${upperScore} ${upperScore === 1 ? "punto" : "puntos"} (${Math.round(probs[upperScore] * 100)}%)` : "ningún puntaje superior";
+        $("probabilityNote").innerHTML = `<strong>Comparación adyacente y resultado observado:</strong> el PCM construye cada paso comparando dos puntajes vecinos, pero al final asigna probabilidad a todos los puntajes de 0 a 3. Para este estudiante, el puntaje más probable es ${mode}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, los puntajes cercanos suelen ser más probables que los saltos lejanos. Una respuesta menor puede ser compatible con variaciones como cansancio, olvido o un error accidental, pero el modelo no identifica cuál fue la causa.`;
+        $("changeText").textContent = changed === "theta"
+          ? "Cambiaste θ (habilidad): observas a otro estudiante; los criterios de puntuación permanecen iguales."
+          : `Cambiaste δ${changed} (umbral del paso): modificaste la dificultad de ganar el punto ${changed}, sin cambiar al estudiante ni los otros pasos.`;
+        renderProbs(probs);
+        renderChart(s);
+      }
+
+      function renderProbs(probs) {
+        $("probList").innerHTML = probs.map((p,i) =>
+          `<div class="prob-row"><span>${i} ${i === 1 ? "punto" : "puntos"}</span><div class="track"><div class="fill" style="width:${p*100}%;background:${IRT.colors[i]}"></div></div><span>${Math.round(p*100)}%</span></div>`
+        ).join("");
+      }
+
+      function renderChart(s) {
+        const svg = $("chart");
+        const chart = IRT.setupChart(svg,{xLabel:"θ (habilidad algebraica)"});
+        const xs = Array.from({length:241},(_,i)=>-4+i*8/240);
+        for (let k=0;k<4;k++) IRT.drawLine(chart.plot,xs.map(x=>({x,y:probabilities(x,s.ds)[k]})),chart,IRT.colors[k]);
+        s.ds.forEach((delta,i)=>IRT.drawVertical(chart,delta,`δ${i+1}`,IRT.colors[i+1],true));
+        IRT.drawVertical(chart,s.t,"θ");
+        probabilities(s.t,s.ds).forEach((p,i)=>chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(s.t),cy:chart.yScale(p),r:5,fill:IRT.colors[i],stroke:"white","stroke-width":2})));
+      }
+
+      theta.addEventListener("input",()=>{changed="theta";render();});
+      deltas.forEach((input,i)=>input.addEventListener("input",()=>{changed=String(i+1);render();}));
+      window.addEventListener("resize",render);
+      render();
+    })();
+  </script>
+</body>
+</html>

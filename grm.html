@@ -1,0 +1,2187 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Clase interactiva sobre el Modelo de Respuesta Graduada (GRM) de la Teoría de Respuesta al Ítem.">
+  <title>GRM · Laboratorio IRT</title>
+  <style>
+    :root {
+      --ink: #17233b;
+      --muted: #647087;
+      --paper: #f7f5ef;
+      --card: #fffdfa;
+      --navy: #17233b;
+      --coral: #f46f5f;
+      --teal: #2aa89a;
+      --gold: #e3ad36;
+      --violet: #7b6be8;
+      --blue: #438bd2;
+      --line: #dcd9d0;
+      --soft-coral: #fff0ec;
+      --soft-teal: #e8f7f4;
+      --soft-gold: #fff7df;
+      --shadow: 0 18px 50px rgba(23, 35, 59, .09);
+      --radius: 24px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 88px;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 12% 4%, rgba(244, 111, 95, .10), transparent 24rem),
+        radial-gradient(circle at 89% 18%, rgba(42, 168, 154, .10), transparent 27rem),
+        var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.55;
+    }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+    a { color: inherit; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      height: 72px;
+      padding: 0 max(22px, calc((100vw - 1180px) / 2));
+      border-bottom: 1px solid rgba(23, 35, 59, .08);
+      background: rgba(247, 245, 239, .88);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      font-weight: 850;
+      letter-spacing: -.02em;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      color: white;
+      background: var(--navy);
+      box-shadow: 4px 4px 0 var(--coral);
+    }
+
+    .topnav {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .topnav a {
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: var(--muted);
+      font-size: .9rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    .topnav a:hover,
+    .topnav a:focus-visible {
+      color: var(--ink);
+      background: white;
+      outline: none;
+    }
+
+    .progress-shell {
+      position: fixed;
+      top: 72px;
+      left: 0;
+      z-index: 30;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+    }
+
+    .progress-bar {
+      width: 0;
+      height: 100%;
+      background: linear-gradient(90deg, var(--coral), var(--gold), var(--teal));
+    }
+
+    main { overflow: hidden; }
+
+    .wrap {
+      width: min(1180px, calc(100% - 44px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.13fr .87fr;
+      gap: 64px;
+      align-items: center;
+      min-height: calc(100vh - 72px);
+      padding: 86px 0 76px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      padding: 7px 11px;
+      border: 1px solid rgba(23, 35, 59, .12);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, .55);
+      font-size: .78rem;
+      font-weight: 850;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--coral);
+      content: "";
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+
+    h1 {
+      max-width: 780px;
+      margin-bottom: 22px;
+      font-size: clamp(3.6rem, 7.4vw, 7rem);
+      line-height: .92;
+      letter-spacing: -.065em;
+    }
+
+    h1 .accent {
+      position: relative;
+      color: var(--coral);
+      white-space: nowrap;
+    }
+
+    h1 .accent::after {
+      position: absolute;
+      right: 0;
+      bottom: -.06em;
+      left: .05em;
+      height: .08em;
+      border-radius: 999px;
+      background: var(--gold);
+      content: "";
+      transform: rotate(-1.5deg);
+    }
+
+    .lede {
+      max-width: 660px;
+      margin-bottom: 30px;
+      color: var(--muted);
+      font-size: clamp(1.08rem, 1.8vw, 1.3rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      padding: 0 19px;
+      border: 0;
+      border-radius: 14px;
+      font-weight: 820;
+      text-decoration: none;
+      cursor: pointer;
+      transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+
+    .button:hover { transform: translateY(-2px); }
+    .button:focus-visible { outline: 3px solid rgba(67, 139, 210, .35); outline-offset: 2px; }
+
+    .button.primary {
+      color: white;
+      background: var(--navy);
+      box-shadow: 0 8px 0 rgba(23, 35, 59, .15);
+    }
+
+    .button.secondary {
+      border: 1px solid var(--line);
+      background: white;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 27px;
+      color: var(--muted);
+      font-size: .88rem;
+      font-weight: 700;
+    }
+
+    .hero-meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .hero-meta i {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 510px;
+    }
+
+    .mountain-card {
+      position: absolute;
+      inset: 30px 0 40px 16px;
+      overflow: hidden;
+      border: 1px solid rgba(23, 35, 59, .1);
+      border-radius: 36px;
+      background: var(--navy);
+      box-shadow: var(--shadow);
+    }
+
+    .mountain-card svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .float-note {
+      position: absolute;
+      z-index: 2;
+      max-width: 190px;
+      padding: 14px 16px;
+      border: 1px solid rgba(23, 35, 59, .1);
+      border-radius: 17px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+      font-size: .84rem;
+      line-height: 1.35;
+      transform: rotate(-2deg);
+    }
+
+    .float-note strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: .78rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    .float-note.one { top: 0; right: -14px; }
+    .float-note.two { bottom: 0; left: -8px; transform: rotate(2deg); }
+    .float-note.one strong { color: var(--coral); }
+    .float-note.two strong { color: var(--teal); }
+
+    .section {
+      padding: 96px 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: .72fr 1.28fr;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 44px;
+    }
+
+    .kicker {
+      margin: 0 0 9px;
+      color: var(--coral);
+      font-size: .78rem;
+      font-weight: 900;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h2 {
+      margin-bottom: 0;
+      font-size: clamp(2.2rem, 4.2vw, 4.25rem);
+      line-height: 1;
+      letter-spacing: -.05em;
+    }
+
+    .section-intro {
+      max-width: 640px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 1.08rem;
+    }
+
+    .concept-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .concept-card {
+      position: relative;
+      min-height: 270px;
+      padding: 26px;
+      overflow: hidden;
+      border: 1px solid rgba(23, 35, 59, .10);
+      border-radius: var(--radius);
+      background: var(--card);
+      box-shadow: 0 8px 30px rgba(23, 35, 59, .04);
+    }
+
+    .concept-card:nth-child(2) { background: var(--soft-teal); }
+    .concept-card:nth-child(3) { background: var(--soft-gold); }
+
+    .concept-number {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      margin-bottom: 36px;
+      border-radius: 13px;
+      color: white;
+      background: var(--navy);
+      font-weight: 900;
+    }
+
+    .concept-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.35rem;
+      letter-spacing: -.025em;
+    }
+
+    .concept-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .scale-demo {
+      display: flex;
+      gap: 7px;
+      margin-top: 22px;
+    }
+
+    .scale-demo span {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(23, 35, 59, .11);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, .7);
+      font-weight: 850;
+    }
+
+    .big-idea {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .analogy {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      min-height: 180px;
+      padding: 26px;
+      border-radius: var(--radius);
+      color: white;
+      background: var(--navy);
+    }
+
+    .analogy:nth-child(2) { background: var(--coral); }
+
+    .analogy-icon {
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 86px;
+      height: 86px;
+      border: 1px solid rgba(255, 255, 255, .22);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, .08);
+      font-size: 2.2rem;
+    }
+
+    .analogy h3 { margin-bottom: 6px; }
+    .analogy p { margin: 0; opacity: .78; }
+
+    .formula-band {
+      padding: 74px 0;
+      color: white;
+      background: var(--navy);
+    }
+
+    .formula-layout {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 55px;
+      align-items: center;
+    }
+
+    .formula-band h2 { margin-bottom: 20px; }
+    .formula-band p { color: rgba(255,255,255,.68); }
+
+    .formula-card {
+      padding: 34px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 28px;
+      background: rgba(255,255,255,.06);
+    }
+
+    .formula {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 120px;
+      margin-bottom: 24px;
+      padding: 20px;
+      border-radius: 18px;
+      color: var(--navy);
+      background: var(--paper);
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(1.25rem, 2.7vw, 2.15rem);
+      text-align: center;
+    }
+
+    .formula-legend {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .formula-legend div {
+      padding: 15px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.07);
+      font-size: .86rem;
+    }
+
+    .formula-legend strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--gold);
+      font-size: 1.25rem;
+    }
+
+    .lab-section {
+      padding: 96px 0;
+      background: #edeae2;
+    }
+
+    .lab {
+      overflow: hidden;
+      border: 1px solid rgba(23, 35, 59, .11);
+      border-radius: 30px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+
+    .lab-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .lab-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0;
+      font-size: 1.05rem;
+    }
+
+    .live-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 6px rgba(42,168,154,.12);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      50% { box-shadow: 0 0 0 10px rgba(42,168,154,0); }
+    }
+
+    .preset-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .chip {
+      padding: 7px 11px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      font-size: .78rem;
+      font-weight: 780;
+      cursor: pointer;
+    }
+
+    .chip:hover, .chip.active {
+      color: white;
+      border-color: var(--navy);
+      background: var(--navy);
+    }
+
+    .lab-body {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      min-height: 680px;
+    }
+
+    .controls {
+      padding: 26px;
+      border-right: 1px solid var(--line);
+      background: #fbfaf6;
+    }
+
+    .control-group {
+      margin-bottom: 26px;
+      padding-bottom: 23px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .control-group:last-child { border-bottom: 0; }
+
+    .control-label {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 800;
+    }
+
+    .control-label output {
+      min-width: 46px;
+      padding: 3px 8px;
+      border-radius: 8px;
+      color: white;
+      background: var(--navy);
+      font-size: .82rem;
+      text-align: center;
+    }
+
+    .control-help {
+      margin: -3px 0 11px;
+      color: var(--muted);
+      font-size: .76rem;
+      line-height: 1.35;
+    }
+
+    .control-interpretation {
+      margin: 12px 0 0;
+      padding: 10px 11px;
+      border-left: 3px solid var(--teal);
+      border-radius: 0 10px 10px 0;
+      color: #526077;
+      background: var(--soft-teal);
+      font-size: .74rem;
+      line-height: 1.4;
+    }
+
+    .control-interpretation strong {
+      color: var(--ink);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      height: 5px;
+      border-radius: 999px;
+      outline: none;
+      background: linear-gradient(90deg, var(--coral), var(--gold));
+      appearance: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 19px;
+      height: 19px;
+      border: 4px solid white;
+      border-radius: 50%;
+      background: var(--navy);
+      box-shadow: 0 1px 5px rgba(23,35,59,.35);
+      cursor: grab;
+      appearance: none;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 12px;
+      height: 12px;
+      border: 4px solid white;
+      border-radius: 50%;
+      background: var(--navy);
+      box-shadow: 0 1px 5px rgba(23,35,59,.35);
+      cursor: grab;
+    }
+
+    .ticks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      color: #9299a8;
+      font-size: .67rem;
+    }
+
+    .threshold-row {
+      display: grid;
+      grid-template-columns: 31px 1fr 39px;
+      gap: 7px;
+      align-items: center;
+      margin-bottom: 5px;
+      font-size: .78rem;
+      font-weight: 780;
+    }
+
+    .threshold-row output {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .threshold-row input { height: 4px; }
+
+    .threshold-meaning {
+      margin: 0 0 13px 38px;
+      color: var(--muted);
+      font-size: .68rem;
+      line-height: 1.35;
+    }
+
+    .lab-main {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-width: 0;
+    }
+
+    .reading {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 22px;
+      padding: 22px 25px;
+      border-bottom: 1px solid var(--line);
+      background: var(--soft-teal);
+    }
+
+    .reading p { margin: 0; }
+
+    .reading-title {
+      margin-bottom: 5px !important;
+      color: var(--teal);
+      font-size: .73rem;
+      font-weight: 900;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .reading-main {
+      font-size: 1.08rem;
+      font-weight: 780;
+    }
+
+    .reading-summary {
+      margin-top: 8px !important;
+      color: var(--muted);
+      font-size: .84rem;
+    }
+
+    .reading-tip {
+      align-self: center;
+      padding-left: 20px;
+      border-left: 1px solid rgba(23,35,59,.12);
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .chart-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 16px 22px 0;
+    }
+
+    .tab-button {
+      padding: 8px 12px;
+      border: 0;
+      border-radius: 10px;
+      color: var(--muted);
+      background: transparent;
+      font-size: .82rem;
+      font-weight: 820;
+      cursor: pointer;
+    }
+
+    .tab-button.active {
+      color: var(--ink);
+      background: #eeece6;
+    }
+
+    .chart-panel {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 190px;
+      gap: 14px;
+      padding: 12px 20px 24px;
+    }
+
+    .chart-meaning {
+      margin: 10px 20px 0;
+      padding: 13px 15px;
+      border: 1px solid rgba(42, 168, 154, .25);
+      border-left: 4px solid var(--teal);
+      border-radius: 13px;
+      color: #526077;
+      background: var(--soft-teal);
+      font-size: .79rem;
+      line-height: 1.5;
+    }
+
+    .chart-meaning strong { color: var(--ink); }
+
+    .chart-wrap {
+      position: relative;
+      min-width: 0;
+      min-height: 410px;
+    }
+
+    #mainChart {
+      display: block;
+      width: 100%;
+      height: 410px;
+    }
+
+    .legend {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding-top: 26px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .legend-swatch {
+      width: 22px;
+      height: 4px;
+      border-radius: 99px;
+    }
+
+    .prob-title {
+      margin: 18px 0 8px;
+      color: var(--ink);
+      font-size: .78rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .prob-row {
+      display: grid;
+      grid-template-columns: 22px 1fr 36px;
+      gap: 6px;
+      align-items: center;
+      margin-bottom: 7px;
+      font-size: .7rem;
+      font-weight: 750;
+    }
+
+    .prob-track {
+      height: 9px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: #eceae4;
+    }
+
+    .prob-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      transition: width .16s ease;
+    }
+
+    .simulate {
+      margin-top: 18px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+    }
+
+    .simulate .button {
+      width: 100%;
+      min-height: 40px;
+      font-size: .78rem;
+    }
+
+    .draw-result {
+      min-height: 46px;
+      margin-top: 10px;
+      padding: 9px;
+      border-radius: 10px;
+      color: var(--muted);
+      background: #f3f1eb;
+      font-size: .75rem;
+      text-align: center;
+    }
+
+    .category-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .category-pill {
+      padding: 8px 4px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: white;
+      font-size: .68rem;
+      font-weight: 800;
+      text-align: center;
+      transition: transform .2s ease, border .2s ease;
+    }
+
+    .person-comparison {
+      margin: 0 20px 24px;
+      padding: 21px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #f7f5ef;
+    }
+
+    .person-comparison-head {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 22px;
+      align-items: end;
+      margin-bottom: 12px;
+    }
+
+    .person-comparison-head h3 {
+      margin: 0 0 5px;
+      font-size: 1.05rem;
+    }
+
+    .person-comparison-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .78rem;
+    }
+
+    .person-gap-control label {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+      font-size: .75rem;
+      font-weight: 850;
+    }
+
+    .person-gap-control output {
+      color: var(--coral);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .person-comparison-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 210px;
+      gap: 15px;
+    }
+
+    #personCompareChart {
+      display: block;
+      width: 100%;
+      height: 300px;
+    }
+
+    .person-result-list {
+      display: grid;
+      gap: 9px;
+      align-content: center;
+    }
+
+    .person-result-card {
+      padding: 13px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: white;
+    }
+
+    .person-result-card.a { border-left: 5px solid var(--blue); }
+    .person-result-card.b { border-left: 5px solid var(--coral); }
+
+    .person-result-card small {
+      display: block;
+      color: var(--muted);
+      font-size: .67rem;
+      font-weight: 850;
+      text-transform: uppercase;
+    }
+
+    .person-result-card strong {
+      display: block;
+      margin: 4px 0 2px;
+      font-size: 1.12rem;
+    }
+
+    .person-result-card span {
+      color: var(--muted);
+      font-size: .71rem;
+    }
+
+    .person-result-difference {
+      padding: 11px;
+      border-radius: 11px;
+      background: var(--soft-gold);
+      font-size: .75rem;
+      font-weight: 780;
+    }
+
+    .category-pill.winner {
+      color: white;
+      border-color: transparent;
+      transform: translateY(-3px);
+    }
+
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .example {
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    .example-tag {
+      display: inline-block;
+      margin-bottom: 26px;
+      padding: 5px 9px;
+      border-radius: 8px;
+      color: var(--teal);
+      background: var(--soft-teal);
+      font-size: .72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .example h3 {
+      margin-bottom: 7px;
+      font-size: 1.35rem;
+    }
+
+    .example p {
+      color: var(--muted);
+      font-size: .91rem;
+    }
+
+    .mini-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+      margin-top: 19px;
+    }
+
+    .mini-scale span {
+      display: grid;
+      place-items: center;
+      height: 34px;
+      border-radius: 8px;
+      color: white;
+      background: var(--navy);
+      font-size: .72rem;
+      font-weight: 850;
+    }
+
+    .mini-scale span:nth-child(2) { opacity: .86; }
+    .mini-scale span:nth-child(3) { opacity: .72; }
+    .mini-scale span:nth-child(4) { opacity: .58; }
+    .mini-scale span:nth-child(5) { opacity: .44; }
+
+    .compare-shell {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+    }
+
+    .compare-controls,
+    .compare-chart-card {
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--card);
+    }
+
+    .item-control {
+      margin-bottom: 20px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #f4f2ec;
+    }
+
+    .item-control:last-of-type { margin-bottom: 15px; }
+    .item-control h3 { margin-bottom: 16px; font-size: 1rem; }
+    .item-a h3 { color: var(--coral); }
+    .item-b h3 { color: var(--teal); }
+
+    .mini-control {
+      display: grid;
+      grid-template-columns: 125px 1fr 34px;
+      gap: 7px;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: .74rem;
+      font-weight: 760;
+    }
+
+    .mini-control output {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+      text-align: right;
+    }
+
+    .compare-reading {
+      margin: 0;
+      padding: 13px;
+      border-radius: 13px;
+      color: var(--muted);
+      background: var(--soft-gold);
+      font-size: .82rem;
+    }
+
+    #compareChart {
+      display: block;
+      width: 100%;
+      height: 390px;
+    }
+
+    .compare-legend {
+      display: flex;
+      gap: 18px;
+      justify-content: center;
+      margin-top: 5px;
+      color: var(--muted);
+      font-size: .79rem;
+      font-weight: 750;
+    }
+
+    .line-key {
+      display: inline-block;
+      width: 28px;
+      height: 4px;
+      margin-right: 7px;
+      border-radius: 99px;
+      vertical-align: middle;
+    }
+
+    .quiz-section {
+      padding: 96px 0;
+      color: white;
+      background: var(--navy);
+    }
+
+    .quiz-section .section-head { margin-bottom: 36px; }
+    .quiz-section .section-intro { color: rgba(255,255,255,.64); }
+    .quiz-section .kicker { color: var(--gold); }
+
+    .quiz-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .quiz-card {
+      padding: 23px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 21px;
+      background: rgba(255,255,255,.055);
+    }
+
+    .quiz-card h3 {
+      min-height: 74px;
+      margin-bottom: 16px;
+      font-size: 1rem;
+      line-height: 1.4;
+    }
+
+    .answer {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 11px;
+      color: rgba(255,255,255,.85);
+      background: rgba(255,255,255,.06);
+      font-size: .8rem;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .answer:hover { background: rgba(255,255,255,.11); }
+    .answer.correct { color: white; border-color: var(--teal); background: rgba(42,168,154,.24); }
+    .answer.wrong { border-color: var(--coral); background: rgba(244,111,95,.17); }
+
+    .feedback {
+      min-height: 52px;
+      margin: 11px 0 0;
+      color: rgba(255,255,255,.6);
+      font-size: .77rem;
+    }
+
+    .recap {
+      padding: 96px 0 120px;
+    }
+
+    .recap-card {
+      display: grid;
+      grid-template-columns: .85fr 1.15fr;
+      gap: 55px;
+      padding: 48px;
+      border-radius: 32px;
+      background: var(--soft-coral);
+    }
+
+    .recap h2 { margin-bottom: 18px; }
+
+    .recap-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .recap-item {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 13px;
+      align-items: start;
+      padding: 15px;
+      border-radius: 15px;
+      background: rgba(255,255,255,.65);
+    }
+
+    .recap-item span {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      color: white;
+      background: var(--navy);
+      font-weight: 900;
+    }
+
+    .recap-item p { margin: 0; }
+
+    footer {
+      padding: 24px;
+      color: var(--muted);
+      font-size: .78rem;
+      text-align: center;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-visual { min-height: 440px; width: min(620px, 100%); margin: 0 auto; }
+      .section-head { grid-template-columns: 1fr; gap: 16px; }
+      .formula-layout { grid-template-columns: 1fr; }
+      .lab-body { grid-template-columns: 270px 1fr; }
+      .chart-panel { grid-template-columns: 1fr; }
+      .legend { display: grid; grid-template-columns: repeat(2, 1fr); padding: 0 10px; }
+      .prob-title, .simulate { grid-column: 1 / -1; }
+      .person-comparison-grid { grid-template-columns: 1fr; }
+      .person-result-list { grid-template-columns: repeat(2, 1fr); }
+      .person-result-difference { grid-column: 1 / -1; }
+      .compare-shell { grid-template-columns: 290px 1fr; }
+      .recap-card { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .topnav { display: none; }
+      .wrap { width: min(100% - 28px, 1180px); }
+      .hero { padding-top: 65px; gap: 35px; }
+      h1 { font-size: clamp(3.2rem, 17vw, 5rem); }
+      .hero-visual { min-height: 370px; }
+      .mountain-card { inset: 20px 0 35px; }
+      .float-note { max-width: 155px; font-size: .72rem; }
+      .section { padding: 72px 0; }
+      .concept-grid, .examples, .quiz-grid, .big-idea { grid-template-columns: 1fr; }
+      .concept-card { min-height: 230px; }
+      .formula-legend { grid-template-columns: 1fr; }
+      .lab-top { align-items: flex-start; flex-direction: column; }
+      .lab-body { grid-template-columns: 1fr; }
+      .controls { border-right: 0; border-bottom: 1px solid var(--line); }
+      .reading { grid-template-columns: 1fr; }
+      .reading-tip { padding: 12px 0 0; border-top: 1px solid rgba(23,35,59,.12); border-left: 0; }
+      .chart-wrap, #mainChart { min-height: 330px; height: 330px; }
+      .person-comparison { margin: 0 12px 18px; padding: 17px; }
+      .person-comparison-head { grid-template-columns: 1fr; }
+      .person-comparison-grid { grid-template-columns: 1fr; }
+      #personCompareChart { height: 270px; }
+      .person-result-list { grid-template-columns: 1fr; }
+      .person-result-difference { grid-column: auto; }
+      .compare-shell { grid-template-columns: 1fr; }
+      .recap-card { padding: 28px; }
+      .analogy { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html" aria-label="Ir a la portada de Laboratorio IRT">
+      <span class="brand-mark">G</span>
+      <span>Laboratorio IRT · GRM</span>
+    </a>
+    <nav class="topnav" aria-label="Navegación del sitio">
+      <a href="index.html">Inicio</a>
+      <a href="rasch.html">Rasch / 1–3PL</a>
+      <a href="pcm.html">PCM</a>
+      <a href="gpcm.html">GPCM</a>
+      <a href="#laboratorio">Laboratorio GRM</a>
+    </nav>
+  </header>
+  <div class="progress-shell" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
+
+  <main>
+    <section class="wrap hero" id="inicio">
+      <div>
+        <p class="eyebrow">Clase interactiva · TRI</p>
+        <h1>Entiende el <span class="accent">GRM</span> moviendo sus piezas.</h1>
+        <p class="lede">El Modelo de Respuesta Graduada explica cómo una característica latente se transforma en respuestas ordenadas. Aquí no solo verás curvas: podrás tocarlas y hacer que te cuenten qué está pasando.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#fundamentos">Empezar la clase <span aria-hidden="true">↓</span></a>
+          <a class="button secondary" href="#laboratorio">Ir al laboratorio</a>
+        </div>
+        <div class="hero-meta">
+          <span><i></i> 20–30 minutos</span>
+          <span><i></i> Sin prerrequisitos avanzados</span>
+          <span><i></i> 4 manipuladores</span>
+        </div>
+      </div>
+
+      <div class="hero-visual" aria-label="Rúbrica académica de un examen oral con cinco niveles y cuatro umbrales">
+        <div class="float-note one"><strong>θ (competencia oral)</strong>Describe el nivel comunicativo del candidato.</div>
+        <div class="float-note two"><strong>δ (umbrales)</strong>Separan los niveles contiguos de la rúbrica.</div>
+        <div class="mountain-card">
+          <svg viewBox="0 0 520 520" role="img" aria-labelledby="mountainTitle">
+            <title id="mountainTitle">Rúbrica de cinco niveles para evaluar competencia comunicativa oral</title>
+            <defs>
+              <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#223252"/>
+                <stop offset="1" stop-color="#111b30"/>
+              </linearGradient>
+            </defs>
+            <rect width="520" height="520" fill="url(#sky)"/>
+            <text x="34" y="48" fill="#e3ad36" font-family="system-ui" font-size="13" font-weight="900" letter-spacing="2">EXAMEN ORAL DE INGLÉS</text>
+            <text x="34" y="76" fill="white" font-family="system-ui" font-size="21" font-weight="850">Rúbrica de desempeño</text>
+            <g transform="translate(42 155)">
+              <circle cx="64" cy="42" r="34" fill="#f46f5f"/>
+              <path d="M20 136 C24 90 104 90 108 136" fill="#2aa89a"/>
+              <rect x="4" y="134" width="120" height="9" rx="4" fill="white" opacity=".18"/>
+              <path d="M126 23 h70 a13 13 0 0 1 13 13 v36 a13 13 0 0 1-13 13 h-43 l-18 17 4-17 h-13 a13 13 0 0 1-13-13 v-36 a13 13 0 0 1 13-13z" fill="white" opacity=".95"/>
+              <g stroke="#647087" stroke-width="4" stroke-linecap="round">
+                <line x1="135" y1="43" x2="185" y2="43"/>
+                <line x1="135" y1="55" x2="192" y2="55"/>
+                <line x1="135" y1="67" x2="174" y2="67"/>
+              </g>
+            </g>
+            <g transform="translate(270 104)">
+              <rect width="210" height="350" rx="18" fill="white" opacity=".08" stroke="white" stroke-opacity=".2"/>
+              <rect x="12" y="14" width="186" height="58" rx="10" fill="#f46f5f"/>
+              <rect x="12" y="80" width="186" height="58" rx="10" fill="#e3ad36"/>
+              <rect x="12" y="146" width="186" height="58" rx="10" fill="#7b6be8"/>
+              <rect x="12" y="212" width="186" height="58" rx="10" fill="#438bd2"/>
+              <rect x="12" y="278" width="186" height="58" rx="10" fill="#2aa89a"/>
+              <g fill="white" font-family="system-ui" font-size="12" font-weight="850">
+                <text x="25" y="49">5 · Avanzado</text>
+                <text x="25" y="115">4 · Competente</text>
+                <text x="25" y="181">3 · Funcional</text>
+                <text x="25" y="247">2 · Básico</text>
+                <text x="25" y="313">1 · Inicial</text>
+              </g>
+              <g fill="#fff" font-family="system-ui" font-size="10" font-weight="800" opacity=".78">
+                <text x="165" y="78">δ₄</text>
+                <text x="165" y="144">δ₃</text>
+                <text x="165" y="210">δ₂</text>
+                <text x="165" y="276">δ₁</text>
+              </g>
+            </g>
+            <path d="M214 282 C237 282 246 282 265 282" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="214" cy="282" r="13" fill="#17233b" stroke="white" stroke-width="4"/>
+            <text x="185" y="312" fill="white" font-family="system-ui" font-weight="850" font-size="12">θ (competencia)</text>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="fundamentos">
+      <div class="section-head">
+        <div>
+          <p class="kicker">01 · Fundamentos</p>
+          <h2>No son cinco respuestas aisladas.</h2>
+        </div>
+        <p class="section-intro">El GRM, propuesto por Samejima, trabaja con categorías ordenadas. En una rúbrica oral pueden ser: inicial, básico, funcional, competente y avanzado. El orden contiene información; la distancia exacta entre niveles no tiene por qué ser igual.</p>
+      </div>
+
+      <div class="concept-grid">
+        <article class="concept-card">
+          <span class="concept-number">θ</span>
+          <h3>θ (competencia o rasgo)</h3>
+          <p>Es el nivel de la característica que queremos medir. Aquí representa la competencia comunicativa oral en inglés.</p>
+          <div class="scale-demo" aria-label="Continuo del rasgo latente"><span>−</span><span>·</span><span>0</span><span>·</span><span>+</span></div>
+        </article>
+        <article class="concept-card">
+          <span class="concept-number">δ</span>
+          <h3>δ (umbrales de categoría)</h3>
+          <p>Cada umbral marca el nivel de competencia donde existe 50% de probabilidad de alcanzar una categoría determinada o una superior.</p>
+          <div class="scale-demo" aria-label="Cuatro umbrales"><span>δ₁</span><span>δ₂</span><span>δ₃</span><span>δ₄</span></div>
+        </article>
+        <article class="concept-card">
+          <span class="concept-number">a</span>
+          <h3>a (discriminación)</h3>
+          <p>Indica qué tan bien la tarea separa candidatos con niveles cercanos de θ (competencia), especialmente alrededor de los umbrales.</p>
+          <div class="scale-demo" aria-hidden="true"><span>╱</span><span>⟋</span><span>│</span></div>
+        </article>
+      </div>
+
+      <div class="big-idea">
+        <article class="analogy">
+          <div class="analogy-icon" aria-hidden="true">EN</div>
+          <div>
+            <h3>Ejemplo: nivel del candidato</h3>
+            <p>Un valor mayor de θ (competencia oral) representa más recursos para sostener la conversación, desarrollar ideas y reparar errores.</p>
+          </div>
+        </article>
+        <article class="analogy">
+          <div class="analogy-icon" aria-hidden="true">a</div>
+          <div>
+            <h3>Ejemplo: separación entre niveles</h3>
+            <p>Con a (discriminación) alta, dos candidatos cercanos pero situados a lados opuestos de un umbral reciben probabilidades más diferentes de alcanzar el nivel superior.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="formula-band" id="formula">
+      <div class="wrap formula-layout">
+        <div>
+          <p class="kicker">02 · El motor</p>
+          <h2>Primero pregunta “¿al menos k?”</h2>
+          <p>En lugar de modelar directamente cada categoría, el GRM construye curvas acumulativas. Para una escala de 1 a 5 hay cuatro fronteras: 2+, 3+, 4+ y 5.</p>
+          <p>Luego resta curvas vecinas para recuperar la probabilidad de responder exactamente cada categoría.</p>
+        </div>
+        <div class="formula-card">
+          <div class="formula" aria-label="Probabilidad de responder en la categoría k o superior">
+            P(Y ≥ k | θ) = 1 / [1 + e<sup>−a(θ−δ<sub>k</sub>)</sup>]
+          </div>
+          <div class="formula-legend">
+            <div><strong>θ (competencia)</strong>nivel del candidato</div>
+            <div><strong>a (discriminación)</strong>separación de niveles cercanos</div>
+            <div><strong>δ<sub>k</sub> (umbral)</strong>transición hacia la categoría k</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="lab-section" id="laboratorio">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">03 · Laboratorio</p>
+            <h2>Mueve una pieza. Lee el cambio.</h2>
+          </div>
+          <p class="section-intro">Aquí θ (competencia comunicativa oral) es el rasgo medido y los cinco niveles son calificaciones de una rúbrica. Cada control explica su efecto en el examen y la interpretación general integra el caso completo.</p>
+        </div>
+
+        <div class="lab">
+          <div class="lab-top">
+            <h3 class="lab-title"><span class="live-dot"></span> Tarea oral: mantener una conversación sobre un tema cotidiano</h3>
+            <div class="preset-row" aria-label="Escenarios predefinidos">
+              <button class="chip active" data-preset="balanced">Equilibrado</button>
+              <button class="chip" data-preset="sharp">Discriminación alta</button>
+              <button class="chip" data-preset="fuzzy">Discriminación baja</button>
+              <button class="chip" data-preset="hard">Examen exigente</button>
+              <button class="chip" data-preset="crowded">Niveles poco diferenciados</button>
+            </div>
+          </div>
+
+          <div class="lab-body">
+            <aside class="controls" aria-label="Controles del modelo">
+              <div class="control-group">
+                <label class="control-label" for="theta">θ (competencia oral) <output id="thetaOut">0.00</output></label>
+                <p class="control-help">Representa su competencia comunicativa oral en inglés.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0" aria-describedby="thetaHelp">
+                <div class="ticks"><span>−4 inicial</span><span>0 medio</span><span>+4 avanzado</span></div>
+                <p class="control-interpretation" id="thetaInterpretation">El candidato puede sostener intercambios funcionales, aunque todavía muestra algunas limitaciones.</p>
+                <span id="thetaHelp" class="sr-only">Nivel de competencia comunicativa oral del candidato</span>
+              </div>
+
+              <div class="control-group">
+                <label class="control-label" for="disc">a (discriminación de la tarea) <output id="discOut">1.40</output></label>
+                <p class="control-help">Indica cuánto distingue la tarea entre candidatos de nivel cercano.</p>
+                <input id="disc" type="range" min=".25" max="3.5" step=".05" value="1.4">
+                <div class="ticks"><span>separa poco</span><span>separa mucho</span></div>
+                <p class="control-interpretation" id="discInterpretation">La tarea diferencia de manera moderada a candidatos con competencia cercana.</p>
+              </div>
+
+              <div class="control-group">
+                <div class="control-label"><span>δ₁ … δ₄ (umbrales de categoría)</span></div>
+                <p class="control-help">Cada δ (umbral) indica la competencia necesaria para tener 50% de probabilidad de alcanzar ese nivel o uno superior.</p>
+                <label class="threshold-row">δ₁ (umbral)<input id="b1" type="range" min="-3.5" max="2.5" step=".05" value="-1.5" aria-label="δ1, umbral para comunicación básica"><output id="b1Out">−1.50</output></label>
+                <p class="threshold-meaning" id="delta1Interpretation">Frontera para pasar de una producción mínima a comunicación básica.</p>
+                <label class="threshold-row">δ₂ (umbral)<input id="b2" type="range" min="-2.5" max="3" step=".05" value="-.5" aria-label="δ2, umbral para conversación funcional"><output id="b2Out">−0.50</output></label>
+                <p class="threshold-meaning" id="delta2Interpretation">Frontera para alcanzar una conversación funcional.</p>
+                <label class="threshold-row">δ₃ (umbral)<input id="b3" type="range" min="-2" max="3.5" step=".05" value=".5" aria-label="δ3, umbral para desempeño competente"><output id="b3Out">0.50</output></label>
+                <p class="threshold-meaning" id="delta3Interpretation">Frontera para mostrar fluidez y elaboración competentes.</p>
+                <label class="threshold-row">δ₄ (umbral)<input id="b4" type="range" min="-1.5" max="4" step=".05" value="1.5" aria-label="δ4, umbral para comunicación avanzada"><output id="b4Out">1.50</output></label>
+                <p class="threshold-meaning" id="delta4Interpretation">Frontera para demostrar comunicación avanzada y matizada.</p>
+              </div>
+
+              <div class="category-strip" id="categoryStrip" aria-label="Categoría más probable">
+                <div class="category-pill">1<br>Inicial</div>
+                <div class="category-pill">2<br>Básico</div>
+                <div class="category-pill">3<br>Funcional</div>
+                <div class="category-pill">4<br>Competente</div>
+                <div class="category-pill">5<br>Avanzado</div>
+              </div>
+            </aside>
+
+            <div class="lab-main">
+              <div class="reading" aria-live="polite">
+                <div>
+                  <p class="reading-title">Interpretación general del caso</p>
+                  <p class="reading-main" id="dynamicReading">La categoría más probable es 3.</p>
+                  <p class="reading-summary" id="generalSummary">La tarea y el candidato están centrados en una región similar de competencia.</p>
+                </div>
+                <p class="reading-tip" id="dynamicTip">Mueve un parámetro: este espacio explicará qué cambió en la interpretación del examen.</p>
+              </div>
+
+              <div>
+                <div class="chart-tabs" role="tablist" aria-label="Tipo de curva">
+                  <button class="tab-button active" role="tab" aria-selected="true" data-chart="category">Categorías exactas</button>
+                  <button class="tab-button" role="tab" aria-selected="false" data-chart="cumulative">Curvas acumulativas</button>
+                </div>
+                <p class="chart-meaning" id="chartMeaning" aria-live="polite"></p>
+                <div class="chart-panel">
+                  <div class="chart-wrap">
+                    <svg id="mainChart" role="img" aria-label="Curvas características de categoría del modelo GRM"></svg>
+                  </div>
+                  <aside class="legend" id="chartLegend" aria-label="Niveles de desempeño y probabilidades"></aside>
+                </div>
+                <section class="person-comparison">
+                  <div class="person-comparison-head">
+                    <div>
+                      <h3>Comparación visible de dos candidatos</h3>
+                      <p>La curva representa la probabilidad de alcanzar el nivel competente o superior. A y B se sitúan alrededor de θ (competencia oral) para mostrar cuánto los separa a (discriminación).</p>
+                    </div>
+                    <div class="person-gap-control">
+                      <label for="personGap">Δθ (distancia entre competencias) <output id="personGapOut">0.50</output></label>
+                      <input id="personGap" type="range" min=".10" max="2" step=".10" value=".50">
+                    </div>
+                  </div>
+                  <div class="person-comparison-grid">
+                    <svg id="personCompareChart" role="img" aria-label="Comparación de dos candidatos para alcanzar el nivel competente"></svg>
+                    <div class="person-result-list">
+                      <div class="person-result-card a"><small>Candidato A</small><strong id="personAResult"></strong><span id="personATheta"></span></div>
+                      <div class="person-result-card b"><small>Candidato B</small><strong id="personBResult"></strong><span id="personBTheta"></span></div>
+                      <div class="person-result-difference" id="personDifference"></div>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="ejemplos">
+      <div class="section-head">
+        <div>
+          <p class="kicker">04 · Dónde aparece</p>
+          <h2>Mismo motor, distintas historias.</h2>
+        </div>
+        <p class="section-intro">El significado de θ (rasgo medido) cambia según el constructo, pero la lógica ordinal se mantiene. Una categoría mayor representa más del rasgo medido, después de recodificar los ítems invertidos.</p>
+      </div>
+      <div class="examples">
+        <article class="example">
+          <span class="example-tag">Educación</span>
+          <h3>Crédito parcial</h3>
+          <p>En una respuesta abierta: incorrecta, idea incipiente, procedimiento parcial, casi correcta, completamente correcta.</p>
+          <div class="mini-scale" aria-hidden="true"><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span></div>
+        </article>
+        <article class="example">
+          <span class="example-tag">Psicología</span>
+          <h3>Frecuencia de ansiedad</h3>
+          <p>“Durante la última semana me costó relajarme”: nunca, rara vez, a veces, frecuentemente, siempre.</p>
+          <div class="mini-scale" aria-hidden="true"><span>N</span><span>R</span><span>A</span><span>F</span><span>S</span></div>
+        </article>
+        <article class="example">
+          <span class="example-tag">Experiencia</span>
+          <h3>Satisfacción</h3>
+          <p>“La plataforma facilitó mi trabajo”: muy en desacuerdo hasta muy de acuerdo. θ (rasgo de satisfacción) representa el nivel de satisfacción.</p>
+          <div class="mini-scale" aria-hidden="true"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap" id="comparar">
+      <div class="section-head">
+        <div>
+          <p class="kicker">05 · Comparador</p>
+          <h2>¿Qué ítem mide mejor dónde?</h2>
+        </div>
+        <p class="section-intro">La curva de información resume precisión. Una tarea aporta más información cerca de sus δ (umbrales); una a (discriminación) alta concentra la capacidad de separar niveles cercanos en esas regiones.</p>
+      </div>
+
+      <div class="compare-shell">
+        <aside class="compare-controls">
+          <div class="item-control item-a">
+            <h3>Ítem A · coral</h3>
+            <label class="mini-control">Centro<input id="centerA" type="range" min="-2.5" max="2.5" step=".1" value="-0.7"><output id="centerAOut">−0.7</output></label>
+            <label class="mini-control">a (discriminación)<input id="aA" type="range" min=".4" max="3" step=".1" value="1.8"><output id="aAOut">1.8</output></label>
+          </div>
+          <div class="item-control item-b">
+            <h3>Ítem B · verde</h3>
+            <label class="mini-control">Centro<input id="centerB" type="range" min="-2.5" max="2.5" step=".1" value="1"><output id="centerBOut">1.0</output></label>
+            <label class="mini-control">a (discriminación)<input id="aB" type="range" min=".4" max="3" step=".1" value="1.1"><output id="aBOut">1.1</output></label>
+          </div>
+          <p class="compare-reading" id="compareReading">El ítem A es más preciso en niveles bajos y distingue con mayor nitidez.</p>
+        </aside>
+        <div class="compare-chart-card">
+          <svg id="compareChart" role="img" aria-label="Comparación aproximada de información de dos ítems"></svg>
+          <div class="compare-legend">
+            <span><i class="line-key" style="background:var(--coral)"></i>Ítem A</span>
+            <span><i class="line-key" style="background:var(--teal)"></i>Ítem B</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="quiz-section" id="practica">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <p class="kicker">06 · Compruébalo</p>
+            <h2>Tres preguntas, cero solemnidad.</h2>
+          </div>
+          <p class="section-intro">Responde con lo aprendido. La retroalimentación explica el porqué y puedes cambiar de respuesta.</p>
+        </div>
+        <div class="quiz-grid">
+          <article class="quiz-card" data-answer="1">
+            <h3>1. Si todos los umbrales se desplazan a la derecha, el ítem…</h3>
+            <button class="answer" data-choice="0">Se vuelve más discriminante</button>
+            <button class="answer" data-choice="1">Requiere mayor θ (competencia o rasgo) para categorías altas</button>
+            <button class="answer" data-choice="2">Deja de ser ordinal</button>
+            <p class="feedback">Elige una opción.</p>
+          </article>
+          <article class="quiz-card" data-answer="2">
+            <h3>2. Una discriminación a muy baja produce curvas…</h3>
+            <button class="answer" data-choice="0">Más desplazadas a la derecha</button>
+            <button class="answer" data-choice="1">Con categorías desordenadas</button>
+            <button class="answer" data-choice="2">Más planas y con mayor solapamiento</button>
+            <p class="feedback">Elige una opción.</p>
+          </article>
+          <article class="quiz-card" data-answer="0">
+            <h3>3. ¿Cómo obtiene el GRM P(Y = 3)?</h3>
+            <button class="answer" data-choice="0">P(Y ≥ 3) − P(Y ≥ 4)</button>
+            <button class="answer" data-choice="1">P(Y ≥ 3) + P(Y ≥ 4)</button>
+            <button class="answer" data-choice="2">Solo con el umbral δ₃</button>
+            <p class="feedback">Elige una opción.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="recap wrap">
+      <div class="recap-card">
+        <div>
+          <p class="kicker">Mapa de bolsillo</p>
+          <h2>El GRM en cuatro movimientos.</h2>
+          <p class="section-intro">Cuando vuelvas a mirar una salida de software, busca estas cuatro ideas antes de perderte entre columnas.</p>
+        </div>
+        <div class="recap-list">
+          <div class="recap-item"><span>1</span><p><b>θ (competencia o rasgo) ubica a la persona</b> en la característica medida.</p></div>
+          <div class="recap-item"><span>2</span><p><b>Los δ (umbrales) ubican las transiciones</b> para alcanzar categorías progresivamente altas.</p></div>
+          <div class="recap-item"><span>3</span><p><b>a (discriminación) indica cuánto separa la tarea</b> a personas con niveles cercanos a esos umbrales.</p></div>
+          <div class="recap-item"><span>4</span><p><b>Restar curvas acumulativas</b> produce la probabilidad de cada respuesta exacta.</p></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Clase interactiva autocontenida · Modelo de Respuesta Graduada de Samejima</footer>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const colors = ["#438bd2", "#7b6be8", "#e3ad36", "#f46f5f", "#2aa89a"];
+      const cumulativeColors = ["#438bd2", "#7b6be8", "#f46f5f", "#2aa89a"];
+      const categoryNames = [
+        "1 · Producción inicial",
+        "2 · Comunicación básica",
+        "3 · Conversación funcional",
+        "4 · Desempeño competente",
+        "5 · Comunicación avanzada"
+      ];
+      const shortLevelNames = ["inicial", "básico", "funcional", "competente", "avanzado"];
+      const thresholdTransitions = [
+        "comunicación básica",
+        "conversación funcional",
+        "desempeño competente",
+        "comunicación avanzada"
+      ];
+
+      const $ = (id) => document.getElementById(id);
+      const thetaInput = $("theta");
+      const discInput = $("disc");
+      const personGapInput = $("personGap");
+      const thresholdInputs = [$("b1"), $("b2"), $("b3"), $("b4")];
+      const thresholdOutputs = [$("b1Out"), $("b2Out"), $("b3Out"), $("b4Out")];
+      let chartMode = "category";
+      let lastChanged = "theta";
+
+      const presets = {
+        balanced: { theta: 0, a: 1.4, bs: [-1.5, -.5, .5, 1.5] },
+        sharp: { theta: 0, a: 3.1, bs: [-1.5, -.5, .5, 1.5] },
+        fuzzy: { theta: 0, a: .45, bs: [-1.5, -.5, .5, 1.5] },
+        hard: { theta: 0, a: 1.5, bs: [.2, 1.1, 2, 2.9] },
+        crowded: { theta: 0, a: 1.8, bs: [-.45, -.15, .15, .45] }
+      };
+
+      function fmt(value, digits = 2) {
+        const n = Number(value);
+        return (n < 0 ? "−" : "") + Math.abs(n).toFixed(digits);
+      }
+
+      function logistic(theta, a, b) {
+        return 1 / (1 + Math.exp(-a * (theta - b)));
+      }
+
+      function probabilities(theta, a, bs) {
+        const stars = bs.map(b => logistic(theta, a, b));
+        return [
+          1 - stars[0],
+          stars[0] - stars[1],
+          stars[1] - stars[2],
+          stars[2] - stars[3],
+          stars[3]
+        ].map(p => Math.max(0, Math.min(1, p)));
+      }
+
+      function state() {
+        return {
+          theta: Number(thetaInput.value),
+          a: Number(discInput.value),
+          bs: thresholdInputs.map(input => Number(input.value))
+        };
+      }
+
+      function keepThresholdsOrdered(changedIndex) {
+        const gap = .15;
+        const values = thresholdInputs.map(input => Number(input.value));
+        if (changedIndex > 0 && values[changedIndex] <= values[changedIndex - 1] + gap) {
+          values[changedIndex] = values[changedIndex - 1] + gap;
+        }
+        if (changedIndex < 3 && values[changedIndex] >= values[changedIndex + 1] - gap) {
+          values[changedIndex] = values[changedIndex + 1] - gap;
+        }
+        thresholdInputs[changedIndex].value = values[changedIndex].toFixed(2);
+      }
+
+      function svgEl(tag, attrs = {}, text = "") {
+        const el = document.createElementNS("http://www.w3.org/2000/svg", tag);
+        Object.entries(attrs).forEach(([key, value]) => el.setAttribute(key, value));
+        if (text) el.textContent = text;
+        return el;
+      }
+
+      function linePath(points, xScale, yScale) {
+        return points.map((p, i) => `${i ? "L" : "M"}${xScale(p.x).toFixed(2)},${yScale(p.y).toFixed(2)}`).join(" ");
+      }
+
+      function setupChart(svg, yMax = 1, yTicks = [0, .25, .5, .75, 1]) {
+        const width = Math.max(540, svg.clientWidth || 700);
+        const height = Number(svg.getAttribute("height")) || svg.clientHeight || 410;
+        const margin = { top: 24, right: 18, bottom: 48, left: 52 };
+        const innerW = width - margin.left - margin.right;
+        const innerH = height - margin.top - margin.bottom;
+        svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+        svg.innerHTML = "";
+
+        const xScale = x => margin.left + ((x + 4) / 8) * innerW;
+        const yScale = y => margin.top + (1 - y / yMax) * innerH;
+
+        const plot = svgEl("g");
+        svg.appendChild(plot);
+
+        yTicks.forEach(tick => {
+          plot.appendChild(svgEl("line", {
+            x1: margin.left, x2: width - margin.right, y1: yScale(tick), y2: yScale(tick),
+            stroke: "#dcd9d0", "stroke-width": 1
+          }));
+          plot.appendChild(svgEl("text", {
+            x: margin.left - 10, y: yScale(tick) + 4, "text-anchor": "end",
+            fill: "#7c8495", "font-size": 11, "font-family": "system-ui"
+          }, tick.toFixed(tick === 0 || tick === yMax ? 0 : 2)));
+        });
+
+        [-4, -3, -2, -1, 0, 1, 2, 3, 4].forEach(tick => {
+          plot.appendChild(svgEl("line", {
+            x1: xScale(tick), x2: xScale(tick), y1: margin.top, y2: height - margin.bottom,
+            stroke: tick === 0 ? "#b9b6ae" : "#ebe8e1", "stroke-width": tick === 0 ? 1.4 : 1
+          }));
+          plot.appendChild(svgEl("text", {
+            x: xScale(tick), y: height - margin.bottom + 21, "text-anchor": "middle",
+            fill: "#7c8495", "font-size": 11, "font-family": "system-ui"
+          }, String(tick).replace("-", "−")));
+        });
+
+        plot.appendChild(svgEl("text", {
+          x: margin.left + innerW / 2, y: height - 8, "text-anchor": "middle",
+          fill: "#647087", "font-size": 12, "font-family": "system-ui", "font-weight": 700
+        }, "θ (competencia comunicativa oral)"));
+
+        return { width, height, margin, innerW, innerH, xScale, yScale, plot };
+      }
+
+      function renderMainChart() {
+        const svg = $("mainChart");
+        const { theta, a, bs } = state();
+        const chart = setupChart(svg);
+        const xs = Array.from({ length: 241 }, (_, i) => -4 + i * (8 / 240));
+        const curves = chartMode === "category"
+          ? [0,1,2,3,4].map(k => xs.map(x => ({ x, y: probabilities(x, a, bs)[k] })))
+          : [0,1,2,3].map(k => xs.map(x => ({ x, y: logistic(x, a, bs[k]) })));
+        const palette = chartMode === "category" ? colors : cumulativeColors;
+
+        bs.forEach((b, i) => {
+          chart.plot.appendChild(svgEl("line", {
+            x1: chart.xScale(b), x2: chart.xScale(b), y1: chart.margin.top, y2: chart.height - chart.margin.bottom,
+            stroke: cumulativeColors[i], "stroke-width": 1.2, "stroke-dasharray": "4 5", opacity: .45
+          }));
+          chart.plot.appendChild(svgEl("text", {
+            x: chart.xScale(b), y: chart.margin.top + 10, "text-anchor": "middle",
+            fill: cumulativeColors[i], "font-size": 10, "font-family": "system-ui", "font-weight": 800
+          }, `δ${i + 1}`));
+        });
+
+        curves.forEach((points, i) => {
+          chart.plot.appendChild(svgEl("path", {
+            d: linePath(points, chart.xScale, chart.yScale),
+            fill: "none", stroke: palette[i], "stroke-width": 3.2,
+            "stroke-linecap": "round", "stroke-linejoin": "round"
+          }));
+        });
+
+        chart.plot.appendChild(svgEl("line", {
+          x1: chart.xScale(theta), x2: chart.xScale(theta),
+          y1: chart.margin.top, y2: chart.height - chart.margin.bottom,
+          stroke: "#17233b", "stroke-width": 2.4
+        }));
+        chart.plot.appendChild(svgEl("rect", {
+          x: chart.xScale(theta) - 22, y: chart.height - chart.margin.bottom - 27,
+          width: 44, height: 21, rx: 7, fill: "#17233b"
+        }));
+        chart.plot.appendChild(svgEl("text", {
+          x: chart.xScale(theta), y: chart.height - chart.margin.bottom - 12,
+          "text-anchor": "middle", fill: "white", "font-size": 10,
+          "font-family": "system-ui", "font-weight": 800
+        }, `θ ${fmt(theta, 1)}`));
+
+        const current = chartMode === "category"
+          ? probabilities(theta, a, bs)
+          : bs.map(b => logistic(theta, a, b));
+        current.forEach((p, i) => {
+          chart.plot.appendChild(svgEl("circle", {
+            cx: chart.xScale(theta), cy: chart.yScale(p), r: 5.5,
+            fill: palette[i], stroke: "white", "stroke-width": 2
+          }));
+        });
+
+        $("chartMeaning").innerHTML = chartMode === "category"
+          ? "<strong>Categorías exactas:</strong> cada punto coloreado sobre la línea de θ (competencia oral) muestra la probabilidad de recibir exactamente ese nivel. El punto más alto señala la calificación más probable; los demás recuerdan que también pueden observarse niveles inferiores o superiores."
+          : "<strong>Curvas acumulativas:</strong> cada punto coloreado sobre la línea de θ (competencia oral) muestra la probabilidad de alcanzar ese nivel o uno superior. Estas probabilidades no son categorías separadas y, por tanto, no se suman entre sí.";
+        renderLegend();
+      }
+
+      function renderLegend() {
+        const { theta, a, bs } = state();
+        const probs = probabilities(theta, a, bs);
+        const legend = $("chartLegend");
+        legend.innerHTML = "";
+        const labels = chartMode === "category"
+          ? categoryNames
+          : ["Básico o más", "Funcional o más", "Competente o más", "Avanzado"];
+        const palette = chartMode === "category" ? colors : cumulativeColors;
+        labels.forEach((label, i) => {
+          const item = document.createElement("div");
+          item.className = "legend-item";
+          item.innerHTML = `<span class="legend-swatch" style="background:${palette[i]}"></span><span>${label}</span>`;
+          legend.appendChild(item);
+        });
+
+        const title = document.createElement("p");
+        title.className = "prob-title";
+        title.textContent = "Ahora, para este candidato";
+        legend.appendChild(title);
+
+        probs.forEach((p, i) => {
+          const row = document.createElement("div");
+          row.className = "prob-row";
+          row.innerHTML = `<span>N${i + 1}</span><div class="prob-track"><div class="prob-fill" style="width:${p * 100}%;background:${colors[i]}"></div></div><span>${Math.round(p * 100)}%</span>`;
+          legend.appendChild(row);
+        });
+
+        const simulation = document.createElement("div");
+        simulation.className = "simulate";
+        simulation.innerHTML = `<button class="button secondary" id="drawResponse">Simular una calificación</button><div class="draw-result" id="drawResult">La calificación se sorteará con estas probabilidades.</div>`;
+        legend.appendChild(simulation);
+        $("drawResponse").addEventListener("click", drawResponse);
+      }
+
+      function drawResponse() {
+        const { theta, a, bs } = state();
+        const probs = probabilities(theta, a, bs);
+        const r = Math.random();
+        let sum = 0;
+        let choice = 4;
+        for (let i = 0; i < probs.length; i++) {
+          sum += probs[i];
+          if (r <= sum) { choice = i; break; }
+        }
+        const result = $("drawResult");
+        result.innerHTML = `El examinador asignó <b style="color:${colors[choice]}">nivel ${choice + 1}: ${shortLevelNames[choice]}</b><br><span>Tenía una probabilidad de ${Math.round(probs[choice] * 100)}%.</span>`;
+      }
+
+      function competenceDescription(theta) {
+        if (theta < -2.25) return "un repertorio muy limitado: responde con palabras o fragmentos y necesita mucho apoyo";
+        if (theta < -.75) return "recursos básicos: comunica información sencilla, con pausas frecuentes y estructuras limitadas";
+        if (theta < .75) return "competencia funcional: sostiene el intercambio y transmite ideas principales, aunque comete errores";
+        if (theta < 2.25) return "un desempeño competente: desarrolla respuestas, mantiene fluidez y repara dificultades";
+        return "competencia avanzada: se expresa con precisión, flexibilidad y matices aun en intercambios exigentes";
+      }
+
+      function taskSensitivityDescription(a, theta, bs) {
+        const gap = Number(personGapInput.value);
+        const lower = logistic(theta - gap / 2, a, bs[2]);
+        const upper = logistic(theta + gap / 2, a, bs[2]);
+        const separation = upper - lower;
+        const relation = theta > bs[2] + .05
+          ? "Como θ (competencia oral) está por encima de δ₃ (umbral de competente), aumentar a (discriminación) eleva la probabilidad de alcanzar ese nivel."
+          : theta < bs[2] - .05
+            ? "Como θ (competencia oral) está por debajo de δ₃ (umbral de competente), aumentar a (discriminación) reduce la probabilidad de alcanzar ese nivel."
+            : "Como θ (competencia oral) está prácticamente en δ₃ (umbral de competente), esa probabilidad se mantiene cerca de 50% aunque cambie a (discriminación).";
+        const level = a < .65 ? "baja" : a < 1.25 ? "moderada-baja" : a < 2.15 ? "adecuada" : "alta";
+        return `a (discriminación) es ${level}. Los candidatos A y B visibles en el comparador difieren ${Math.round(separation * 100)} puntos porcentuales en su probabilidad de alcanzar al menos el nivel competente. ${relation}`;
+      }
+
+      function thresholdDemandDescription(value) {
+        if (value < -1.5) return "muy accesible";
+        if (value < -.45) return "accesible";
+        if (value < .55) return "de exigencia media";
+        if (value < 1.55) return "exigente";
+        return "muy exigente";
+      }
+
+      function updateControlInterpretations(theta, a, bs) {
+        const currentProbs = probabilities(theta, a, bs);
+        const currentExpected = currentProbs.reduce((sum, p, i) => sum + p * (i + 1), 0);
+        $("thetaInterpretation").innerHTML = `Este candidato muestra <strong>${competenceDescription(theta)}</strong>. Con esta tarea, su nivel esperado es <strong>${currentExpected.toFixed(2)} de 5</strong>. Al mover θ (competencia oral) cambias al candidato, no el examen.`;
+        $("discInterpretation").textContent = taskSensitivityDescription(a, theta, bs);
+
+        bs.forEach((delta, i) => {
+          const probability = logistic(theta, a, delta);
+          const relation = theta >= delta
+            ? `El candidato está ${fmt(theta - delta)} unidades por encima de esta frontera`
+            : `El candidato está ${fmt(delta - theta)} unidades por debajo de esta frontera`;
+          $(`delta${i + 1}Interpretation`).innerHTML =
+            `<strong>δ${i + 1} (umbral) = ${fmt(delta)}:</strong> alcanzar ${thresholdTransitions[i]} es ${thresholdDemandDescription(delta)}. ${relation}; tiene ${Math.round(probability * 100)}% de probabilidad de lograr este nivel o uno superior.`;
+        });
+      }
+
+      function updateInterpretation() {
+        const { theta, a, bs } = state();
+        const probs = probabilities(theta, a, bs);
+        const winner = probs.indexOf(Math.max(...probs));
+        const certainty = probs[winner];
+        const expectedScore = probs.reduce((sum, p, i) => sum + p * (i + 1), 0);
+        const competentOrMore = logistic(theta, a, bs[2]);
+        const advanced = logistic(theta, a, bs[3]);
+
+        $("dynamicReading").innerHTML = `Para un candidato con θ (competencia oral) = <b>${fmt(theta)}</b>, la calificación más probable es <b style="color:${colors[winner]}">${categoryNames[winner]}</b> (${Math.round(certainty * 100)}%).`;
+        $("generalSummary").innerHTML = `Su calificación esperada es <b>${expectedScore.toFixed(2)} de 5</b>. Tiene <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar al menos el nivel competente y <b>${Math.round(advanced * 100)}%</b> de llegar al nivel avanzado.`;
+
+        let tip;
+        if (lastChanged === "gap") {
+          tip = "Cambiaste Δθ (distancia entre competencias): acercaste o separaste a los candidatos A y B sin modificar la tarea, sus umbrales ni su discriminación.";
+        } else if (lastChanged === "disc") {
+          tip = "Cambiaste a (discriminación): el candidato y los umbrales siguen iguales. Lo que cambia es cuánto separa la tarea a candidatos con competencias cercanas.";
+        } else if (lastChanged === "thresholds") {
+          const spacing = bs[3] - bs[0];
+          tip = spacing < 1.4
+            ? "Cambiaste el conjunto de δ (umbrales): los niveles de la rúbrica quedaron muy juntos y varias calificaciones compiten en una franja estrecha de competencia."
+            : "Cambiaste el conjunto de δ (umbrales): el examen ahora sitúa sus niveles de desempeño en otra región de competencia, sin cambiar al candidato.";
+        } else if (lastChanged === "preset") {
+          tip = "Este escenario sirve como punto de referencia: compara la competencia del candidato, la discriminación de la tarea y la exigencia de los cuatro niveles.";
+        } else if (lastChanged.startsWith("b")) {
+          const index = Number(lastChanged.slice(1)) - 1;
+          tip = `Cambiaste δ${index + 1} (umbral): ahora el examen exige más o menos competencia para alcanzar ${thresholdTransitions[index]}. Esto modifica sobre todo la transición entre los niveles ${index + 1} y ${index + 2}.`;
+        } else {
+          tip = "Cambiaste θ (competencia oral): ahora observas a otro candidato. La tarea, su discriminación y sus criterios de calificación no cambiaron.";
+        }
+        $("dynamicTip").textContent = tip;
+        updateControlInterpretations(theta, a, bs);
+
+        document.querySelectorAll(".category-pill").forEach((pill, i) => {
+          pill.classList.toggle("winner", i === winner);
+          pill.style.background = i === winner ? colors[i] : "";
+        });
+      }
+
+      function updateOutputs() {
+        $("thetaOut").textContent = fmt(thetaInput.value);
+        $("discOut").textContent = fmt(discInput.value);
+        thresholdOutputs.forEach((output, i) => output.textContent = fmt(thresholdInputs[i].value));
+      }
+
+      function updateAll() {
+        updateOutputs();
+        updateInterpretation();
+        renderMainChart();
+        renderPersonComparison();
+      }
+
+      function renderPersonComparison() {
+        const { theta, a, bs } = state();
+        const gap = Number(personGapInput.value);
+        const thetaA = Math.max(-4, theta - gap / 2);
+        const thetaB = Math.min(4, theta + gap / 2);
+        const probabilityA = logistic(thetaA, a, bs[2]);
+        const probabilityB = logistic(thetaB, a, bs[2]);
+        $("personGapOut").textContent = fmt(thetaB - thetaA);
+        $("personAResult").textContent = `${Math.round(probabilityA * 100)}% competente+`;
+        $("personBResult").textContent = `${Math.round(probabilityB * 100)}% competente+`;
+        $("personATheta").textContent = `θA (competencia) = ${fmt(thetaA)}`;
+        $("personBTheta").textContent = `θB (competencia) = ${fmt(thetaB)}`;
+        $("personDifference").textContent = `Diferencia visible: ${Math.round((probabilityB - probabilityA) * 100)} puntos porcentuales con a (discriminación) = ${fmt(a)}.`;
+
+        const svg = $("personCompareChart");
+        const chart = setupChart(svg);
+        const xs = Array.from({ length: 241 }, (_, i) => -4 + i * (8 / 240));
+        const points = xs.map(x => ({ x, y: logistic(x, a, bs[2]) }));
+        chart.plot.appendChild(svgEl("path", {
+          d: linePath(points, chart.xScale, chart.yScale),
+          fill: "none", stroke: "#2aa89a", "stroke-width": 3.2,
+          "stroke-linecap": "round", "stroke-linejoin": "round"
+        }));
+        chart.plot.appendChild(svgEl("line", {
+          x1: chart.xScale(bs[2]), x2: chart.xScale(bs[2]),
+          y1: chart.margin.top, y2: chart.height - chart.margin.bottom,
+          stroke: "#e3ad36", "stroke-width": 1.3, "stroke-dasharray": "5 5"
+        }));
+        [
+          { theta: thetaA, probability: probabilityA, label: "A", color: "#438bd2" },
+          { theta: thetaB, probability: probabilityB, label: "B", color: "#f46f5f" }
+        ].forEach(person => {
+          chart.plot.appendChild(svgEl("line", {
+            x1: chart.xScale(person.theta), x2: chart.xScale(person.theta),
+            y1: chart.margin.top, y2: chart.height - chart.margin.bottom,
+            stroke: person.color, "stroke-width": 2.2
+          }));
+          chart.plot.appendChild(svgEl("text", {
+            x: chart.xScale(person.theta), y: chart.margin.top + 11,
+            "text-anchor": "middle", fill: person.color,
+            "font-size": 10, "font-family": "system-ui", "font-weight": 850
+          }, person.label));
+          chart.plot.appendChild(svgEl("circle", {
+            cx: chart.xScale(person.theta), cy: chart.yScale(person.probability), r: 6,
+            fill: person.color, stroke: "white", "stroke-width": 2
+          }));
+        });
+      }
+
+      function applyPreset(name) {
+        const preset = presets[name];
+        thetaInput.value = preset.theta;
+        discInput.value = preset.a;
+        thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
+        lastChanged = name === "sharp" || name === "fuzzy" ? "disc" : name === "balanced" ? "preset" : "thresholds";
+        document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.preset === name));
+        updateAll();
+      }
+
+      thetaInput.addEventListener("input", () => { lastChanged = "theta"; document.querySelectorAll(".chip").forEach(c => c.classList.remove("active")); updateAll(); });
+      discInput.addEventListener("input", () => { lastChanged = "disc"; document.querySelectorAll(".chip").forEach(c => c.classList.remove("active")); updateAll(); });
+      personGapInput.addEventListener("input", () => { lastChanged = "gap"; updateAll(); });
+      thresholdInputs.forEach((input, i) => {
+        input.addEventListener("input", () => {
+          keepThresholdsOrdered(i);
+          lastChanged = `b${i + 1}`;
+          document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+          updateAll();
+        });
+      });
+      document.querySelectorAll(".chip").forEach(chip => chip.addEventListener("click", () => applyPreset(chip.dataset.preset)));
+      document.querySelectorAll(".tab-button").forEach(button => {
+        button.addEventListener("click", () => {
+          chartMode = button.dataset.chart;
+          document.querySelectorAll(".tab-button").forEach(b => {
+            const active = b === button;
+            b.classList.toggle("active", active);
+            b.setAttribute("aria-selected", String(active));
+          });
+          renderMainChart();
+        });
+      });
+
+      function itemInfo(theta, a, center) {
+        const bs = [-1.35, -.45, .45, 1.35].map(offset => center + offset);
+        const probs = probabilities(theta, a, bs);
+        const eps = .001;
+        const plus = probabilities(theta + eps, a, bs);
+        const minus = probabilities(theta - eps, a, bs);
+        return probs.reduce((sum, p, i) => {
+          const derivative = (plus[i] - minus[i]) / (2 * eps);
+          return sum + (p > 1e-8 ? derivative * derivative / p : 0);
+        }, 0);
+      }
+
+      const compareInputs = [$("centerA"), $("aA"), $("centerB"), $("aB")];
+
+      function renderCompare() {
+        const centerA = Number($("centerA").value);
+        const aA = Number($("aA").value);
+        const centerB = Number($("centerB").value);
+        const aB = Number($("aB").value);
+        $("centerAOut").textContent = fmt(centerA, 1);
+        $("aAOut").textContent = fmt(aA, 1);
+        $("centerBOut").textContent = fmt(centerB, 1);
+        $("aBOut").textContent = fmt(aB, 1);
+
+        const xs = Array.from({ length: 201 }, (_, i) => -4 + i * .04);
+        const dataA = xs.map(x => ({ x, y: itemInfo(x, aA, centerA) }));
+        const dataB = xs.map(x => ({ x, y: itemInfo(x, aB, centerB) }));
+        const rawMax = Math.max(...dataA.map(d => d.y), ...dataB.map(d => d.y));
+        const yMax = Math.max(1, Math.ceil(rawMax * 2) / 2);
+        const yTicks = [0, .25, .5, .75, 1].map(v => v * yMax);
+        const svg = $("compareChart");
+        const chart = setupChart(svg, yMax, yTicks);
+
+        [{ data: dataA, color: "#f46f5f" }, { data: dataB, color: "#2aa89a" }].forEach(series => {
+          const areaD = linePath(series.data, chart.xScale, chart.yScale)
+            + ` L${chart.xScale(4)},${chart.yScale(0)} L${chart.xScale(-4)},${chart.yScale(0)} Z`;
+          chart.plot.appendChild(svgEl("path", { d: areaD, fill: series.color, opacity: .09 }));
+          chart.plot.appendChild(svgEl("path", {
+            d: linePath(series.data, chart.xScale, chart.yScale), fill: "none",
+            stroke: series.color, "stroke-width": 3.2, "stroke-linecap": "round"
+          }));
+        });
+
+        chart.plot.appendChild(svgEl("text", {
+          x: 16, y: 15, fill: "#647087", "font-size": 11,
+          "font-family": "system-ui", "font-weight": 700
+        }, "Información aproximada"));
+
+        const relation = centerA < centerB
+          ? "A se concentra en niveles de θ más bajos que B."
+          : centerA > centerB
+            ? "B se concentra en niveles de θ más bajos que A."
+            : "Ambos ítems se concentran en la misma región de θ.";
+        const precision = aA > aB + .15
+          ? " A tiene picos más altos: separa mejor niveles cercanos."
+          : aB > aA + .15
+            ? " B tiene picos más altos: separa mejor niveles cercanos."
+            : " Sus discriminaciones son parecidas.";
+        $("compareReading").textContent = relation + precision;
+      }
+
+      compareInputs.forEach(input => input.addEventListener("input", renderCompare));
+
+      document.querySelectorAll(".quiz-card").forEach(card => {
+        card.querySelectorAll(".answer").forEach(button => {
+          button.addEventListener("click", () => {
+            const correct = button.dataset.choice === card.dataset.answer;
+            card.querySelectorAll(".answer").forEach(a => a.classList.remove("correct", "wrong"));
+            button.classList.add(correct ? "correct" : "wrong");
+            card.querySelector(".feedback").textContent = correct
+              ? "Correcto. " + (
+                  card.dataset.answer === "1" ? "Desplazar δ (umbral) cambia la dificultad o localización, no la pendiente."
+                  : card.dataset.answer === "2" ? "Una a (discriminación) baja produce cambios más graduales y aumenta el solapamiento."
+                  : "La franja exacta se obtiene restando dos probabilidades acumuladas."
+                )
+              : "No exactamente. Piensa en qué parámetro se movió y qué aspecto de la curva controla.";
+          });
+        });
+      });
+
+      function updateProgress() {
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+        $("progressBar").style.width = `${maxScroll > 0 ? (window.scrollY / maxScroll) * 100 : 0}%`;
+      }
+
+      let resizeTimer;
+      window.addEventListener("resize", () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { renderMainChart(); renderPersonComparison(); renderCompare(); }, 120);
+      });
+      window.addEventListener("scroll", updateProgress, { passive: true });
+
+      updateAll();
+      renderCompare();
+      updateProgress();
+    })();
+  </script>
+</body>
+</html>

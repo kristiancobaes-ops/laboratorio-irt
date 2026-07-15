@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial Generalizado (GPCM).">
+  <title>GPCM · Laboratorio IRT</title>
+  <link rel="stylesheet" href="lab-common.css">
+  <style>
+    .paragraph-demo { position:relative; z-index:2; width:min(430px,88%); padding:23px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.08); font-family:system-ui; font-size:.9rem; line-height:1.75; text-align:left; }
+    .paragraph-demo mark { padding:1px 4px; border-radius:4px; color:var(--navy); background:var(--gold); }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <nav class="site-nav" aria-label="Modelos">
+      <a href="index.html">Inicio</a><a href="rasch.html">Rasch / 1–3PL</a>
+      <a href="pcm.html">PCM</a><a class="active" href="gpcm.html">GPCM</a><a href="grm.html">GRM</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">Crédito Parcial Generalizado</p>
+        <h1>La calidad avanza por pasos, pero no todos los ítems discriminan igual.</h1>
+        <p class="lede">El GPCM conserva los pasos del PCM y añade una discriminación propia del ítem. Aquí mediremos la capacidad para construir un párrafo coherente.</p>
+        <div class="hero-actions"><a class="button primary" href="#laboratorio">Abrir laboratorio</a><a class="button" href="#modelo">Entender el cambio</a></div>
+      </div>
+      <div class="hero-art">
+        <div class="paragraph-demo"><mark>Idea central:</mark> el transporte público reduce la congestión. <mark>Desarrollo:</mark> un autobús puede sustituir decenas de automóviles. <mark>Conexión:</mark> por ello, invertir en rutas frecuentes mejora la movilidad urbana.</div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="modelo">
+      <div class="section-head">
+        <div><p class="kicker">De PCM a GPCM</p><h2>Los mismos pasos, una pendiente nueva.</h2></div>
+        <p class="section-copy">En el GPCM, a (discriminación) multiplica las ventajas de paso del ítem. Un valor alto hace que la tarea separe mejor autores con niveles cercanos de θ (habilidad de coherencia), especialmente alrededor de los umbrales.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="card-tag">Constructo</span><h3>θ (habilidad de coherencia)</h3><p>Capacidad para mantener una idea central, conectar proposiciones y organizar una progresión lógica.</p></article>
+        <article class="card"><span class="card-tag">Rúbrica</span><h3>δ₁ … δ₄ (umbrales de paso)</h3><p>Dificultad de avanzar desde fragmentos aislados hasta un párrafo cohesivo, desarrollado y fluido.</p></article>
+        <article class="card"><span class="card-tag">Generalización</span><h3>a (discriminación)</h3><p>Indica cuánto separa la tarea a autores con niveles cercanos de coherencia alrededor de los umbrales.</p></article>
+      </div>
+    </section>
+
+    <section class="formula-strip">
+      <div class="wrap formula-grid">
+        <div><p class="kicker">Probabilidad de k puntos</p><h2>El PCM aparece cuando a (discriminación) = 1.</h2><p>Si aumentas a (discriminación), la tarea separa más las probabilidades de autores cercanos a los umbrales. Si la reduces, las categorías se solapan más.</p></div>
+        <div class="formula-box">P(X=k|θ) ∝ exp[a Σ<sub>m=1</sub><sup>k</sup>(θ−δ<sub>m</sub>)]</div>
+      </div>
+    </section>
+
+    <section class="lab-section" id="laboratorio">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Laboratorio GPCM</p><h2>Diseña una rúbrica que diferencie niveles de coherencia.</h2></div>
+          <p class="section-copy">Cada control tiene una lectura sustantiva. La interpretación general combina la habilidad del autor, la discriminación del ítem y las cuatro exigencias de la rúbrica.</p>
+        </div>
+        <div class="lab-shell">
+          <div class="lab-head"><h3>Tarea: redactar un párrafo explicativo coherente</h3><span class="model-tab active">GPCM · 0 a 4 puntos</span></div>
+          <div class="lab-grid">
+            <aside class="controls">
+              <div class="control">
+                <label for="theta">θ (habilidad de coherencia) <output id="thetaOut">0.00</output></label>
+                <p class="control-help">Cambia al autor hipotético.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
+                <div class="ticks"><span>fragmentario</span><span>funcional</span><span>muy coherente</span></div>
+                <p class="control-reading" id="thetaRead"></p>
+              </div>
+              <div class="control">
+                <label for="disc">a (discriminación) <output id="discOut">1.30</output></label>
+                <p class="control-help">Capacidad de esta tarea para diferenciar niveles cercanos de coherencia.</p>
+                <input id="disc" type="range" min=".25" max="3.2" step=".05" value="1.3">
+                <div class="ticks"><span>baja</span><span>moderada</span><span>alta</span></div>
+                <p class="control-reading" id="discRead"></p>
+              </div>
+              <div class="control">
+                <label for="d1">δ₁ (umbral del paso 1) <output id="d1Out">−1.50</output></label>
+                <p class="control-help">0→1: producir una idea reconocible.</p>
+                <input id="d1" type="range" min="-3" max="3" step=".05" value="-1.5">
+                <p class="control-reading" id="d1Read"></p>
+              </div>
+              <div class="control">
+                <label for="d2">δ₂ (umbral del paso 2) <output id="d2Out">−0.40</output></label>
+                <p class="control-help">1→2: mantener una idea central.</p>
+                <input id="d2" type="range" min="-3" max="3" step=".05" value="-.4">
+                <p class="control-reading" id="d2Read"></p>
+              </div>
+              <div class="control">
+                <label for="d3">δ₃ (umbral del paso 3) <output id="d3Out">0.60</output></label>
+                <p class="control-help">2→3: conectar y desarrollar las proposiciones.</p>
+                <input id="d3" type="range" min="-3" max="3" step=".05" value=".6">
+                <p class="control-reading" id="d3Read"></p>
+              </div>
+              <div class="control">
+                <label for="d4">δ₄ (umbral del paso 4) <output id="d4Out">1.60</output></label>
+                <p class="control-help">3→4: lograr progresión fluida y cohesión precisa.</p>
+                <input id="d4" type="range" min="-3" max="3" step=".05" value="1.6">
+                <p class="control-reading" id="d4Read"></p>
+              </div>
+            </aside>
+            <div class="main-panel">
+              <div class="interpretation" aria-live="polite">
+                <div><h3 id="generalTitle"></h3><p id="generalText"></p></div>
+                <p class="change" id="changeText"></p>
+              </div>
+              <div class="chart-area">
+                <svg class="chart" id="chart" role="img" aria-label="Curvas de categorías del GPCM"></svg>
+                <aside class="side-readout">
+                  <div class="metric"><small>Puntaje esperado</small><strong id="expectedMetric"></strong></div>
+                  <div class="metric"><small>Nivel más probable</small><strong id="modeMetric"></strong></div>
+                  <div class="metric"><small>Discriminación</small><strong id="discMetric"></strong></div>
+                  <div class="prob-list" id="probList"></div>
+                </aside>
+              </div>
+              <p class="probability-note" id="probabilityNote" aria-live="polite"></p>
+              <section class="comparison-lab">
+                <div class="comparison-head">
+                  <div>
+                    <h3>Comparación visible de dos autores</h3>
+                    <p>La curva muestra el puntaje esperado. A y B están a ambos lados de θ (habilidad de coherencia) para mostrar cuánto los separa a (discriminación).</p>
+                  </div>
+                  <div class="comparison-control">
+                    <label for="personGap">Δθ (distancia entre habilidades) <output id="personGapOut">0.50</output></label>
+                    <input id="personGap" type="range" min=".10" max="2" step=".10" value=".50">
+                  </div>
+                </div>
+                <div class="comparison-grid">
+                  <svg class="comparison-chart" id="personChart" role="img" aria-label="Comparación del puntaje esperado de dos autores"></svg>
+                  <div class="person-results">
+                    <div class="person-card a"><small>Autor A</small><strong id="personAResult"></strong><span id="personATheta"></span></div>
+                    <div class="person-card b"><small>Autor B</small><strong id="personBResult"></strong><span id="personBTheta"></span></div>
+                    <div class="comparison-difference" id="personDifference"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap back-next"><a class="button" href="pcm.html">← PCM</a><a class="button primary" href="grm.html">Siguiente: GRM →</a></div>
+  </main>
+  <footer>Laboratorio IRT · Modelo de Crédito Parcial Generalizado</footer>
+
+  <script src="lab-utils.js"></script>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const theta = $("theta");
+      const disc = $("disc");
+      const personGap = $("personGap");
+      const deltas = [$("d1"),$("d2"),$("d3"),$("d4")];
+      let changed = "theta";
+      const levelNames = ["0 · Fragmentario","1 · Idea reconocible","2 · Idea central","3 · Desarrollo conectado","4 · Cohesión fluida"];
+
+      function probabilities(t,a,ds) {
+        const logits = [0];
+        let accumulated = 0;
+        ds.forEach(delta => { accumulated += a * (t-delta); logits.push(accumulated); });
+        return IRT.softmax(logits);
+      }
+      function state() { return {t:+theta.value,a:+disc.value,ds:deltas.map(input=>+input.value)}; }
+
+      function authorText(t) {
+        if (t < -1.4) return "El autor produce enunciados aislados y pierde con facilidad el hilo temático.";
+        if (t < .5) return "El autor mantiene una idea central, aunque algunas conexiones son implícitas o repetitivas.";
+        if (t < 1.8) return "El autor desarrolla y conecta ideas con una progresión generalmente clara.";
+        return "El autor controla la progresión temática y utiliza recursos cohesivos con precisión.";
+      }
+      function expectedScore(t,a,ds) {
+        return probabilities(t,a,ds).reduce((sum,p,i)=>sum+p*i,0);
+      }
+      function discText(a,t,ds) {
+        const gap = +personGap.value;
+        const lower = expectedScore(t-gap/2,a,ds);
+        const upper = expectedScore(t+gap/2,a,ds);
+        const difference = upper-lower;
+        const level = a < .7 ? "baja" : a < 1.8 ? "moderada" : "alta";
+        return `a (discriminación) ${level}: los autores A y B visibles en el comparador difieren ${difference.toFixed(2)} puntos esperados. Un valor mayor separa más claramente niveles cercanos a los umbrales; no eleva automáticamente todas las calificaciones.`;
+      }
+      function stepText(i,delta,t,a) {
+        const names = ["una idea reconocible","una idea central estable","conexiones desarrolladas","una cohesión fluida"];
+        const chance = IRT.logistic(a*(t-delta));
+        return `El paso hacia ${names[i]} exige δ${i+1} (umbral) = ${IRT.fmt(delta)}. Para el autor actual, la ventaja relativa de avanzar es ${Math.round(chance*100)}%.`;
+      }
+
+      function render() {
+        const s=state();
+        const probs=probabilities(s.t,s.a,s.ds);
+        const mode=probs.indexOf(Math.max(...probs));
+        const expected=probs.reduce((sum,p,i)=>sum+p*i,0);
+        const ordered=s.ds.every((d,i)=>i===0||d>s.ds[i-1]);
+        $("thetaOut").textContent=IRT.fmt(s.t);
+        $("discOut").textContent=IRT.fmt(s.a);
+        $("thetaRead").textContent=`${authorText(s.t)} Con los parámetros actuales, su puntaje esperado es ${expected.toFixed(2)} de 4.`;
+        $("discRead").textContent=discText(s.a,s.t,s.ds);
+        deltas.forEach((input,i)=>{ $(`d${i+1}Out`).textContent=IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent=stepText(i,s.ds[i],s.t,s.a); });
+        $("expectedMetric").textContent=`${expected.toFixed(2)} / 4`;
+        $("modeMetric").textContent=levelNames[mode];
+        $("discMetric").textContent=s.a<.7?"Baja":s.a<1.8?"Moderada":"Alta";
+        $("generalTitle").innerHTML=`La calificación más probable es <b>${levelNames[mode]}</b> (${Math.round(probs[mode]*100)}%).`;
+        $("generalText").textContent=ordered
+          ? `El autor tiene un puntaje esperado de ${expected.toFixed(2)}. La rúbrica avanza en orden desde una idea reconocible hasta cohesión fluida.`
+          : `El puntaje esperado es ${expected.toFixed(2)}, pero los pasos están desordenados. Una categoría puede quedar comprimida o no dominar nunca.`;
+        const lowerScore=mode-1;
+        const upperScore=mode+1;
+        const lower=mode>0?`${lowerScore} ${lowerScore===1?"punto":"puntos"} (${Math.round(probs[lowerScore]*100)}%)`:"ningún puntaje inferior";
+        const upper=mode<probs.length-1?`${upperScore} ${upperScore===1?"punto":"puntos"} (${Math.round(probs[upperScore]*100)}%)`:"ningún puntaje superior";
+        $("probabilityNote").innerHTML=`<strong>Comparación adyacente y resultado observado:</strong> el GPCM compara la ventaja de avanzar entre puntajes vecinos, pero calcula probabilidades para todos los puntajes de 0 a 4. Para este autor, el nivel más probable es ${levelNames[mode]}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, las categorías cercanas suelen concentrar más probabilidad que un salto lejano. Un desempeño menor puede ser compatible con cansancio, olvido o un error accidental, pero el modelo representa la incertidumbre y no diagnostica su causa.`;
+        $("changeText").textContent=changed==="theta"?"Cambiaste θ (habilidad de coherencia): ahora calificas el texto de otro autor con la misma rúbrica."
+          :changed==="a"?`Cambiaste a (discriminación): observa en el segundo gráfico cómo se modifica la distancia vertical entre A y B.`
+          :changed==="gap"?"Cambiaste Δθ (distancia entre habilidades): acercaste o separaste a los autores A y B sin modificar la tarea."
+          :`Cambiaste δ${changed} (umbral del paso): alteraste la exigencia para pasar del nivel ${+changed-1} al nivel ${changed}.`;
+        $("probList").innerHTML=probs.map((p,i)=>`<div class="prob-row"><span>${i} ${i===1?"punto":"puntos"}</span><div class="track"><div class="fill" style="width:${p*100}%;background:${IRT.colors[i]}"></div></div><span>${Math.round(p*100)}%</span></div>`).join("");
+        renderChart(s);
+        renderPersonComparison(s);
+      }
+
+      function renderChart(s) {
+        const svg=$("chart");
+        const chart=IRT.setupChart(svg,{xLabel:"θ (habilidad de coherencia)"});
+        const xs=Array.from({length:241},(_,i)=>-4+i*8/240);
+        for(let k=0;k<5;k++) IRT.drawLine(chart.plot,xs.map(x=>({x,y:probabilities(x,s.a,s.ds)[k]})),chart,IRT.colors[k]);
+        s.ds.forEach((delta,i)=>IRT.drawVertical(chart,delta,`δ${i+1}`,IRT.colors[i+1],true));
+        IRT.drawVertical(chart,s.t,"θ");
+        probabilities(s.t,s.a,s.ds).forEach((p,i)=>chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(s.t),cy:chart.yScale(p),r:5,fill:IRT.colors[i],stroke:"white","stroke-width":2})));
+      }
+
+      function renderPersonComparison(s) {
+        const gap = +personGap.value;
+        const thetaA = Math.max(-4, s.t-gap/2);
+        const thetaB = Math.min(4, s.t+gap/2);
+        const scoreA = expectedScore(thetaA,s.a,s.ds);
+        const scoreB = expectedScore(thetaB,s.a,s.ds);
+        $("personGapOut").textContent=IRT.fmt(thetaB-thetaA);
+        $("personAResult").textContent=`${scoreA.toFixed(2)} / 4`;
+        $("personBResult").textContent=`${scoreB.toFixed(2)} / 4`;
+        $("personATheta").textContent=`θA (habilidad) = ${IRT.fmt(thetaA)}`;
+        $("personBTheta").textContent=`θB (habilidad) = ${IRT.fmt(thetaB)}`;
+        $("personDifference").textContent=`Diferencia visible: ${(scoreB-scoreA).toFixed(2)} puntos esperados con a (discriminación) = ${IRT.fmt(s.a)}.`;
+        const svg=$("personChart");
+        const chart=IRT.setupChart(svg,{xLabel:"θ (habilidad de coherencia)",yMax:4,yTicks:[0,1,2,3,4]});
+        const xs=Array.from({length:241},(_,i)=>-4+i*8/240);
+        IRT.drawLine(chart.plot,xs.map(x=>({x,y:expectedScore(x,s.a,s.ds)})),chart,"#7b6be8");
+        IRT.drawVertical(chart,thetaA,"A","#438bd2");
+        IRT.drawVertical(chart,thetaB,"B","#f46f5f");
+        chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaA),cy:chart.yScale(scoreA),r:6,fill:"#438bd2",stroke:"white","stroke-width":2}));
+        chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaB),cy:chart.yScale(scoreB),r:6,fill:"#f46f5f",stroke:"white","stroke-width":2}));
+      }
+
+      theta.addEventListener("input",()=>{changed="theta";render();});
+      disc.addEventListener("input",()=>{changed="a";render();});
+      personGap.addEventListener("input",()=>{changed="gap";render();});
+      deltas.forEach((input,i)=>input.addEventListener("input",()=>{changed=String(i+1);render();}));
+      window.addEventListener("resize",render);
+      render();
+    })();
+  </script>
+</body>
+</html>

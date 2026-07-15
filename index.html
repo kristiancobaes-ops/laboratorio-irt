@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratorio IRT: clases interactivas de GRM, Rasch, PCM y GPCM.">
+  <title>Laboratorio IRT · Modelos interactivos</title>
+  <link rel="stylesheet" href="lab-common.css">
+  <style>
+    .home-hero { min-height: 690px; }
+    .model-map {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: repeat(2, 132px);
+      gap: 14px;
+    }
+    .map-node {
+      display: grid;
+      place-items: center;
+      min-height: 116px;
+      padding: 15px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 22px;
+      background: rgba(255,255,255,.08);
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+    .map-node strong { display: block; font-size: 1.25rem; }
+    .map-node span { font-size: .7rem; opacity: .68; }
+    .model-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 18px; }
+    .model-card {
+      position: relative;
+      min-height: 340px;
+      padding: 30px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 27px;
+      background: var(--card);
+      box-shadow: 0 9px 30px rgba(23,35,59,.05);
+    }
+    .model-card::after {
+      position: absolute;
+      right: -55px;
+      bottom: -70px;
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: var(--soft-teal);
+      content: "";
+    }
+    .model-card:nth-child(2)::after { background: var(--soft-gold); }
+    .model-card:nth-child(3)::after { background: var(--soft-coral); }
+    .model-card:nth-child(4)::after { background: #eeebff; }
+    .model-code { color: var(--coral); font-size: .75rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; }
+    .model-card h2 { margin: 28px 0 10px; font-size: 2.3rem; }
+    .model-card p { max-width: 470px; color: var(--muted); }
+    .model-meta { display: flex; flex-wrap: wrap; gap: 7px; margin: 20px 0 25px; }
+    .model-meta span { padding: 6px 9px; border-radius: 8px; background: #f1efe9; font-size: .7rem; font-weight: 800; }
+    .parameter-section { padding: 90px 0; background: #ece9e1; }
+    .parameter-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 17px; }
+    .parameter-card {
+      display: grid;
+      grid-template-columns: 92px 1fr;
+      gap: 20px;
+      min-height: 220px;
+      padding: 25px;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--card);
+    }
+    .parameter-symbol {
+      display: grid;
+      place-items: center;
+      align-self: start;
+      width: 78px;
+      height: 78px;
+      border-radius: 22px;
+      color: white;
+      background: var(--navy);
+      box-shadow: 5px 5px 0 var(--coral);
+      font-family: Georgia,serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+    }
+    .parameter-card:nth-child(2) .parameter-symbol { box-shadow: 5px 5px 0 var(--gold); }
+    .parameter-card:nth-child(3) .parameter-symbol { box-shadow: 5px 5px 0 var(--teal); }
+    .parameter-card:nth-child(4) .parameter-symbol { box-shadow: 5px 5px 0 var(--violet); }
+    .parameter-card h3 { margin: 2px 0 7px; font-size: 1.3rem; }
+    .parameter-card p { margin: 0 0 9px; color: var(--muted); font-size: .88rem; }
+    .academic-example { padding-top: 9px; border-top: 1px solid var(--line); color: var(--ink) !important; font-size: .78rem !important; }
+    .discrimination-lesson {
+      display: grid;
+      grid-template-columns: .72fr 1.28fr;
+      gap: 25px;
+      align-items: center;
+      margin-top: 18px;
+      padding: 24px;
+      border-radius: 22px;
+      color: white;
+      background: var(--navy);
+    }
+    .discrimination-lesson h3 { margin: 0 0 9px; font-size: 1.25rem; }
+    .discrimination-lesson p { margin: 0; color: rgba(255,255,255,.72); font-size: .85rem; }
+    .discrimination-lesson b { color: white; }
+    .discrimination-figure {
+      display: block;
+      width: 100%;
+      min-height: 290px;
+      border-radius: 17px;
+      background: #fffdfa;
+    }
+    .precision-note {
+      display: grid;
+      grid-template-columns: 48px 1fr;
+      gap: 15px;
+      align-items: start;
+      margin-top: 18px;
+      padding: 20px;
+      border-radius: 18px;
+      color: white;
+      background: var(--navy);
+    }
+    .precision-note strong:first-child {
+      display: grid;
+      place-items: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      color: var(--navy);
+      background: var(--gold);
+      font-size: 1.2rem;
+    }
+    .precision-note p { margin: 0; color: rgba(255,255,255,.72); font-size: .88rem; }
+    .precision-note b { color: white; }
+    .path-section { padding: 80px 0 110px; }
+    .path-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; }
+    .path-step { padding: 18px; border-top: 4px solid var(--coral); background: white; }
+    .path-step:nth-child(2) { border-color: var(--gold); }
+    .path-step:nth-child(3) { border-color: var(--teal); }
+    .path-step:nth-child(4) { border-color: var(--violet); }
+    .path-step strong { display: block; margin-bottom: 5px; }
+    .path-step span { color: var(--muted); font-size: .78rem; }
+    @media(max-width:720px) {
+      .model-grid, .path-row, .parameter-grid { grid-template-columns: 1fr; }
+      .model-map { grid-template-columns: repeat(2,110px); }
+      .parameter-card { grid-template-columns: 65px 1fr; padding: 20px; }
+      .parameter-symbol { width: 58px; height: 58px; border-radius: 17px; font-size: 1.65rem; }
+      .discrimination-lesson { grid-template-columns: 1fr; padding: 18px; }
+      .discrimination-figure { min-height: 240px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <nav class="site-nav" aria-label="Modelos">
+      <a class="active" href="index.html">Inicio</a>
+      <a href="rasch.html">Rasch / 1–3PL</a>
+      <a href="pcm.html">PCM</a>
+      <a href="gpcm.html">GPCM</a>
+      <a href="grm.html">GRM</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero home-hero">
+      <div>
+        <p class="eyebrow">Teoría de Respuesta al Ítem</p>
+        <h1>Modelos que puedes mover.</h1>
+        <p class="lede">Un sitio para aprender IRT manipulando personas, ítems, pasos y categorías. Cada laboratorio traduce los parámetros técnicos a una situación de evaluación concreta.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#modelos">Explorar modelos</a>
+          <a class="button" href="rasch.html">Empezar por Rasch</a>
+        </div>
+      </div>
+      <div class="hero-art" aria-label="Mapa de modelos IRT">
+        <div class="model-map">
+          <div class="map-node"><strong>1–3PL</strong><span>respuesta dicotómica</span></div>
+          <div class="map-node"><strong>PCM</strong><span>crédito parcial</span></div>
+          <div class="map-node"><strong>GPCM</strong><span>pasos discriminantes</span></div>
+          <div class="map-node"><strong>GRM</strong><span>categorías ordenadas</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="parameter-section" id="parametros">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Antes de empezar</p><h2>Cuatro parámetros, cuatro preguntas.</h2></div>
+          <p class="section-copy">En todos los laboratorios usaremos situaciones de evaluación: preguntas de examen, rúbricas y desempeños de estudiantes. Cada parámetro responde una pregunta distinta sobre la persona o el ítem.</p>
+        </div>
+        <div class="parameter-grid">
+          <article class="parameter-card">
+            <div class="parameter-symbol" aria-hidden="true">θ</div>
+            <div>
+              <h3>θ (nivel de habilidad o rasgo)</h3>
+              <p>Representa el nivel de la característica que se desea medir: habilidad matemática, coherencia escrita o competencia comunicativa oral.</p>
+              <p class="academic-example"><b>Ejemplo académico:</b> en un examen oral de inglés, un valor mayor de θ (competencia oral) indica más recursos para comprender, responder, desarrollar ideas y reparar errores.</p>
+            </div>
+          </article>
+          <article class="parameter-card">
+            <div class="parameter-symbol" aria-hidden="true">b/δ</div>
+            <div>
+              <h3>b (dificultad) y δ (umbral o paso)</h3>
+              <p><b>b (dificultad)</b> sitúa una pregunta dicotómica en la escala de habilidad. <b>δ (umbral o paso)</b> marca la transición entre puntajes o el acceso a una categoría superior, según el modelo.</p>
+              <p class="academic-example"><b>Según el modelo:</b> en Rasch/1PL/2PL, b (dificultad) indica dónde el acierto alcanza 50%; en 3PL sitúa el centro de la transición por encima del piso c (azar). En PCM/GPCM, cada δ (umbral de paso) marca la dificultad de ganar un punto adicional. En GRM, δ₄ (umbral) marca el nivel donde existe 50% de probabilidad de alcanzar la categoría avanzada o una superior.</p>
+            </div>
+          </article>
+          <article class="parameter-card">
+            <div class="parameter-symbol" aria-hidden="true">a</div>
+            <div>
+              <h3>a (discriminación)</h3>
+              <p>Indica qué tan bien una pregunta o tarea distingue personas con niveles cercanos de θ (habilidad o rasgo), especialmente alrededor de b (dificultad) o δ (umbral).</p>
+              <p class="academic-example"><b>Ejemplo académico:</b> una tarea oral con a (discriminación) alta produce probabilidades claramente distintas para dos candidatos cercanos que están a lados opuestos del umbral de “competente”.</p>
+            </div>
+          </article>
+          <article class="parameter-card">
+            <div class="parameter-symbol" aria-hidden="true">c</div>
+            <div>
+              <h3>c (azar o adivinación)</h3>
+              <p>Representa la probabilidad mínima de acertar una pregunta por adivinación, suerte o elección al azar, aun cuando θ (habilidad) sea muy bajo.</p>
+              <p class="academic-example"><b>Ejemplo académico:</b> en una pregunta de opción múltiple, un estudiante puede elegir la respuesta correcta sin dominar el contenido. El parámetro c (azar) representa ese piso de acierto en el modelo 3PL.</p>
+            </div>
+          </article>
+        </div>
+        <div class="discrimination-lesson">
+          <div>
+            <h3>¿Qué muestra una curva más empinada?</h3>
+            <p>En este ejemplo sin c (azar), ambos ítems tienen el mismo b (dificultad). Con a (discriminación) baja, los estudiantes A y B obtienen probabilidades parecidas. Con a (discriminación) alta, la pregunta <b>separa mejor sus niveles cercanos</b>: por debajo de b (dificultad) disminuye la probabilidad y por encima aumenta. Justo en b (dificultad), la probabilidad permanece en 50%.</p>
+          </div>
+          <svg class="discrimination-figure" viewBox="0 0 760 300" role="img" aria-label="Comparación académica entre discriminación baja y alta">
+            <rect width="760" height="300" rx="18" fill="#fffdfa"/>
+            <g font-family="system-ui" fill="#17233b">
+              <text x="28" y="28" font-size="14" font-weight="900">MISMA PREGUNTA Y DIFICULTAD; DISTINTA DISCRIMINACIÓN</text>
+              <text x="105" y="57" font-size="13" font-weight="850">a (discriminación) baja</text>
+              <text x="492" y="57" font-size="13" font-weight="850">a (discriminación) alta</text>
+            </g>
+            <g stroke="#dcd9d0" stroke-width="1">
+              <line x1="55" y1="240" x2="340" y2="240"/><line x1="55" y1="75" x2="55" y2="240"/>
+              <line x1="420" y1="240" x2="705" y2="240"/><line x1="420" y1="75" x2="420" y2="240"/>
+            </g>
+            <g stroke="#e3ad36" stroke-width="2" stroke-dasharray="5 5">
+              <line x1="198" y1="75" x2="198" y2="240"/><line x1="563" y1="75" x2="563" y2="240"/>
+            </g>
+            <g fill="none" stroke="#2aa89a" stroke-width="5" stroke-linecap="round">
+              <path d="M58 216 C112 205 154 174 198 158 C242 142 284 105 337 91"/>
+              <path d="M423 231 C512 229 544 215 563 158 C582 101 614 87 702 85"/>
+            </g>
+            <g stroke-width="2">
+              <line x1="174" y1="75" x2="174" y2="240" stroke="#438bd2"/><line x1="222" y1="75" x2="222" y2="240" stroke="#f46f5f"/>
+              <line x1="539" y1="75" x2="539" y2="240" stroke="#438bd2"/><line x1="587" y1="75" x2="587" y2="240" stroke="#f46f5f"/>
+            </g>
+            <g>
+              <circle cx="174" cy="167" r="7" fill="#438bd2" stroke="white" stroke-width="2"/>
+              <circle cx="222" cy="149" r="7" fill="#f46f5f" stroke="white" stroke-width="2"/>
+              <circle cx="539" cy="199" r="7" fill="#438bd2" stroke="white" stroke-width="2"/>
+              <circle cx="587" cy="117" r="7" fill="#f46f5f" stroke="white" stroke-width="2"/>
+            </g>
+            <g font-family="system-ui" font-size="11" font-weight="800">
+              <text x="159" y="260" fill="#438bd2">A · 44%</text><text x="207" y="278" fill="#f46f5f">B · 56%</text>
+              <text x="524" y="260" fill="#438bd2">A · 23%</text><text x="572" y="278" fill="#f46f5f">B · 77%</text>
+              <text x="150" y="70" fill="#9a741c">b (dificultad)</text><text x="515" y="70" fill="#9a741c">b (dificultad)</text>
+              <text x="118" y="292" fill="#647087">Poca separación</text><text x="492" y="292" fill="#647087">Mayor separación</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="modelos">
+      <div class="section-head">
+        <div><p class="kicker">Cuatro laboratorios</p><h2>Elige según el tipo de respuesta.</h2></div>
+        <p class="section-copy">La pregunta central no es “¿qué modelo es más avanzado?”, sino “¿qué proceso de respuesta necesito representar?”.</p>
+      </div>
+      <div class="model-grid">
+        <article class="model-card">
+          <span class="model-code">Correcto / incorrecto</span>
+          <h2>Rasch, 1PL, 2PL y 3PL</h2>
+          <p>Compara dificultad, discriminación y azar mediante un ítem de álgebra con una única respuesta correcta.</p>
+          <div class="model-meta"><span>θ (habilidad matemática)</span><span>b (dificultad)</span><span>a (discriminación)</span><span>c (azar)</span></div>
+          <a class="button primary" href="rasch.html">Abrir laboratorio</a>
+        </article>
+        <article class="model-card">
+          <span class="model-code">Puntaje por pasos</span>
+          <h2>PCM</h2>
+          <p>Observa cómo una solución matemática recibe crédito parcial por alcanzar pasos sucesivos, con discriminación fija.</p>
+          <div class="model-meta"><span>0–3 puntos</span><span>δ (umbrales de paso)</span><span>a (discriminación) fija</span></div>
+          <a class="button primary" href="pcm.html">Abrir laboratorio</a>
+        </article>
+        <article class="model-card">
+          <span class="model-code">Rúbrica analítica</span>
+          <h2>GPCM</h2>
+          <p>Modela la coherencia de un párrafo y descubre qué cambia cuando los pasos comparten una discriminación ajustable.</p>
+          <div class="model-meta"><span>0–4 puntos</span><span>δ (umbrales de paso)</span><span>a (discriminación) libre</span></div>
+          <a class="button primary" href="gpcm.html">Abrir laboratorio</a>
+        </article>
+        <article class="model-card">
+          <span class="model-code">Categorías ordenadas</span>
+          <h2>GRM</h2>
+          <p>Interpreta niveles de competencia comunicativa en un examen oral mediante curvas acumulativas y categorías exactas.</p>
+          <div class="model-meta"><span>5 niveles</span><span>δ (umbrales de categoría)</span><span>a (discriminación)</span></div>
+          <a class="button primary" href="grm.html">Abrir laboratorio</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="path-section wrap">
+      <div class="section-head">
+        <div><p class="kicker">Ruta sugerida</p><h2>De una respuesta a muchas categorías.</h2></div>
+        <p class="section-copy">La secuencia ayuda a ver cómo cada modelo amplía el anterior, sin esconder qué supuestos cambian.</p>
+      </div>
+      <div class="path-row">
+        <div class="path-step"><strong>1. Rasch / 1–3PL</strong><span>Empieza con la probabilidad de acertar.</span></div>
+        <div class="path-step"><strong>2. PCM</strong><span>Divide el logro en pasos puntuables.</span></div>
+        <div class="path-step"><strong>3. GPCM</strong><span>Añade discriminación al crédito parcial.</span></div>
+        <div class="path-step"><strong>4. GRM</strong><span>Piensa en umbrales acumulativos.</span></div>
+      </div>
+    </section>
+  </main>
+  <footer>Laboratorio IRT · Clases interactivas autocontenidas</footer>
+</body>
+</html>

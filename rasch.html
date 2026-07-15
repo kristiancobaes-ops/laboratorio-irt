@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
+  <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
+  <link rel="stylesheet" href="lab-common.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <nav class="site-nav" aria-label="Modelos">
+      <a href="index.html">Inicio</a><a class="active" href="rasch.html">Rasch / 1–3PL</a>
+      <a href="pcm.html">PCM</a><a href="gpcm.html">GPCM</a><a href="grm.html">GRM</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="wrap hero">
+      <div>
+        <p class="eyebrow">Respuesta dicotómica</p>
+        <h1>De Rasch al 3PL, parámetro por parámetro.</h1>
+        <p class="lede">Un estudiante responde un ítem de álgebra. Empieza con θ (habilidad) y b (dificultad); después libera a (discriminación) y, finalmente, incorpora c (azar o adivinación).</p>
+        <div class="hero-actions"><a class="button primary" href="#laboratorio">Abrir laboratorio</a><a class="button" href="#modelo">Ver diferencias</a></div>
+      </div>
+      <div class="hero-art">
+        <div class="hero-equation">3(x − 2) = 12<small>¿Cuánto vale x? · Respuesta correcta: 6</small></div>
+      </div>
+    </section>
+
+    <section class="section wrap" id="modelo">
+      <div class="section-head">
+        <div><p class="kicker">La familia logística</p><h2>La misma curva, distintos grados de libertad.</h2></div>
+        <p class="section-copy">Rasch y 1PL fijan la discriminación y no admiten azar. El 2PL permite que cada ítem discrimine distinto. El 3PL añade una asíntota inferior para representar aciertos sin dominio suficiente.</p>
+      </div>
+      <div class="cards">
+        <article class="card"><span class="card-tag">Rasch / 1PL</span><h3>Solo cambia b (dificultad)</h3><p>La dificultad desplaza la curva. a (discriminación) permanece fija en 1 y la probabilidad mínima es 0.</p></article>
+        <article class="card"><span class="card-tag">2PL</span><h3>Se libera a (discriminación)</h3><p>Un valor alto separa mejor a estudiantes con θ (habilidad) cercana a b (dificultad); un valor bajo produce probabilidades más parecidas.</p></article>
+        <article class="card"><span class="card-tag">3PL</span><h3>Se añade c (azar)</h3><p>Incluso con θ (habilidad) muy baja puede existir una probabilidad basal de acertar por suerte o adivinación, por ejemplo en opción múltiple.</p></article>
+      </div>
+    </section>
+
+    <section class="formula-strip">
+      <div class="wrap formula-grid">
+        <div><p class="kicker">Ecuación general</p><h2>P(acierto | θ)</h2><p>θ (habilidad matemática) representa el nivel de la persona. Rasch fija a (discriminación) = 1 y c (azar o adivinación) = 0. El 2PL conserva c (azar o adivinación) = 0. El 3PL permite estimar b (dificultad), a (discriminación) y c (azar o adivinación).</p></div>
+        <div class="formula-box">P(X=1|θ) = c + (1−c) / [1 + e<sup>−a(θ−b)</sup>]</div>
+      </div>
+    </section>
+
+    <section class="lab-section" id="laboratorio">
+      <div class="wrap">
+        <div class="section-head">
+          <div><p class="kicker">Laboratorio</p><h2>¿Qué hace cada parámetro?</h2></div>
+          <p class="section-copy">Cambia de modelo y mueve los controles. Las variables bloqueadas muestran qué restricciones impone cada versión.</p>
+        </div>
+        <div class="lab-shell">
+          <div class="lab-head">
+            <h3>Ítem: resolver 3(x − 2) = 12</h3>
+            <div class="model-tabs" role="tablist" aria-label="Modelo logístico">
+              <button class="model-tab active" data-model="rasch">Rasch / 1PL</button>
+              <button class="model-tab" data-model="2pl">2PL</button>
+              <button class="model-tab" data-model="3pl">3PL</button>
+            </div>
+          </div>
+          <div class="lab-grid">
+            <aside class="controls">
+              <div class="control">
+                <label for="theta">θ (habilidad matemática) <output id="thetaOut">0.00</output></label>
+                <p class="control-help">Nivel del estudiante en razonamiento algebraico.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
+                <div class="ticks"><span>incipiente</span><span>medio</span><span>alto</span></div>
+                <p class="control-reading" id="thetaRead"></p>
+              </div>
+              <div class="control">
+                <label for="difficulty">b (dificultad del ítem) <output id="difficultyOut">0.50</output></label>
+                <p class="control-help">Habilidad requerida para alcanzar el punto central del ítem.</p>
+                <input id="difficulty" type="range" min="-3" max="3" step=".05" value=".5">
+                <div class="ticks"><span>fácil</span><span>media</span><span>difícil</span></div>
+                <p class="control-reading" id="difficultyRead"></p>
+              </div>
+              <div class="control">
+                <label for="disc">a (discriminación) <output id="discOut">1.00</output></label>
+                <p class="control-help">Pendiente cerca de la dificultad. Se libera desde 2PL.</p>
+                <input id="disc" type="range" min=".25" max="3.5" step=".05" value="1" disabled>
+                <div class="ticks"><span>baja</span><span>moderada</span><span>alta</span></div>
+                <p class="control-reading" id="discRead"></p>
+              </div>
+              <div class="control">
+                <label for="guess">c (azar o adivinación) <output id="guessOut">0.00</output></label>
+                <p class="control-help">Probabilidad mínima de acertar por suerte o elección al azar. Solo está disponible en 3PL.</p>
+                <input id="guess" type="range" min="0" max=".4" step=".01" value="0" disabled>
+                <div class="ticks"><span>sin azar</span><span>40%</span></div>
+                <p class="control-reading" id="guessRead"></p>
+              </div>
+            </aside>
+            <div class="main-panel">
+              <div class="interpretation" aria-live="polite">
+                <div><h3 id="generalTitle"></h3><p id="generalText"></p></div>
+                <p class="change" id="changeText"></p>
+              </div>
+              <div class="chart-area">
+                <svg class="chart" id="chart" role="img" aria-label="Curva característica del ítem"></svg>
+                <aside class="side-readout">
+                  <div class="metric"><small>Modelo activo</small><strong id="modelMetric">Rasch</strong></div>
+                  <div class="metric"><small>Probabilidad de acierto</small><strong id="probMetric">38%</strong></div>
+                  <div class="metric"><small>Resultado más probable</small><strong id="resultMetric">Incorrecto</strong></div>
+                  <div class="prob-list">
+                    <div class="prob-row"><span>Incorrecto</span><div class="track"><div class="fill" id="wrongBar" style="background:#f46f5f"></div></div><span id="wrongPct"></span></div>
+                    <div class="prob-row"><span>Correcto</span><div class="track"><div class="fill" id="rightBar" style="background:#2aa89a"></div></div><span id="rightPct"></span></div>
+                  </div>
+                </aside>
+              </div>
+              <section class="comparison-lab" id="personComparison" hidden>
+                <div class="comparison-head">
+                  <div>
+                    <h3>Comparación visible de discriminación</h3>
+                    <p>La misma curva, dos estudiantes alrededor de θ (habilidad). Mueve a (discriminación) o cambia la distancia para observar cuánto se separan sus probabilidades.</p>
+                  </div>
+                  <div class="comparison-control">
+                    <label for="personGap">Δθ (distancia entre habilidades) <output id="personGapOut">0.50</output></label>
+                    <input id="personGap" type="range" min=".10" max="2" step=".10" value=".50">
+                  </div>
+                </div>
+                <div class="comparison-grid">
+                  <svg class="comparison-chart" id="personChart" role="img" aria-label="Comparación de probabilidad de acierto de dos estudiantes"></svg>
+                  <div class="person-results">
+                    <div class="person-card a"><small>Estudiante A</small><strong id="personAResult"></strong><span id="personATheta"></span></div>
+                    <div class="person-card b"><small>Estudiante B</small><strong id="personBResult"></strong><span id="personBTheta"></span></div>
+                    <div class="comparison-difference" id="personDifference"></div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap back-next"><a class="button" href="index.html">← Portada</a><a class="button primary" href="pcm.html">Siguiente: PCM →</a></div>
+  </main>
+  <footer>Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</footer>
+
+  <script src="lab-utils.js"></script>
+  <script>
+    (() => {
+      const $ = id => document.getElementById(id);
+      const inputs = { theta: $("theta"), b: $("difficulty"), a: $("disc"), c: $("guess") };
+      const personGap = $("personGap");
+      let model = "rasch";
+      let changed = "model";
+
+      function probability(theta, b, a, c) {
+        return c + (1 - c) * IRT.logistic(a * (theta - b));
+      }
+
+      function state() {
+        return { theta: +inputs.theta.value, b: +inputs.b.value, a: +inputs.a.value, c: +inputs.c.value };
+      }
+
+      function thetaDescription(theta) {
+        if (theta < -1.5) return "El estudiante apenas reconoce procedimientos algebraicos y depende de ejemplos muy directos.";
+        if (theta < .5) return "El estudiante resuelve transformaciones conocidas, pero puede fallar al coordinar varios pasos.";
+        if (theta < 2) return "El estudiante maneja con soltura ecuaciones lineales y controla sus transformaciones.";
+        return "El estudiante muestra dominio alto y puede generalizar el procedimiento a situaciones nuevas.";
+      }
+
+      function render() {
+        const s = state();
+        const p = probability(s.theta, s.b, s.a, s.c);
+        $("thetaOut").textContent = IRT.fmt(s.theta);
+        $("difficultyOut").textContent = IRT.fmt(s.b);
+        $("discOut").textContent = IRT.fmt(s.a);
+        $("guessOut").textContent = IRT.fmt(s.c);
+        const comparisonGap = +personGap.value;
+        const nearbyLow = probability(s.theta - comparisonGap / 2, s.b, s.a, s.c);
+        const nearbyHigh = probability(s.theta + comparisonGap / 2, s.b, s.a, s.c);
+        const localSeparation = nearbyHigh - nearbyLow;
+        const centerProbability = probability(s.b, s.b, s.a, s.c);
+        const sideEffect = s.theta > s.b + .05
+          ? "Como θ (habilidad) está por encima de b (dificultad), aumentar a (discriminación) aumenta la probabilidad de acierto."
+          : s.theta < s.b - .05
+            ? "Como θ (habilidad) está por debajo de b (dificultad), aumentar a (discriminación) reduce la probabilidad hacia el piso del modelo."
+            : "Como θ (habilidad) está prácticamente en b (dificultad), cambiar a (discriminación) apenas modifica su probabilidad central.";
+
+        $("thetaRead").textContent = `${thetaDescription(s.theta)} Con los parámetros actuales, su probabilidad de acierto es ${Math.round(p * 100)}%.`;
+        $("difficultyRead").textContent = `${s.b < -.7 ? "El ítem es fácil para la población de referencia." : s.b > .7 ? "El ítem exige habilidad superior al promedio." : "El ítem está centrado cerca del nivel medio."} Cuando θ (habilidad) = b (dificultad), la probabilidad es ${Math.round(centerProbability * 100)}%${s.c > 0 ? " porque c (azar) eleva el punto central" : ""}.`;
+        $("discRead").textContent = model === "rasch"
+          ? "Rasch fija a (discriminación) = 1. Activa 2PL o 3PL para manipularla y comparar dos estudiantes."
+          : `${s.a < .8 ? "a (discriminación) baja" : s.a > 2 ? "a (discriminación) alta" : "a (discriminación) moderada"}: en el gráfico comparativo, A y B difieren ${Math.round(localSeparation * 100)} puntos porcentuales. ${sideEffect}`;
+        $("guessRead").textContent = model !== "3pl"
+          ? "Este modelo fija c (azar) = 0: con habilidad extremadamente baja, la probabilidad se aproxima a 0%."
+          : `c (azar o adivinación) fija un piso de ${Math.round(s.c * 100)}%: incluso sin dominio suficiente puede acertarse por suerte. No aumenta la habilidad del estudiante.`;
+
+        const modelName = model === "rasch" ? "Rasch / 1PL" : model.toUpperCase();
+        $("modelMetric").textContent = modelName;
+        $("probMetric").textContent = `${Math.round(p * 100)}%`;
+        $("resultMetric").textContent = p >= .5 ? "Correcto" : "Incorrecto";
+        $("wrongBar").style.width = `${(1-p)*100}%`;
+        $("rightBar").style.width = `${p*100}%`;
+        $("wrongPct").textContent = `${Math.round((1-p)*100)}%`;
+        $("rightPct").textContent = `${Math.round(p*100)}%`;
+        $("generalTitle").innerHTML = `Este estudiante tiene <b>${Math.round(p*100)}%</b> de probabilidad de responder correctamente.`;
+        const gap = s.theta - s.b;
+        $("generalText").textContent = gap >= 0
+          ? `Su habilidad está ${IRT.fmt(gap)} unidades por encima de la dificultad. ${s.c > 0 ? "Parte de la probabilidad también incluye el piso de azar." : "La ventaja proviene del dominio, no de un parámetro de azar."}`
+          : `Su habilidad está ${IRT.fmt(Math.abs(gap))} unidades por debajo de la dificultad. El ítem resulta más exigente que su nivel actual.`;
+        const changes = {
+          theta: "Cambiaste θ (habilidad): observas a otro estudiante; el ítem conserva sus propiedades.",
+          b: "Cambiaste b (dificultad): el contenido se volvió más fácil o difícil sin alterar al estudiante.",
+          a: `Cambiaste a (discriminación): modificaste cuánto separa el ítem niveles cercanos. ${sideEffect}`,
+          c: "Cambiaste c (azar): modificaste el piso de acierto por suerte o adivinación.",
+          gap: "Cambiaste Δθ (distancia entre habilidades): separaste o acercaste a los estudiantes A y B sin modificar el ítem.",
+          model: `Cambiaste al ${modelName}: observa qué parámetros quedan libres y cuáles se fijan.`
+        };
+        $("changeText").textContent = changes[changed];
+        renderChart(s, p);
+        renderPersonComparison(s);
+      }
+
+      function renderChart(s, p) {
+        const svg = $("chart");
+        const chart = IRT.setupChart(svg, { xLabel: "θ (habilidad matemática)" });
+        const xs = Array.from({length:241}, (_,i) => -4 + i * 8/240);
+        IRT.drawLine(chart.plot, xs.map(x => ({x, y: probability(x,s.b,s.a,s.c)})), chart, "#2aa89a");
+        IRT.drawVertical(chart, s.b, "b", "#f46f5f", true);
+        IRT.drawVertical(chart, s.theta, "θ");
+        chart.plot.appendChild(IRT.svgEl("circle", { cx:chart.xScale(s.theta), cy:chart.yScale(p), r:6, fill:"#2aa89a", stroke:"white", "stroke-width":2 }));
+        if (s.c > 0) chart.plot.appendChild(IRT.svgEl("line", { x1:chart.margin.left, x2:chart.width-chart.margin.right, y1:chart.yScale(s.c), y2:chart.yScale(s.c), stroke:"#7b6be8", "stroke-width":1.3, "stroke-dasharray":"5 5" }));
+      }
+
+      function renderPersonComparison(s) {
+        const visible = model !== "rasch";
+        $("personComparison").hidden = !visible;
+        if (!visible) return;
+        const gap = +personGap.value;
+        const thetaA = Math.max(-4, s.theta - gap / 2);
+        const thetaB = Math.min(4, s.theta + gap / 2);
+        const pA = probability(thetaA, s.b, s.a, s.c);
+        const pB = probability(thetaB, s.b, s.a, s.c);
+        $("personGapOut").textContent = IRT.fmt(thetaB - thetaA);
+        $("personAResult").textContent = `${Math.round(pA * 100)}% acierto`;
+        $("personBResult").textContent = `${Math.round(pB * 100)}% acierto`;
+        $("personATheta").textContent = `θA (habilidad) = ${IRT.fmt(thetaA)}`;
+        $("personBTheta").textContent = `θB (habilidad) = ${IRT.fmt(thetaB)}`;
+        $("personDifference").textContent = `Separación visible: ${Math.round((pB - pA) * 100)} puntos porcentuales con a (discriminación) = ${IRT.fmt(s.a)}.`;
+
+        const svg = $("personChart");
+        const chart = IRT.setupChart(svg, { xLabel: "θ (habilidad matemática)" });
+        const xs = Array.from({length:241}, (_,i) => -4 + i * 8/240);
+        IRT.drawLine(chart.plot, xs.map(x => ({x, y: probability(x,s.b,s.a,s.c)})), chart, "#2aa89a");
+        IRT.drawVertical(chart, s.b, "b", "#e3ad36", true);
+        IRT.drawVertical(chart, thetaA, "A", "#438bd2");
+        IRT.drawVertical(chart, thetaB, "B", "#f46f5f");
+        chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaA),cy:chart.yScale(pA),r:6,fill:"#438bd2",stroke:"white","stroke-width":2}));
+        chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaB),cy:chart.yScale(pB),r:6,fill:"#f46f5f",stroke:"white","stroke-width":2}));
+      }
+
+      function selectModel(next) {
+        model = next;
+        changed = "model";
+        if (model === "rasch") { inputs.a.value = 1; inputs.c.value = 0; inputs.a.disabled = true; inputs.c.disabled = true; }
+        if (model === "2pl") { inputs.c.value = 0; inputs.a.disabled = false; inputs.c.disabled = true; }
+        if (model === "3pl") { inputs.a.disabled = false; inputs.c.disabled = false; if (+inputs.c.value === 0) inputs.c.value = .2; }
+        document.querySelectorAll(".model-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.model === model));
+        render();
+      }
+
+      Object.entries(inputs).forEach(([key,input]) => input.addEventListener("input", () => { changed = key; render(); }));
+      personGap.addEventListener("input", () => { changed = "gap"; render(); });
+      document.querySelectorAll(".model-tab").forEach(btn => btn.addEventListener("click", () => selectModel(btn.dataset.model)));
+      window.addEventListener("resize", render);
+      render();
+    })();
+  </script>
+</body>
+</html>
