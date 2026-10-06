@@ -15,6 +15,8 @@ Los ejemplos son simulaciones didacticas, no instrumentos validados. El control 
 
 Los enlaces a casos usan `case`, y la pagina logistica admite `model`: por ejemplo, `rasch.html?case=choice&model=3pl#laboratorio` o `grm.html?case=oral#laboratorio`.
 
+Cada laboratorio muestra al inicio la respuesta o calificacion exacta mas probable. Los criterios de puntuacion aparecen encima de la grafica principal y resaltan esa respuesta; si hay empate se muestran todas las opciones igualmente probables. En GRM este resumen se calcula con categorias exactas, incluso al ver curvas acumulativas. Rasch/1PL, 2PL y 3PL muestran dos resultados binarios, no niveles de una rubrica.
+
 ## Como verlo
 
 Abre `index.html` en el navegador o publica el repositorio con GitHub Pages desde la rama `main`.

@@ -867,38 +867,6 @@
       text-align: center;
     }
 
-    .category-summary-title {
-      margin: 14px 0 8px;
-      font-size: .75rem;
-      font-weight: 800;
-    }
-
-    .category-summary-note {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: .72rem;
-      line-height: 1.5;
-    }
-
-    .category-strip {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
-      gap: 8px;
-      margin-top: 0;
-    }
-
-    .category-pill {
-      min-width: 0;
-      padding: 8px 4px;
-      border: 1px solid var(--line);
-      border-radius: 9px;
-      background: white;
-      font-size: .68rem;
-      font-weight: 800;
-      text-align: center;
-      transition: transform .2s ease, border .2s ease;
-    }
-
     .person-comparison {
       margin: 0 20px 24px;
       padding: 21px;
@@ -993,12 +961,6 @@
       background: var(--soft-gold);
       font-size: .75rem;
       font-weight: 780;
-    }
-
-    .category-pill.winner {
-      color: white;
-      border-color: transparent;
-      transform: translateY(-3px);
     }
 
     .examples {
@@ -1301,8 +1263,8 @@
     }
   </style>
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=headings-9">
-  <link rel="stylesheet" href="hero-heading.css?v=headings-9">
+  <link rel="stylesheet" href="lab-cases.css?v=responses-10">
+  <link rel="stylesheet" href="hero-heading.css?v=responses-10">
 </head>
 <body>
   <header class="topbar">
@@ -1311,15 +1273,15 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=headings-9" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=responses-10" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=headings-9">Inicio</a>
-      <a href="rasch.html?v=headings-9">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=headings-9">PCM</a>
-      <a href="gpcm.html?v=headings-9">GPCM</a>
+      <a href="index.html?v=responses-10">Inicio</a>
+      <a href="rasch.html?v=responses-10">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=responses-10">PCM</a>
+      <a href="gpcm.html?v=responses-10">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
@@ -1493,7 +1455,11 @@
           <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
-            <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+            <section class="response-summary" aria-labelledby="responseSummaryTitle" aria-live="polite">
+              <h4 id="responseSummaryTitle">Calificación exacta más probable</h4>
+              <p class="response-summary-value" id="responseSummaryValue"></p>
+              <p class="response-summary-note" id="responseSummaryNote"></p>
+            </section>
             <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
@@ -1531,15 +1497,6 @@
                 <p class="threshold-meaning" id="delta4Interpretation">Frontera para demostrar comunicación avanzada y matizada.</p>
               </div>
 
-              <p class="category-summary-title" id="categorySummaryTitle">Calificación exacta más probable</p>
-              <div class="category-strip" id="categoryStrip" role="group" aria-labelledby="categorySummaryTitle" aria-describedby="categorySummaryNote">
-                <div class="category-pill">1<br>Inicial</div>
-                <div class="category-pill">2<br>Básico</div>
-                <div class="category-pill">3<br>Funcional</div>
-                <div class="category-pill">4<br>Competente</div>
-                <div class="category-pill">5<br>Avanzado</div>
-              </div>
-              <p class="category-summary-note" id="categorySummaryNote">El color destaca la calificación exacta más probable del candidato actual. Puede obtener otras calificaciones.</p>
             </aside>
 
             <div class="lab-main">
@@ -1558,6 +1515,11 @@
                   <button class="tab-button" role="tab" aria-selected="false" data-chart="cumulative">Curvas acumulativas</button>
                 </div>
                 <p class="chart-meaning" id="chartMeaning" aria-live="polite"></p>
+                <section class="chart-rubric" aria-labelledby="chartRubricTitle">
+                  <h4 id="chartRubricTitle">Niveles de la rúbrica</h4>
+                  <p class="chart-rubric-caption">Estos niveles describen calificaciones, no niveles asignados automáticamente a θ (habilidad o rasgo). El resaltado corresponde a la calificación exacta más probable, también al ver curvas acumulativas.</p>
+                  <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+                </section>
                 <div class="chart-panel">
                   <div class="chart-wrap">
                     <svg id="mainChart" role="img" aria-label="Curvas características de categoría del modelo GRM"></svg>
@@ -1708,7 +1670,7 @@
 
   <footer>Clase interactiva autocontenida · Modelo de Respuesta Graduada de Samejima</footer>
 
-  <script src="lab-cases.js?v=headings-9"></script>
+  <script src="lab-cases.js?v=responses-10"></script>
   <script>
     (() => {
       "use strict";
@@ -1989,13 +1951,12 @@
       function updateInterpretation() {
         const { theta, a, bs } = state();
         const probs = probabilities(theta, a, bs);
-        const winner = probs.indexOf(Math.max(...probs));
-        const certainty = probs[winner];
         const expectedScore = probs.reduce((sum, p, i) => sum + p * (i + 1), 0);
         const competentOrMore = logistic(theta, a, bs[2]);
         const advanced = logistic(theta, a, bs[3]);
 
-        $("dynamicReading").innerHTML = `Para un candidato con θ (${example.construct}) = <b>${fmt(theta)}</b>, la calificación más probable es <b style="color:${colors[winner]}">${categoryNames[winner]}</b> (${Math.round(certainty * 100)}%).`;
+        IRTExamples.renderResponse("grm",example,probs);
+        $("dynamicReading").innerHTML = `Para un candidato con θ (${example.construct}) = <b>${fmt(theta)}</b>, las curvas muestran cómo se distribuyen sus posibles calificaciones.`;
         $("generalSummary").innerHTML = `Su calificación esperada es <b>${expectedScore.toFixed(2)} de 5</b>. Tiene <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior y <b>${Math.round(advanced * 100)}%</b> de llegar a «${example.levels[4].name}».`;
 
         let tip;
@@ -2021,11 +1982,6 @@
         $("dynamicTip").textContent = tip;
         updateControlInterpretations(theta, a, bs);
 
-        document.querySelectorAll(".category-pill").forEach((pill, i) => {
-          pill.classList.toggle("winner", i === winner);
-          pill.style.background = i === winner ? colors[i] : "";
-        });
-        $("categorySummaryNote").textContent = `Para el candidato actual, ${categoryNames[winner]} tiene la mayor probabilidad de calificación exacta (${Math.round(certainty * 100)}%). No es un resultado garantizado ni la probabilidad acumulada de alcanzar ese nivel o uno superior.`;
       }
 
       function updateOutputs() {
@@ -2229,16 +2185,6 @@
         IRTExamples.render("grm",example,"grm");
         $("thetaHelp").textContent = `Nivel de ${example.construct} del candidato`;
         thresholdInputs.forEach((input,i)=>input.setAttribute("aria-label",`δ${i+1} (umbral) para ${thresholdTransitions[i]}`));
-        document.querySelectorAll(".category-pill").forEach((pill,i)=>{
-          pill.innerHTML = "";
-          const number = document.createElement("span");
-          number.textContent = String(i+1);
-          const label = document.createElement("span");
-          label.textContent = shortLevelNames[i];
-          label.style.display = "block";
-          pill.appendChild(number);
-          pill.appendChild(label);
-        });
         applyPreset("balanced");
         compareInputs.forEach((input,i)=>input.value = [-.7,1.8,1,1.1][i]);
         lastChanged = "case";

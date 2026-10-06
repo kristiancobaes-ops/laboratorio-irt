@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "headings-9", case: key });
+    const params = new URLSearchParams({ v: "responses-10", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -200,6 +200,10 @@ window.IRTExamples = (() => {
       detail.textContent = item.detail;
       row.appendChild(title);
       row.appendChild(detail);
+      const modeTag = document.createElement("span");
+      modeTag.classList.add("case-mode-tag");
+      modeTag.hidden = true;
+      row.appendChild(modeTag);
       rubric.appendChild(row);
     });
     renderMethod(page, example, model);
@@ -213,5 +217,31 @@ window.IRTExamples = (() => {
     }
   }
 
-  return { cases, setup, initial, names, describe, render, renderMethod, link };
+  function renderResponse(page, example, probabilities) {
+    const highest = Math.max(...probabilities);
+    const winners = probabilities.map((probability, i) => ({ probability, i }))
+      .filter(item => Math.abs(item.probability - highest) < 1e-12);
+    const labels = page === "rasch" ? example.levels.map(item => item.name) : names(example, page === "grm" ? 1 : 0);
+    const tied = winners.length > 1;
+    document.getElementById("responseSummaryTitle").textContent = page === "rasch"
+      ? tied ? "Respuestas más probables (empate)" : "Respuesta más probable"
+      : tied ? "Calificaciones exactas más probables (empate)" : "Calificación exacta más probable";
+    document.getElementById("responseSummaryValue").textContent = tied
+      ? `${winners.map(item => labels[item.i]).join(" / ")} (${Math.round(highest * 100)}% cada una)`
+      : `${labels[winners[0].i]} (${Math.round(highest * 100)}%)`;
+    document.getElementById("responseSummaryNote").textContent = page === "grm"
+      ? "Se calcula con la probabilidad de calificación exacta, incluso al ver curvas acumulativas. No es la probabilidad de alcanzar ese nivel o uno superior ni un resultado garantizado."
+      : page === "rasch"
+        ? "Se comparan correcto/incorrecto o criterio logrado/no logrado. La respuesta más probable no es un resultado garantizado ni identifica la causa del acierto o del error."
+        : "Es la probabilidad de obtener exactamente ese puntaje, no de obtenerlo o superarlo. El puntaje más probable no es un resultado garantizado ni equivale a la habilidad del estudiante.";
+    Array.from(document.getElementById("caseRubric").children).forEach((row, i) => {
+      const highlighted = winners.some(item => item.i === i);
+      row.classList.toggle("is-most-likely", highlighted);
+      const tag = row.children[row.children.length - 1];
+      tag.hidden = !highlighted;
+      tag.textContent = highlighted ? `${Math.round(probabilities[i] * 100)}% · ${tied ? "Empate: más probable" : "Más probable"}` : "";
+    });
+  }
+
+  return { cases, setup, initial, names, describe, render, renderMethod, renderResponse, link };
 })();

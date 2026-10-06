@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial (PCM).">
   <title>PCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=headings-9">
+  <link rel="stylesheet" href="lab-common.css?v=responses-10">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=headings-9">
+  <link rel="stylesheet" href="lab-cases.css?v=responses-10">
   <style>
     .rubric { display:grid; gap:8px; margin-top:20px; width:min(420px,90%); }
     .rubric div { position:relative; z-index:2; padding:10px 13px; border:1px solid rgba(255,255,255,.16); border-radius:11px; background:rgba(255,255,255,.07); font-family:system-ui; font-size:.78rem; text-align:left; }
     .rubric b { color:var(--gold); }
   </style>
-  <link rel="stylesheet" href="hero-heading.css?v=headings-9">
+  <link rel="stylesheet" href="hero-heading.css?v=responses-10">
 </head>
 <body>
   <header class="site-header">
@@ -22,10 +22,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=headings-9"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=responses-10"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=headings-9">Inicio</a><a href="rasch.html?v=headings-9">Rasch / 1–3PL</a>
-      <a class="active" href="pcm.html?v=headings-9">PCM</a><a href="gpcm.html?v=headings-9">GPCM</a><a href="grm.html?v=headings-9">GRM</a>
+      <a href="index.html?v=responses-10">Inicio</a><a href="rasch.html?v=responses-10">Rasch / 1–3PL</a>
+      <a class="active" href="pcm.html?v=responses-10">PCM</a><a href="gpcm.html?v=responses-10">GPCM</a><a href="grm.html?v=responses-10">GRM</a>
     </nav>
     </div>
   </header>
@@ -82,14 +82,18 @@
             <h3 id="taskTitle">Ítem: resolver 2x + 6 = 18 y justificar</h3>
             <div class="model-navigation">
               <span class="model-badge">Modelo activo: PCM</span>
-              <a id="otherCreditLab" class="button model-lab-link" href="gpcm.html?v=headings-9#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio GPCM</a>
+              <a id="otherCreditLab" class="button model-lab-link" href="gpcm.html?v=responses-10#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio GPCM</a>
             </div>
           </div>
           <p class="model-note" id="creditModelNote" aria-live="polite">PCM activo: no se estima una a (discriminación) distinta para cada ítem; en esta escala está fijada en 1. Para explorar ese parámetro, abre el laboratorio GPCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página.</p>
           <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
-            <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+            <section class="response-summary" aria-labelledby="responseSummaryTitle" aria-live="polite">
+              <h4 id="responseSummaryTitle">Calificación exacta más probable</h4>
+              <p class="response-summary-value" id="responseSummaryValue"></p>
+              <p class="response-summary-note" id="responseSummaryNote"></p>
+            </section>
             <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
@@ -133,11 +137,15 @@
                 <div><h3 id="generalTitle"></h3><p id="generalText"></p></div>
                 <p class="change" id="changeText"></p>
               </div>
+              <section class="chart-rubric" aria-labelledby="chartRubricTitle">
+                <h4 id="chartRubricTitle">Puntajes de la rúbrica</h4>
+                <p class="chart-rubric-caption">Cada tarjeta describe un puntaje del caso. El resaltado indica su mayor probabilidad actual, no un nivel garantizado de habilidad.</p>
+                <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+              </section>
               <div class="chart-area">
                 <svg class="chart" id="chart" role="img" aria-label="Curvas de categorías del PCM"></svg>
                 <aside class="side-readout">
                   <div class="metric"><small>Puntaje esperado</small><strong id="expectedMetric"></strong></div>
-                  <div class="metric"><small>Puntaje más probable</small><strong id="modeMetric"></strong></div>
                   <div class="metric"><small>Orden de pasos</small><strong id="orderMetric"></strong></div>
                   <div class="prob-list" id="probList"></div>
                 </aside>
@@ -169,12 +177,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="rasch.html?v=headings-9">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=headings-9">Siguiente: GPCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="rasch.html?v=responses-10">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=responses-10">Siguiente: GPCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=headings-9"></script>
+  <script src="lab-cases.js?v=responses-10"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -214,14 +222,14 @@
         $("discOut").textContent = IRT.fmt(s.a);
         $("creditModelNote").textContent = `PCM activo: para esta tarea de ${example.construct}, no se estima una a (discriminación) distinta por ítem; en esta escala está fijada en 1 y el control está bloqueado. Para explorar a (discriminación) ajustable, abre el laboratorio GPCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página; no se conserva automáticamente la misma comparación.`;
         IRTExamples.renderMethod("pcm",example,model);
+        IRTExamples.renderResponse("pcm",example,probs);
         $("discRead").textContent = "a (discriminación) = 1 es una restricción del PCM, no una estimación propia de este ítem ni un valor ajustable aquí. El gráfico inferior compara dos estudiantes con esa discriminación fija. Para explorar una pendiente distinta, abre el laboratorio GPCM.";
         deltas.forEach((input,i) => { $(`d${i+1}Out`).textContent = IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent = stepText(i,s.ds[i],s.t,s.a); });
         $("thetaRead").textContent = `En este ejemplo: ${IRTExamples.describe(example,s.t)} Con esta rúbrica, su puntaje esperado es ${expected.toFixed(2)} de 3.`;
         $("expectedMetric").textContent = `${expected.toFixed(2)} / 3`;
-        $("modeMetric").textContent = `${mode} · ${example.levels[mode].name}`;
         $("orderMetric").textContent = ordered ? "Ordenados" : "Desordenados";
         $("orderMetric").style.color = ordered ? "#2aa89a" : "#f46f5f";
-        $("generalTitle").innerHTML = `El puntaje más probable es <b>${mode} · ${example.levels[mode].name}</b> (${Math.round(probs[mode]*100)}%).`;
+        $("generalTitle").textContent = "Lectura del caso en PCM";
         $("generalText").textContent = ordered
           ? `La rúbrica progresa de pasos accesibles a exigentes. El puntaje esperado del estudiante es ${expected.toFixed(2)}.`
           : "Algún paso posterior es más fácil que uno anterior. Esto puede hacer que una categoría intermedia casi nunca sea la más probable y merece revisión.";

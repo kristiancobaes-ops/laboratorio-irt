@@ -6,6 +6,17 @@
 .case-rubric { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin: 0 0 14px; padding: 0; list-style: none; }
 .case-rubric li { display: grid; align-content: start; gap: 5px; padding: 11px; border: 1px solid #e1ddd4; border-radius: 10px; background: white; font-size: .75rem; line-height: 1.5; }
 .case-rubric span { color: #66738a; }
+.response-summary { margin: 0 0 16px; padding: 14px 17px; border: 1px solid #b9dcd7; border-left: 4px solid #2aa89a; border-radius: 12px; color: #17233b; background: #e8f7f4; }
+.response-summary h4 { margin: 0 0 5px; font-size: .8rem; }
+.response-summary-value { margin: 0 0 6px; font-size: 1.08rem; font-weight: 850; line-height: 1.4; }
+.response-summary-note { margin: 0; color: #526077; font-size: .76rem; line-height: 1.5; }
+.chart-rubric { padding: 18px 24px 0; }
+.chart-rubric h4 { margin: 0 0 6px; font-size: .88rem; }
+.chart-rubric-caption { margin: 0 0 12px; color: #526077; font-size: .76rem; line-height: 1.5; }
+.chart-rubric .case-rubric { grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); }
+.case-rubric li.is-most-likely { border-color: #b78218; background: #fff6df; }
+.case-rubric .case-mode-tag { justify-self: start; padding: 3px 6px; border-radius: 6px; color: #17233b; background: #e3ad36; font-size: .7rem; font-weight: 800; }
+.case-mode-tag[hidden] { display: none; }
 .case-method { padding: 13px 15px; border-left: 3px solid #e3ad36; border-radius: 0 10px 10px 0; background: #fff6df; font-size: .79rem; line-height: 1.6; }
 .case-method h4 { margin: 0 0 6px; font-size: .85rem; }
 .case-method p { margin: 0; }
@@ -19,4 +30,5 @@
   .case-picker { align-items: stretch; flex-direction: column; gap: 8px; }
   .case-picker select { width: 100%; }
   .case-rubric { grid-template-columns: 1fr; }
+  .chart-rubric { padding: 17px 17px 0; }
 }
