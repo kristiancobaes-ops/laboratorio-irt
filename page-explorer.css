@@ -6,7 +6,10 @@ html { scroll-padding-top: var(--page-header-offset, 160px); }
   bottom: 18px;
   width: 210px;
   max-width: calc(100vw - 32px);
-  overflow: hidden;
+  max-height: max(46px, calc(100dvh - var(--page-header-offset, 160px) - 24px));
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   border: 1px solid #dcd9d0;
   border-radius: 15px;
   color: #17233b;
@@ -33,7 +36,7 @@ html { scroll-padding-top: var(--page-header-offset, 160px); }
 }
 .page-explorer-toggle span { font-size: 1.2rem; }
 .page-explorer ol {
-  max-height: max(44px, min(60vh, calc(100dvh - var(--page-header-offset, 160px) - 90px)));
+  max-height: max(44px, min(60vh, calc(100dvh - var(--page-header-offset, 160px) - 170px)));
   overflow-y: auto;
   margin: 0;
   padding: 8px;
@@ -51,6 +54,13 @@ html { scroll-padding-top: var(--page-header-offset, 160px); }
 .page-explorer a:hover { background: #e8f7f4; }
 .page-explorer a[aria-current="location"] { color: #17233b; background: #fff1cb; font-weight: 850; }
 .page-explorer a:focus-visible, .page-explorer-toggle:focus-visible { outline: 3px solid #438bd2; outline-offset: -3px; }
+.page-explorer-tools { display: grid; grid-template-columns: 1fr 1.4fr; gap: 7px; padding: 10px; border-top: 1px solid #dcd9d0; background: #e7eff8; }
+.page-explorer-tools button { min-height: 34px; padding: 5px; border: 1px solid #bacde2; border-radius: 7px; color: #17233b; background: white; font: inherit; font-size: .72rem; font-weight: 750; cursor: pointer; }
+.page-explorer-tools button:focus-visible { outline: 3px solid #28649a; outline-offset: 1px; }
+.page-explorer-tools #pageExplorerMove { touch-action: none; user-select: none; cursor: grab; }
+.page-explorer.is-dragging, .page-explorer.is-dragging #pageExplorerMove { cursor: grabbing; user-select: none; }
+.page-explorer-help { grid-column: 1 / -1; color: #526077; font-size: .68rem; }
+.page-explorer-status { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .page-explorer [hidden] { display: none !important; }
 @media (min-width: 1600px) {
   .page-explorer {

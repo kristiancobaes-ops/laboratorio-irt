@@ -19,6 +19,8 @@ Cada laboratorio muestra al inicio la respuesta o calificacion exacta mas probab
 
 Las restricciones de parametros se presentan en tarjetas rojas junto a los fundamentos de cada modelo; PCM, GPCM y GRM no repiten la nota de c debajo del caso. La pagina logistica conserva las aclaraciones necesarias sobre la eleccion del modelo segun la tarea. Todas las paginas incluyen un explorador flotante de secciones, con indicador de ubicacion y enlaces internos. En pantallas amplias ocupa el margen lateral; en las demas se inicia plegado. Conserva el desplazamiento normal, respeta movimiento reducido y ajusta el espacio de los destinos a la altura del encabezado. Las comparaciones ocultas no aparecen en el explorador.
 
+El encabezado comparte etiquetas, estilo y estado activo en las cinco paginas, e identifica el laboratorio actual junto al nombre del sitio. El explorador admite arrastre con raton, tacto o lapiz desde Mover, desplazamiento con flechas (Shift aumenta el paso) y Restablecer para recuperar la ubicacion inicial. Escape cancela un arrastre en curso. La posicion se mantiene dentro de la ventana al plegar, ampliar o redimensionar el menu, y se recuerda entre paginas mediante almacenamiento local cuando el navegador lo permite.
+
 ## Como verlo
 
 Abre `index.html` en el navegador o publica el repositorio con GitHub Pages desde la rama `main`.
