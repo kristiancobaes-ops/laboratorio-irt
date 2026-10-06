@@ -1301,6 +1301,7 @@
     }
   </style>
   <link rel="stylesheet" href="author-header.css?v=2">
+  <link rel="stylesheet" href="lab-cases.css?v=cases-6">
 </head>
 <body>
   <header class="topbar">
@@ -1309,15 +1310,15 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=model-buttons-5" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=cases-6" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=model-buttons-5">Inicio</a>
-      <a href="rasch.html?v=model-buttons-5">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=model-buttons-5">PCM</a>
-      <a href="gpcm.html?v=model-buttons-5">GPCM</a>
+      <a href="index.html?v=cases-6">Inicio</a>
+      <a href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=cases-6">PCM</a>
+      <a href="gpcm.html?v=cases-6">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
@@ -1472,12 +1473,12 @@
             <p class="kicker">03 · Laboratorio</p>
             <h2>Mueve una pieza. Lee el cambio.</h2>
           </div>
-          <p class="section-intro">Aquí θ (competencia comunicativa oral) es el rasgo medido y los cinco niveles son calificaciones de una rúbrica. Cada control explica su efecto en el examen y la interpretación general integra el caso completo.</p>
+          <p class="section-intro">Elige un caso: θ (habilidad o rasgo) representa la característica medida y los cinco niveles son calificaciones de su rúbrica. Los controles y la interpretación general se adaptan al contexto seleccionado.</p>
         </div>
 
         <div class="lab">
           <div class="lab-top">
-            <h3 class="lab-title"><span class="live-dot"></span> Tarea oral: mantener una conversación sobre un tema cotidiano</h3>
+            <h3 class="lab-title"><span class="live-dot"></span> <span id="taskTitle">Tarea oral: mantener una conversación sobre un tema cotidiano</span></h3>
             <div class="preset-row" role="group" aria-label="Escenarios del mismo modelo GRM" aria-describedby="presetNote">
               <button type="button" class="chip active" data-preset="balanced" aria-pressed="true">Ejemplo inicial</button>
               <button type="button" class="chip" data-preset="sharp" aria-pressed="false">Discriminación alta</button>
@@ -1487,15 +1488,22 @@
               <button type="button" class="chip" data-preset="crowded" aria-pressed="false">Umbrales próximos</button>
             </div>
           </div>
+          <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
+            <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
+            <p class="case-description" id="caseDescription"></p>
+            <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+            <div class="case-method" aria-live="polite"><h4>¿Corresponde c (pseudoazar) en este caso?</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
+          </section>
           <p class="preset-note" id="presetNote" aria-live="polite">Estos botones exploran escenarios del mismo GRM; no cambian de modelo. Discriminación alta o baja modifica solo a (discriminación); exigir más o menos desplaza δ (umbrales). El candidato conserva θ (competencia oral). Ejemplo inicial restablece los controles.</p>
 
           <div class="lab-body">
             <aside class="controls" aria-label="Controles del modelo">
               <div class="control-group">
-                <label class="control-label" for="theta">θ (competencia oral) <output id="thetaOut">0.00</output></label>
-                <p class="control-help">Representa su competencia comunicativa oral en inglés.</p>
+                <label class="control-label" for="theta"><span id="thetaName">θ (competencia oral)</span> <output id="thetaOut">0.00</output></label>
+                <p class="control-help" id="thetaContext">Representa su competencia comunicativa oral en inglés.</p>
                 <input id="theta" type="range" min="-4" max="4" step=".05" value="0" aria-describedby="thetaHelp">
-                <div class="ticks"><span>−4 inicial</span><span>0 medio</span><span>+4 avanzado</span></div>
+                <div class="ticks"><span>−4 bajo</span><span>0 medio</span><span>+4 alto</span></div>
                 <p class="control-interpretation" id="thetaInterpretation">El candidato puede sostener intercambios funcionales, aunque todavía muestra algunas limitaciones.</p>
                 <span id="thetaHelp" class="sr-only">Nivel de competencia comunicativa oral del candidato</span>
               </div>
@@ -1558,7 +1566,7 @@
                   <div class="person-comparison-head">
                     <div>
                       <h3>Comparación visible de dos candidatos</h3>
-                      <p>La curva representa la probabilidad de alcanzar el nivel competente o superior. A y B se sitúan alrededor de θ (competencia oral) para mostrar cuánto los separa a (discriminación).</p>
+                      <p id="personComparisonMeaning">La curva representa la probabilidad de alcanzar el nivel 4 o superior. A y B se sitúan alrededor de θ (habilidad o rasgo) para mostrar cuánto los separa a (discriminación).</p>
                     </div>
                     <div class="person-gap-control">
                       <label for="personGap">Δθ (distancia entre competencias) <output id="personGapOut">0.50</output></label>
@@ -1698,26 +1706,17 @@
 
   <footer>Clase interactiva autocontenida · Modelo de Respuesta Graduada de Samejima</footer>
 
+  <script src="lab-cases.js?v=cases-6"></script>
   <script>
     (() => {
       "use strict";
 
       const colors = ["#438bd2", "#7b6be8", "#e3ad36", "#f46f5f", "#2aa89a"];
       const cumulativeColors = ["#438bd2", "#7b6be8", "#f46f5f", "#2aa89a"];
-      const categoryNames = [
-        "1 · Producción inicial",
-        "2 · Comunicación básica",
-        "3 · Conversación funcional",
-        "4 · Desempeño competente",
-        "5 · Comunicación avanzada"
-      ];
-      const shortLevelNames = ["inicial", "básico", "funcional", "competente", "avanzado"];
-      const thresholdTransitions = [
-        "comunicación básica",
-        "conversación funcional",
-        "desempeño competente",
-        "comunicación avanzada"
-      ];
+      let example = IRTExamples.setup("grm");
+      let categoryNames = IRTExamples.names(example,1);
+      let shortLevelNames = example.levels.map(item=>item.short);
+      let thresholdTransitions = example.levels.slice(1).map(item=>item.name.toLowerCase());
 
       const $ = (id) => document.getElementById(id);
       const thetaInput = $("theta");
@@ -1828,13 +1827,14 @@
         plot.appendChild(svgEl("text", {
           x: margin.left + innerW / 2, y: height - 8, "text-anchor": "middle",
           fill: "#647087", "font-size": 12, "font-family": "system-ui", "font-weight": 700
-        }, "θ (competencia comunicativa oral)"));
+        }, `θ (${example.construct})`));
 
         return { width, height, margin, innerW, innerH, xScale, yScale, plot };
       }
 
       function renderMainChart() {
         const svg = $("mainChart");
+        svg.setAttribute("aria-label",`Curvas del GRM: ${example.label}`);
         const { theta, a, bs } = state();
         const chart = setupChart(svg);
         const xs = Array.from({ length: 241 }, (_, i) => -4 + i * (8 / 240));
@@ -1888,8 +1888,8 @@
         });
 
         $("chartMeaning").innerHTML = chartMode === "category"
-          ? "<strong>Categorías exactas:</strong> cada punto coloreado sobre la línea de θ (competencia oral) muestra la probabilidad de recibir exactamente ese nivel. El punto más alto señala la calificación más probable; los demás recuerdan que también pueden observarse niveles inferiores o superiores."
-          : "<strong>Curvas acumulativas:</strong> cada punto coloreado sobre la línea de θ (competencia oral) muestra la probabilidad de alcanzar ese nivel o uno superior. Estas probabilidades no son categorías separadas y, por tanto, no se suman entre sí.";
+          ? `<strong>Categorías exactas:</strong> cada punto coloreado sobre la línea de θ (${example.construct}) muestra la probabilidad de recibir exactamente ese nivel. El punto más alto señala la calificación más probable; los demás recuerdan que también pueden observarse niveles inferiores o superiores. No identifican la causa de la calificación ni la seguridad subjetiva.`
+          : `<strong>Curvas acumulativas:</strong> cada punto coloreado sobre la línea de θ (${example.construct}) muestra la probabilidad de alcanzar ese nivel o uno superior. Estas probabilidades no son categorías separadas y, por tanto, no se suman entre sí. No miden seguridad subjetiva ni adivinanza.`;
         renderLegend();
       }
 
@@ -1900,7 +1900,7 @@
         legend.innerHTML = "";
         const labels = chartMode === "category"
           ? categoryNames
-          : ["Básico o más", "Funcional o más", "Competente o más", "Avanzado"];
+          : example.levels.slice(1).map((item,i)=>item.name+(i<3?" o más":""));
         const palette = chartMode === "category" ? colors : cumulativeColors;
         labels.forEach((label, i) => {
           const item = document.createElement("div");
@@ -1939,29 +1939,25 @@
           if (r <= sum) { choice = i; break; }
         }
         const result = $("drawResult");
-        result.innerHTML = `El examinador asignó <b style="color:${colors[choice]}">nivel ${choice + 1}: ${shortLevelNames[choice]}</b><br><span>Tenía una probabilidad de ${Math.round(probs[choice] * 100)}%.</span>`;
+        result.innerHTML = `El evaluador asignó <b style="color:${colors[choice]}">nivel ${choice + 1}: ${shortLevelNames[choice]}</b><br><span>Tenía una probabilidad de ${Math.round(probs[choice] * 100)}%. La simulación no determina por qué obtuvo ese resultado.</span>`;
       }
 
       function competenceDescription(theta) {
-        if (theta < -2.25) return "un repertorio muy limitado: responde con palabras o fragmentos y necesita mucho apoyo";
-        if (theta < -.75) return "recursos básicos: comunica información sencilla, con pausas frecuentes y estructuras limitadas";
-        if (theta < .75) return "competencia funcional: sostiene el intercambio y transmite ideas principales, aunque comete errores";
-        if (theta < 2.25) return "un desempeño competente: desarrolla respuestas, mantiene fluidez y repara dificultades";
-        return "competencia avanzada: se expresa con precisión, flexibilidad y matices aun en intercambios exigentes";
+        return IRTExamples.describe(example,theta);
       }
 
       function taskSensitivityDescription(a, theta, bs) {
         const gap = Number(personGapInput.value);
-        const lower = logistic(theta - gap / 2, a, bs[2]);
-        const upper = logistic(theta + gap / 2, a, bs[2]);
+        const lower = logistic(Math.max(-4,theta - gap / 2), a, bs[2]);
+        const upper = logistic(Math.min(4,theta + gap / 2), a, bs[2]);
         const separation = upper - lower;
         const relation = theta > bs[2] + .05
-          ? "Como θ (competencia oral) está por encima de δ₃ (umbral de competente), aumentar a (discriminación) eleva la probabilidad de alcanzar ese nivel."
+          ? `Como θ (${example.construct}) está por encima de δ₃ (umbral del nivel 4), aumentar a (discriminación) eleva la probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior.`
           : theta < bs[2] - .05
-            ? "Como θ (competencia oral) está por debajo de δ₃ (umbral de competente), aumentar a (discriminación) reduce la probabilidad de alcanzar ese nivel."
-            : "Como θ (competencia oral) está prácticamente en δ₃ (umbral de competente), esa probabilidad se mantiene cerca de 50% aunque cambie a (discriminación).";
+            ? `Como θ (${example.construct}) está por debajo de δ₃ (umbral del nivel 4), aumentar a (discriminación) reduce la probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior.`
+            : "Como θ (habilidad o rasgo) está prácticamente en δ₃ (umbral del nivel 4), esa probabilidad se mantiene cerca de 50% aunque cambie a (discriminación).";
         const level = a < .65 ? "baja" : a < 1.25 ? "moderada-baja" : a < 2.15 ? "adecuada" : "alta";
-        return `a (discriminación) es ${level}. Los candidatos A y B visibles en el comparador difieren ${Math.round(separation * 100)} puntos porcentuales en su probabilidad de alcanzar al menos el nivel competente. ${relation}`;
+        return `a (discriminación) es ${level}. Los candidatos A y B visibles en el comparador difieren ${Math.round(separation * 100)} puntos porcentuales en su probabilidad de alcanzar el nivel 4 o superior. ${relation}`;
       }
 
       function thresholdDemandDescription(value) {
@@ -1975,7 +1971,7 @@
       function updateControlInterpretations(theta, a, bs) {
         const currentProbs = probabilities(theta, a, bs);
         const currentExpected = currentProbs.reduce((sum, p, i) => sum + p * (i + 1), 0);
-        $("thetaInterpretation").innerHTML = `Este candidato muestra <strong>${competenceDescription(theta)}</strong>. Con esta tarea, su nivel esperado es <strong>${currentExpected.toFixed(2)} de 5</strong>. Al mover θ (competencia oral) cambias al candidato, no el examen.`;
+        $("thetaInterpretation").innerHTML = `En este ejemplo: <strong>${competenceDescription(theta)}</strong> Con esta tarea, su nivel esperado es <strong>${currentExpected.toFixed(2)} de 5</strong>. Al mover θ (${example.construct}) cambias al candidato, no la tarea ni su seguridad subjetiva.`;
         $("discInterpretation").textContent = taskSensitivityDescription(a, theta, bs);
 
         bs.forEach((delta, i) => {
@@ -1997,11 +1993,13 @@
         const competentOrMore = logistic(theta, a, bs[2]);
         const advanced = logistic(theta, a, bs[3]);
 
-        $("dynamicReading").innerHTML = `Para un candidato con θ (competencia oral) = <b>${fmt(theta)}</b>, la calificación más probable es <b style="color:${colors[winner]}">${categoryNames[winner]}</b> (${Math.round(certainty * 100)}%).`;
-        $("generalSummary").innerHTML = `Su calificación esperada es <b>${expectedScore.toFixed(2)} de 5</b>. Tiene <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar al menos el nivel competente y <b>${Math.round(advanced * 100)}%</b> de llegar al nivel avanzado.`;
+        $("dynamicReading").innerHTML = `Para un candidato con θ (${example.construct}) = <b>${fmt(theta)}</b>, la calificación más probable es <b style="color:${colors[winner]}">${categoryNames[winner]}</b> (${Math.round(certainty * 100)}%).`;
+        $("generalSummary").innerHTML = `Su calificación esperada es <b>${expectedScore.toFixed(2)} de 5</b>. Tiene <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior y <b>${Math.round(advanced * 100)}%</b> de llegar a «${example.levels[4].name}».`;
 
         let tip;
-        if (lastChanged === "gap") {
+        if (lastChanged === "case") {
+          tip = `Elegiste «${example.label}»: la tarea y la rúbrica cambiaron, y los parámetros hipotéticos se restablecieron. GRM conserva su lógica acumulativa; no incluye c (pseudoazar) ni estima la seguridad al responder.`;
+        } else if (lastChanged === "gap") {
           tip = "Cambiaste Δθ (distancia entre competencias): acercaste o separaste a los candidatos A y B sin modificar la tarea, sus umbrales ni su discriminación.";
         } else if (lastChanged === "disc") {
           tip = "Cambiaste a (discriminación): el candidato y los umbrales siguen iguales. Lo que cambia es cuánto separa la tarea a candidatos con competencias cercanas.";
@@ -2016,7 +2014,7 @@
           const index = Number(lastChanged.slice(1)) - 1;
           tip = `Cambiaste δ${index + 1} (umbral): ahora el examen exige más o menos competencia para alcanzar ${thresholdTransitions[index]}. Esto modifica sobre todo la transición entre los niveles ${index + 1} y ${index + 2}.`;
         } else {
-          tip = "Cambiaste θ (competencia oral): ahora observas a otro candidato. La tarea, su discriminación y sus criterios de calificación no cambiaron.";
+          tip = "Cambiaste θ (habilidad o rasgo del caso): ahora observas a otro candidato. La tarea, su discriminación y sus criterios de calificación no cambiaron.";
         }
         $("dynamicTip").textContent = tip;
         updateControlInterpretations(theta, a, bs);
@@ -2049,10 +2047,11 @@
         const probabilityA = logistic(thetaA, a, bs[2]);
         const probabilityB = logistic(thetaB, a, bs[2]);
         $("personGapOut").textContent = fmt(thetaB - thetaA);
-        $("personAResult").textContent = `${Math.round(probabilityA * 100)}% competente+`;
-        $("personBResult").textContent = `${Math.round(probabilityB * 100)}% competente+`;
-        $("personATheta").textContent = `θA (competencia) = ${fmt(thetaA)}`;
-        $("personBTheta").textContent = `θB (competencia) = ${fmt(thetaB)}`;
+        $("personAResult").textContent = `${Math.round(probabilityA * 100)}% nivel 4 o superior`;
+        $("personBResult").textContent = `${Math.round(probabilityB * 100)}% nivel 4 o superior`;
+        $("personATheta").textContent = `θA (${example.construct}) = ${fmt(thetaA)}`;
+        $("personBTheta").textContent = `θB (${example.construct}) = ${fmt(thetaB)}`;
+        $("personComparisonMeaning").textContent = `La curva muestra la probabilidad de alcanzar el nivel 4 («${example.levels[3].name}») o superior. A y B se sitúan alrededor de θ (${example.construct}) para mostrar cuánto los separa a (discriminación).`;
         $("personDifference").textContent = `Diferencia visible: ${Math.round((probabilityB - probabilityA) * 100)} puntos porcentuales con a (discriminación) = ${fmt(a)}.`;
 
         const svg = $("personCompareChart");
@@ -2098,10 +2097,10 @@
           discInput.value = preset.a;
           personGapInput.value = .5;
           thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
-          explanation = "Restableciste el ejemplo inicial: θ (competencia oral) = 0, a (discriminación) = 1.40, δ (umbrales) = −1.50, −0.50, 0.50 y 1.50, y Δθ (distancia entre competencias) = 0.50. Este botón sí reinicia el caso completo del laboratorio.";
+          explanation = "Restableciste el ejemplo inicial: θ (habilidad o rasgo del caso) = 0, a (discriminación) = 1.40, δ (umbrales) = −1.50, −0.50, 0.50 y 1.50, y Δθ (distancia entre competencias) = 0.50. Este botón sí reinicia el caso completo del laboratorio.";
         } else if (preset.a !== undefined) {
           discInput.value = preset.a;
-          explanation = `Cambiaste únicamente a (discriminación) a ${fmt(preset.a)}. El candidato conserva θ (competencia oral) y el examen conserva δ (umbrales). Compara la pendiente de las curvas acumulativas y la separación entre A y B: no significa que todas las calificaciones suban.`;
+          explanation = `Cambiaste únicamente a (discriminación) a ${fmt(preset.a)}. El candidato conserva θ (habilidad o rasgo del caso) y el examen conserva δ (umbrales). Compara la pendiente de las curvas acumulativas y la separación entre A y B: no significa que todas las calificaciones suban.`;
         } else if (preset.shift !== undefined) {
           const values = thresholdInputs.map(input => Number(input.value));
           const shift = preset.shift > 0
@@ -2110,10 +2109,10 @@
           thresholdInputs.forEach((input, i) => input.value = (values[i] + shift).toFixed(2));
           explanation = Math.abs(shift) < .001
             ? "Los umbrales ya alcanzaron el límite de los controles: no se desplazaron. El candidato y la discriminación tampoco cambiaron."
-            : `Desplazaste todos los δ (umbrales) ${fmt(Math.abs(shift))} unidades hacia ${shift > 0 ? "la derecha: ahora el examen exige más competencia para alcanzar cada nivel" : "la izquierda: ahora el examen exige menos competencia para alcanzar cada nivel"}. θ (competencia oral), a (discriminación) y las distancias entre umbrales no cambiaron.`;
+            : `Desplazaste todos los δ (umbrales) ${fmt(Math.abs(shift))} unidades hacia ${shift > 0 ? "la derecha: ahora el examen exige más competencia para alcanzar cada nivel" : "la izquierda: ahora el examen exige menos competencia para alcanzar cada nivel"}. θ (habilidad o rasgo del caso), a (discriminación) y las distancias entre umbrales no cambiaron.`;
         } else {
           thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
-          explanation = "Situaste δ (umbrales) en −0.45, −0.15, 0.15 y 0.45: las transiciones se concentran en una zona estrecha de competencia. θ (competencia oral) y a (discriminación) no cambiaron. Observa qué ocurre con las probabilidades de las categorías intermedias.";
+          explanation = "Situaste δ (umbrales) en −0.45, −0.15, 0.15 y 0.45: las transiciones se concentran en una zona estrecha de competencia. θ (habilidad o rasgo del caso) y a (discriminación) no cambiaron. Observa qué ocurre con las probabilidades de las categorías intermedias.";
         }
         $("presetNote").textContent = explanation;
         lastChanged = name === "sharp" || name === "fuzzy" ? "disc" : name === "balanced" ? "preset" : "thresholds";
@@ -2220,6 +2219,35 @@
 
       compareInputs.forEach(input => input.addEventListener("input", renderCompare));
 
+      function selectExample(key) {
+        example = IRTExamples.cases.grm.find(item=>item.key === key) || IRTExamples.cases.grm[0];
+        categoryNames = IRTExamples.names(example,1);
+        shortLevelNames = example.levels.map(item=>item.short);
+        thresholdTransitions = example.levels.slice(1).map(item=>item.name.toLowerCase());
+        IRTExamples.render("grm",example,"grm");
+        $("thetaHelp").textContent = `Nivel de ${example.construct} del candidato`;
+        thresholdInputs.forEach((input,i)=>input.setAttribute("aria-label",`δ${i+1} (umbral) para ${thresholdTransitions[i]}`));
+        document.querySelectorAll(".category-pill").forEach((pill,i)=>{
+          pill.innerHTML = "";
+          const number = document.createElement("span");
+          number.textContent = String(i+1);
+          const label = document.createElement("span");
+          label.textContent = shortLevelNames[i];
+          label.style.display = "block";
+          pill.appendChild(number);
+          pill.appendChild(label);
+        });
+        applyPreset("balanced");
+        compareInputs.forEach((input,i)=>input.value = [-.7,1.8,1,1.1][i]);
+        lastChanged = "case";
+        $("presetNote").textContent = "Nuevo caso: se restablecieron los parámetros hipotéticos de este ejemplo. Los botones de escenarios modificarán la discriminación o los umbrales dentro de este mismo contexto.";
+        $("personCompareChart").setAttribute("aria-label",`Comparación de dos candidatos para el nivel 4 o superior: ${example.label}`);
+        updateAll();
+        renderCompare();
+      }
+
+      $("caseSelect").addEventListener("change",()=>selectExample($("caseSelect").value));
+
       document.querySelectorAll(".quiz-card").forEach(card => {
         card.querySelectorAll(".answer").forEach(button => {
           button.addEventListener("click", () => {
@@ -2249,8 +2277,7 @@
       });
       window.addEventListener("scroll", updateProgress, { passive: true });
 
-      updateAll();
-      renderCompare();
+      selectExample(example.key);
       updateProgress();
     })();
   </script>

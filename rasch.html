@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=model-buttons-5">
+  <link rel="stylesheet" href="lab-common.css?v=cases-6">
   <link rel="stylesheet" href="author-header.css?v=2">
+  <link rel="stylesheet" href="lab-cases.css?v=cases-6">
 </head>
 <body>
   <header class="site-header">
@@ -15,10 +16,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=model-buttons-5"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=cases-6"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=model-buttons-5">Inicio</a><a class="active" href="rasch.html?v=model-buttons-5">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=model-buttons-5">PCM</a><a href="gpcm.html?v=model-buttons-5">GPCM</a><a href="grm.html?v=model-buttons-5">GRM</a>
+      <a href="index.html?v=cases-6">Inicio</a><a class="active" href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=cases-6">PCM</a><a href="gpcm.html?v=cases-6">GPCM</a><a href="grm.html?v=cases-6">GRM</a>
     </nav>
     </div>
   </header>
@@ -39,7 +40,7 @@
     <section class="section wrap" id="modelo">
       <div class="section-head">
         <div><p class="kicker">La familia logística</p><h2>La misma curva, distintos grados de libertad.</h2></div>
-        <p class="section-copy">Rasch y 1PL fijan la discriminación y no admiten azar. El 2PL permite que cada ítem discrimine distinto. El 3PL añade una asíntota inferior para representar aciertos sin dominio suficiente.</p>
+        <p class="section-copy">Rasch y 1PL fijan la discriminación y no incluyen un parámetro de pseudoazar. Eso no prueba que nadie acierte por casualidad. El 2PL permite variar la discriminación; el 3PL añade una asíntota inferior.</p>
       </div>
       <div class="cards">
         <article class="card"><span class="card-tag">Rasch / 1PL</span><h3>Solo cambia b (dificultad)</h3><p>La dificultad desplaza la curva. a (discriminación) permanece fija en 1 y la probabilidad mínima es 0.</p></article>
@@ -63,18 +64,25 @@
         </div>
         <div class="lab-shell">
           <div class="lab-head">
-            <h3>Ítem: resolver 3(x − 2) = 12</h3>
-            <div class="model-tabs" role="tablist" aria-label="Modelo logístico">
-              <button class="model-tab active" data-model="rasch">Rasch / 1PL</button>
-              <button class="model-tab" data-model="2pl">2PL</button>
-              <button class="model-tab" data-model="3pl">3PL</button>
+            <h3 id="taskTitle">Ítem: resolver 3(x − 2) = 12</h3>
+            <div class="model-tabs" role="group" aria-label="Modelo logístico" aria-describedby="caseMethod">
+              <button type="button" class="model-tab active" data-model="rasch" aria-pressed="true">Rasch / 1PL</button>
+              <button type="button" class="model-tab" data-model="2pl" aria-pressed="false">2PL</button>
+              <button type="button" class="model-tab" data-model="3pl" aria-pressed="false">3PL</button>
             </div>
           </div>
+          <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
+            <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
+            <p class="case-description" id="caseDescription"></p>
+            <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+            <div class="case-method" aria-live="polite"><h4>¿Corresponde c (pseudoazar) en este caso?</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
+          </section>
           <div class="lab-grid">
             <aside class="controls">
               <div class="control">
-                <label for="theta">θ (habilidad matemática) <output id="thetaOut">0.00</output></label>
-                <p class="control-help">Nivel del estudiante en razonamiento algebraico.</p>
+                <label for="theta"><span id="thetaName">θ (habilidad matemática)</span> <output id="thetaOut">0.00</output></label>
+                <p class="control-help" id="thetaContext">Nivel del estudiante en razonamiento algebraico.</p>
                 <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
                 <div class="ticks"><span>incipiente</span><span>medio</span><span>alto</span></div>
                 <p class="control-reading" id="thetaRead"></p>
@@ -94,8 +102,8 @@
                 <p class="control-reading" id="discRead"></p>
               </div>
               <div class="control">
-                <label for="guess">c (azar o adivinación) <output id="guessOut">0.00</output></label>
-                <p class="control-help">Probabilidad mínima de acertar por suerte o elección al azar. Solo está disponible en 3PL.</p>
+                <label for="guess">c (pseudoazar) <output id="guessOut">0.00</output></label>
+                <p class="control-help">Asíntota inferior de la probabilidad de acierto. En este laboratorio se explora con 3PL y opción múltiple; no mide la seguridad subjetiva.</p>
                 <input id="guess" type="range" min="0" max=".4" step=".01" value="0" disabled>
                 <div class="ticks"><span>sin azar</span><span>40%</span></div>
                 <p class="control-reading" id="guessRead"></p>
@@ -144,11 +152,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=model-buttons-5">← Portada</a><a class="button primary" href="pcm.html?v=model-buttons-5">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=cases-6">← Portada</a><a class="button primary" href="pcm.html?v=cases-6">Siguiente: PCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</footer>
 
   <script src="lab-utils.js"></script>
+  <script src="lab-cases.js?v=cases-6"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -156,20 +165,18 @@
       const personGap = $("personGap");
       let model = "rasch";
       let changed = "model";
+      let example = IRTExamples.setup("rasch");
 
       function probability(theta, b, a, c) {
         return c + (1 - c) * IRT.logistic(a * (theta - b));
       }
 
       function state() {
-        return { theta: +inputs.theta.value, b: +inputs.b.value, a: +inputs.a.value, c: +inputs.c.value };
+        return { theta: +inputs.theta.value, b: +inputs.b.value, a: model === "rasch" ? 1 : +inputs.a.value, c: model === "3pl" && example.guessing ? +inputs.c.value : 0 };
       }
 
       function thetaDescription(theta) {
-        if (theta < -1.5) return "El estudiante apenas reconoce procedimientos algebraicos y depende de ejemplos muy directos.";
-        if (theta < .5) return "El estudiante resuelve transformaciones conocidas, pero puede fallar al coordinar varios pasos.";
-        if (theta < 2) return "El estudiante maneja con soltura ecuaciones lineales y controla sus transformaciones.";
-        return "El estudiante muestra dominio alto y puede generalizar el procedimiento a situaciones nuevas.";
+        return IRTExamples.describe(example,theta);
       }
 
       function render() {
@@ -180,8 +187,8 @@
         $("discOut").textContent = IRT.fmt(s.a);
         $("guessOut").textContent = IRT.fmt(s.c);
         const comparisonGap = +personGap.value;
-        const nearbyLow = probability(s.theta - comparisonGap / 2, s.b, s.a, s.c);
-        const nearbyHigh = probability(s.theta + comparisonGap / 2, s.b, s.a, s.c);
+        const nearbyLow = probability(Math.max(-4,s.theta - comparisonGap / 2), s.b, s.a, s.c);
+        const nearbyHigh = probability(Math.min(4,s.theta + comparisonGap / 2), s.b, s.a, s.c);
         const localSeparation = nearbyHigh - nearbyLow;
         const centerProbability = probability(s.b, s.b, s.a, s.c);
         const sideEffect = s.theta > s.b + .05
@@ -195,9 +202,12 @@
         $("discRead").textContent = model === "rasch"
           ? "Rasch fija a (discriminación) = 1. Activa 2PL o 3PL para manipularla y comparar dos estudiantes."
           : `${s.a < .8 ? "a (discriminación) baja" : s.a > 2 ? "a (discriminación) alta" : "a (discriminación) moderada"}: en el gráfico comparativo, A y B difieren ${Math.round(localSeparation * 100)} puntos porcentuales. ${sideEffect}`;
-        $("guessRead").textContent = model !== "3pl"
-          ? "Este modelo fija c (azar) = 0: con habilidad extremadamente baja, la probabilidad se aproxima a 0%."
-          : `c (azar o adivinación) fija un piso de ${Math.round(s.c * 100)}%: incluso sin dominio suficiente puede acertarse por suerte. No aumenta la habilidad del estudiante.`;
+        $("guessRead").textContent = !example.guessing
+          ? "c (pseudoazar) no se usa en este caso: no se ha justificado un piso de acierto por elección al azar. Esto no demuestra que acertar por casualidad sea imposible. Consulta el enlace al ejemplo de opción múltiple."
+          : model !== "3pl"
+            ? "El caso permite explorar pseudoazar, pero el modelo activo fija c (pseudoazar) = 0. Elige 3PL para habilitar este parámetro."
+            : `c (pseudoazar) fija un piso de ${Math.round(s.c * 100)}% en la curva. No es la probabilidad de que este estudiante esté adivinando ni se fija automáticamente en 25% por tener cuatro alternativas.`;
+        IRTExamples.renderMethod("rasch",example,model);
 
         const modelName = model === "rasch" ? "Rasch / 1PL" : model.toUpperCase();
         $("modelMetric").textContent = modelName;
@@ -210,7 +220,7 @@
         $("generalTitle").innerHTML = `Este estudiante tiene <b>${Math.round(p*100)}%</b> de probabilidad de responder correctamente.`;
         const gap = s.theta - s.b;
         $("generalText").textContent = gap >= 0
-          ? `Su habilidad está ${IRT.fmt(gap)} unidades por encima de la dificultad. ${s.c > 0 ? "Parte de la probabilidad también incluye el piso de azar." : "La ventaja proviene del dominio, no de un parámetro de azar."}`
+          ? `Su ${example.construct} está ${IRT.fmt(gap)} unidades por encima de la dificultad. ${s.c > 0 ? "El modelo también incorpora una asíntota inferior de pseudoazar." : "El modelo no incorpora un piso de pseudoazar; no identifica la causa de cada acierto."}`
           : `Su habilidad está ${IRT.fmt(Math.abs(gap))} unidades por debajo de la dificultad. El ítem resulta más exigente que su nivel actual.`;
         const changes = {
           theta: "Cambiaste θ (habilidad): observas a otro estudiante; el ítem conserva sus propiedades.",
@@ -220,14 +230,16 @@
           gap: "Cambiaste Δθ (distancia entre habilidades): separaste o acercaste a los estudiantes A y B sin modificar el ítem.",
           model: `Cambiaste al ${modelName}: observa qué parámetros quedan libres y cuáles se fijan.`
         };
-        $("changeText").textContent = changes[changed];
+        $("changeText").textContent = changed === "case"
+          ? `Elegiste «${example.label}»: se restablecieron los parámetros hipotéticos. Ahora θ (${example.construct}) describe este constructo, no la seguridad al responder. ${example.guessing ? "Puedes comparar Rasch, 2PL y 3PL." : "En este caso se comparan Rasch y 2PL; 3PL queda bloqueado."}`
+          : changes[changed];
         renderChart(s, p);
         renderPersonComparison(s);
       }
 
       function renderChart(s, p) {
         const svg = $("chart");
-        const chart = IRT.setupChart(svg, { xLabel: "θ (habilidad matemática)" });
+        const chart = IRT.setupChart(svg, { xLabel: `θ (${example.construct})` });
         const xs = Array.from({length:241}, (_,i) => -4 + i * 8/240);
         IRT.drawLine(chart.plot, xs.map(x => ({x, y: probability(x,s.b,s.a,s.c)})), chart, "#2aa89a");
         IRT.drawVertical(chart, s.b, "b", "#f46f5f", true);
@@ -248,12 +260,12 @@
         $("personGapOut").textContent = IRT.fmt(thetaB - thetaA);
         $("personAResult").textContent = `${Math.round(pA * 100)}% acierto`;
         $("personBResult").textContent = `${Math.round(pB * 100)}% acierto`;
-        $("personATheta").textContent = `θA (habilidad) = ${IRT.fmt(thetaA)}`;
-        $("personBTheta").textContent = `θB (habilidad) = ${IRT.fmt(thetaB)}`;
+        $("personATheta").textContent = `θA (${example.construct}) = ${IRT.fmt(thetaA)}`;
+        $("personBTheta").textContent = `θB (${example.construct}) = ${IRT.fmt(thetaB)}`;
         $("personDifference").textContent = `Separación visible: ${Math.round((pB - pA) * 100)} puntos porcentuales con a (discriminación) = ${IRT.fmt(s.a)}.`;
 
         const svg = $("personChart");
-        const chart = IRT.setupChart(svg, { xLabel: "θ (habilidad matemática)" });
+        const chart = IRT.setupChart(svg, { xLabel: `θ (${example.construct})` });
         const xs = Array.from({length:241}, (_,i) => -4 + i * 8/240);
         IRT.drawLine(chart.plot, xs.map(x => ({x, y: probability(x,s.b,s.a,s.c)})), chart, "#2aa89a");
         IRT.drawVertical(chart, s.b, "b", "#e3ad36", true);
@@ -264,20 +276,43 @@
       }
 
       function selectModel(next) {
+        if (next === "3pl" && !example.guessing) return;
         model = next;
         changed = "model";
         if (model === "rasch") { inputs.a.value = 1; inputs.c.value = 0; inputs.a.disabled = true; inputs.c.disabled = true; }
         if (model === "2pl") { inputs.c.value = 0; inputs.a.disabled = false; inputs.c.disabled = true; }
         if (model === "3pl") { inputs.a.disabled = false; inputs.c.disabled = false; if (+inputs.c.value === 0) inputs.c.value = .2; }
-        document.querySelectorAll(".model-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.model === model));
+        document.querySelectorAll("[data-model]").forEach(btn => {
+          const active = btn.dataset.model === model;
+          btn.classList.toggle("active",active);
+          btn.setAttribute("aria-pressed",String(active));
+          btn.disabled = btn.dataset.model === "3pl" && !example.guessing;
+        });
+        render();
+      }
+
+      function selectExample(key) {
+        example = IRTExamples.cases.rasch.find(item => item.key === key) || IRTExamples.cases.rasch[0];
+        inputs.theta.value = 0;
+        inputs.b.value = .5;
+        inputs.a.value = model === "rasch" ? 1 : 1.3;
+        inputs.c.value = 0;
+        personGap.value = .5;
+        if (model === "3pl" && !example.guessing) model = "2pl";
+        IRTExamples.render("rasch",example,model);
+        selectModel(model);
+        changed = "case";
         render();
       }
 
       Object.entries(inputs).forEach(([key,input]) => input.addEventListener("input", () => { changed = key; render(); }));
       personGap.addEventListener("input", () => { changed = "gap"; render(); });
-      document.querySelectorAll(".model-tab").forEach(btn => btn.addEventListener("click", () => selectModel(btn.dataset.model)));
+      document.querySelectorAll("[data-model]").forEach(btn => btn.addEventListener("click", () => selectModel(btn.dataset.model)));
+      $("caseSelect").addEventListener("change",()=>selectExample($("caseSelect").value));
       window.addEventListener("resize", render);
-      render();
+      const requestedModel = new URLSearchParams(window.location.search).get("model");
+      if (["rasch","2pl","3pl"].includes(requestedModel)) model = requestedModel;
+      selectExample(example.key);
     })();
   </script>
 </body>
