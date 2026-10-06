@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial Generalizado (GPCM).">
   <title>GPCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=scope-7">
+  <link rel="stylesheet" href="lab-common.css?v=separate-labs-8">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=scope-7">
+  <link rel="stylesheet" href="lab-cases.css?v=separate-labs-8">
   <style>
     .paragraph-demo { position:relative; z-index:2; width:min(430px,88%); padding:23px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.08); font-family:system-ui; font-size:.9rem; line-height:1.75; text-align:left; }
     .paragraph-demo mark { padding:1px 4px; border-radius:4px; color:var(--navy); background:var(--gold); }
@@ -20,10 +20,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=scope-7"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=separate-labs-8"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=scope-7">Inicio</a><a href="rasch.html?v=scope-7">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=scope-7">PCM</a><a class="active" href="gpcm.html?v=scope-7">GPCM</a><a href="grm.html?v=scope-7">GRM</a>
+      <a href="index.html?v=separate-labs-8">Inicio</a><a href="rasch.html?v=separate-labs-8">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=separate-labs-8">PCM</a><a class="active" href="gpcm.html?v=separate-labs-8">GPCM</a><a href="grm.html?v=separate-labs-8">GRM</a>
     </nav>
     </div>
   </header>
@@ -49,7 +49,7 @@
       <div class="cards">
         <article class="card"><span class="card-tag">Constructo</span><h3>θ (habilidad de coherencia)</h3><p>Capacidad para mantener una idea central, conectar proposiciones y organizar una progresión lógica.</p></article>
         <article class="card"><span class="card-tag">Rúbrica</span><h3>δ₁ … δ₄ (umbrales de paso)</h3><p>Dificultad de avanzar desde fragmentos aislados hasta un párrafo cohesivo, desarrollado y fluido.</p></article>
-        <article class="card"><span class="card-tag">Generalización</span><h3>a (discriminación)</h3><p>Indica cuánto separa la tarea a autores con niveles cercanos de coherencia alrededor de los umbrales.</p></article>
+        <article class="card"><span class="card-tag">Generalización</span><h3>a (discriminación)</h3><p>GPCM permite estimar una discriminación propia de cada ítem. Indica cuánto separa la tarea a estudiantes con niveles cercanos del rasgo alrededor de los umbrales. PCM, en cambio, la mantiene fija.</p></article>
       </div>
     </section>
 
@@ -64,16 +64,17 @@
       <div class="wrap">
         <div class="section-head">
           <div><p class="kicker">Laboratorio GPCM</p><h2>Explora distintas tareas con la misma lógica de pasos.</h2></div>
-          <p class="section-copy">Elige un caso y compara GPCM y PCM sin cambiar al estudiante ni los cuatro pasos de su rúbrica. Los botones liberan o fijan a (discriminación), y la interpretación explica el cambio.</p>
+          <p class="section-copy">Esta página utiliza únicamente GPCM: puedes ajustar a (discriminación), θ (habilidad) y δ (umbrales de paso). Para explorar la restricción de discriminación fija, abre la página del laboratorio PCM.</p>
         </div>
         <div class="lab-shell">
           <div class="lab-head">
             <h3 id="taskTitle">Tarea: redactar un párrafo explicativo coherente</h3>
-            <div class="model-tabs" role="group" aria-label="Modelo para la misma tarea de escritura" aria-describedby="creditModelNote">
-              <button type="button" class="model-tab" data-credit-model="pcm" aria-pressed="false">PCM · discriminación fija</button>
-              <button type="button" class="model-tab active" data-credit-model="gpcm" aria-pressed="true">GPCM · discriminación libre</button>
+            <div class="model-navigation">
+              <span class="model-badge">Modelo activo: GPCM</span>
+              <a id="otherCreditLab" class="button model-lab-link" href="pcm.html?v=separate-labs-8#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio PCM</a>
             </div>
           </div>
+          <p class="model-note" id="creditModelNote" aria-live="polite">GPCM activo: permite estimar una a (discriminación) propia de cada ítem. Aquí exploras valores hipotéticos, no estimaciones a partir de datos. Para revisar la discriminación fija, abre el laboratorio PCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página.</p>
           <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
@@ -81,7 +82,6 @@
             <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
-          <p class="model-note" id="creditModelNote" aria-live="polite"></p>
           <div class="lab-grid">
             <aside class="controls">
               <div class="control">
@@ -93,7 +93,7 @@
               </div>
               <div class="control">
                 <label for="disc">a (discriminación) <output id="discOut">1.30</output></label>
-                <p class="control-help">Capacidad de esta tarea para diferenciar estudiantes con niveles cercanos del rasgo. En PCM se fija en 1; en GPCM puedes modificarla.</p>
+                <p class="control-help">GPCM permite estimar una discriminación propia del ítem. Aquí puedes explorar valores hipotéticos y ver cuánto distingue la tarea a estudiantes con niveles cercanos del rasgo. PCM mantiene ese parámetro fijo en otra página.</p>
                 <input id="disc" type="range" min=".25" max="3.2" step=".05" value="1.3" aria-describedby="discRead">
                 <div class="ticks"><span>baja</span><span>moderada</span><span>alta</span></div>
                 <p class="control-reading" id="discRead"></p>
@@ -164,12 +164,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="pcm.html?v=scope-7">← PCM</a><a class="button primary" href="grm.html?v=scope-7">Siguiente: GRM →</a></div>
+    <div class="wrap back-next"><a class="button" href="pcm.html?v=separate-labs-8">← PCM</a><a class="button primary" href="grm.html?v=separate-labs-8">Siguiente: GRM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial Generalizado</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=scope-7"></script>
+  <script src="lab-cases.js?v=separate-labs-8"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -177,8 +177,7 @@
       const disc = $("disc");
       const personGap = $("personGap");
       const deltas = [$("d1"),$("d2"),$("d3"),$("d4")];
-      let model = "gpcm";
-      let freeDiscrimination = +disc.value;
+      const model = "gpcm";
       let changed = "theta";
       let example = IRTExamples.setup("gpcm");
       let levelNames = IRTExamples.names(example);
@@ -189,7 +188,7 @@
         ds.forEach(delta => { accumulated += a * (t-delta); logits.push(accumulated); });
         return IRT.softmax(logits);
       }
-      function state() { return {t:+theta.value,a:model === "pcm" ? 1 : +disc.value,ds:deltas.map(input=>+input.value)}; }
+      function state() { return {t:+theta.value,a:+disc.value,ds:deltas.map(input=>+input.value)}; }
 
       function authorText(t) {
         return IRTExamples.describe(example,t);
@@ -220,18 +219,14 @@
         const ordered=s.ds.every((d,i)=>i===0||d>s.ds[i-1]);
         $("thetaOut").textContent=IRT.fmt(s.t);
         $("discOut").textContent=IRT.fmt(s.a);
-        $("creditModelNote").textContent=model === "pcm"
-          ? `PCM activo: a (discriminación) está fijada en 1 y su control está bloqueado. La tarea es la misma, con θ (${example.construct}) y δ (umbrales de paso) sin cambios.`
-          : "GPCM activo: puedes modificar a (discriminación) de esta tarea. Al alternar con PCM se conservan el estudiante y la rúbrica. Con a (discriminación) = 1, ambos modelos producen las mismas probabilidades.";
+        $("creditModelNote").textContent=`GPCM activo: permite estimar una a (discriminación) propia del ítem para esta tarea de ${example.construct}. Aquí ajustas valores hipotéticos, no estimaciones a partir de datos. Para revisar la discriminación fija, abre el laboratorio PCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página. GPCM con a (discriminación) = 1 equivale a PCM solo si se mantienen la misma escala, rúbrica y umbrales.`;
         IRTExamples.renderMethod("gpcm",example,model);
         $("thetaRead").textContent=`En este ejemplo: ${authorText(s.t)} Con los parámetros actuales, su puntaje esperado es ${expected.toFixed(2)} de 4.`;
-        $("discRead").textContent=model === "pcm"
-          ? "a (discriminación) = 1 es una restricción del PCM. El comparador sigue mostrando a los mismos estudiantes A y B con esa discriminación fija; elige GPCM para modificarla."
-          : discText(s.a,s.t,s.ds);
+        $("discRead").textContent=discText(s.a,s.t,s.ds);
         deltas.forEach((input,i)=>{ $(`d${i+1}Out`).textContent=IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent=stepText(i,s.ds[i],s.t,s.a); });
         $("expectedMetric").textContent=`${expected.toFixed(2)} / 4`;
         $("modeMetric").textContent=levelNames[mode];
-        $("discMetric").textContent=model === "pcm"?"Fija en 1":s.a<.7?"Baja":s.a<1.8?"Moderada":"Alta";
+        $("discMetric").textContent=s.a<.7?"Baja":s.a<1.8?"Moderada":"Alta";
         $("generalTitle").innerHTML=`La calificación más probable es <b>${levelNames[mode]}</b> (${Math.round(probs[mode]*100)}%).`;
         $("generalText").textContent=ordered
           ? `El estudiante tiene un puntaje esperado de ${expected.toFixed(2)}. La rúbrica avanza en orden desde «${example.levels[1].name}» hasta «${example.levels[4].name}».`
@@ -243,7 +238,6 @@
         $("probabilityNote").innerHTML=`<strong>Comparación adyacente y resultado observado:</strong> el ${modelName} compara la ventaja de avanzar entre puntajes vecinos, pero calcula probabilidades para todos los puntajes de 0 a 4. Para este estudiante, el nivel más probable es ${levelNames[mode]}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, las categorías cercanas suelen concentrar más probabilidad que un salto lejano. Un desempeño menor puede ser compatible con cansancio, olvido o un error accidental, pero el modelo representa la incertidumbre y no diagnostica su causa.`;
         $("changeText").textContent=changed==="theta"?`Cambiaste θ (${example.construct}): ahora observas a otro estudiante con la misma rúbrica.`
           :changed==="case"?`Elegiste «${example.label}»: se restablecieron los parámetros hipotéticos. Los puntajes describen este producto o respuesta, no la seguridad subjetiva del estudiante.`
-          :changed==="model"?`Elegiste ${modelName}: ${model === "pcm" ? "a (discriminación) queda fijada en 1" : "a (discriminación) puede variar"}. Los estudiantes A y B y los umbrales no cambiaron; observa qué sucede con sus puntajes esperados.`
           :changed==="a"?`Cambiaste a (discriminación): observa en el segundo gráfico cómo se modifica la distancia vertical entre A y B.`
           :changed==="gap"?"Cambiaste Δθ (distancia entre habilidades): acercaste o separaste a los estudiantes A y B sin modificar la tarea."
           :`Cambiaste δ${changed} (umbral del paso): alteraste la exigencia para pasar del nivel ${+changed-1} al nivel ${changed}.`;
@@ -285,26 +279,11 @@
         chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaB),cy:chart.yScale(scoreB),r:6,fill:"#f46f5f",stroke:"white","stroke-width":2}));
       }
 
-      function selectModel(next) {
-        if (model === "gpcm") freeDiscrimination = +disc.value;
-        model = next;
-        disc.disabled = model === "pcm";
-        disc.value = model === "pcm" ? 1 : freeDiscrimination;
-        document.querySelectorAll("[data-credit-model]").forEach(button=>{
-          const active = button.dataset.creditModel === model;
-          button.classList.toggle("active",active);
-          button.setAttribute("aria-pressed",String(active));
-        });
-        changed = "model";
-        render();
-      }
-
       function selectExample(key) {
         example = IRTExamples.cases.gpcm.find(item => item.key === key) || IRTExamples.cases.gpcm[0];
         levelNames = IRTExamples.names(example);
         theta.value = 0;
-        freeDiscrimination = 1.3;
-        disc.value = model === "pcm" ? 1 : freeDiscrimination;
+        disc.value = 1.3;
         deltas.forEach((input,i)=>input.value = [-1.5,-.4,.6,1.6][i]);
         personGap.value = .5;
         IRTExamples.render("gpcm",example,model);
@@ -316,7 +295,6 @@
       disc.addEventListener("input",()=>{changed="a";render();});
       personGap.addEventListener("input",()=>{changed="gap";render();});
       deltas.forEach((input,i)=>input.addEventListener("input",()=>{changed=String(i+1);render();}));
-      document.querySelectorAll("[data-credit-model]").forEach(button=>button.addEventListener("click",()=>selectModel(button.dataset.creditModel)));
       $("caseSelect").addEventListener("change",()=>selectExample($("caseSelect").value));
       window.addEventListener("resize",render);
       selectExample(example.key);

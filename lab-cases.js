@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "scope-7", case: key });
+    const params = new URLSearchParams({ v: "separate-labs-8", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -203,6 +203,14 @@ window.IRTExamples = (() => {
       rubric.appendChild(row);
     });
     renderMethod(page, example, model);
+    const otherLab = document.getElementById("otherCreditLab");
+    if (otherLab) {
+      const otherPage = page === "pcm" ? "gpcm" : "pcm";
+      const matchingCase = cases[otherPage].find(item => item.key === example.key);
+      const otherCase = matchingCase || cases[otherPage][0];
+      otherLab.setAttribute("href", link(otherPage, otherCase.key));
+      otherLab.textContent = `Ir al laboratorio ${otherPage.toUpperCase()}${matchingCase ? "" : " (otro caso)"}`;
+    }
   }
 
   return { cases, setup, initial, names, describe, render, renderMethod, link };
