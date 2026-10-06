@@ -857,14 +857,28 @@
       text-align: center;
     }
 
+    .category-summary-title {
+      margin: 14px 0 8px;
+      font-size: .75rem;
+      font-weight: 800;
+    }
+
+    .category-summary-note {
+      margin: 10px 0 0;
+      color: var(--muted);
+      font-size: .72rem;
+      line-height: 1.5;
+    }
+
     .category-strip {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(72px, 1fr));
       gap: 8px;
-      margin-top: 14px;
+      margin-top: 0;
     }
 
     .category-pill {
+      min-width: 0;
       padding: 8px 4px;
       border: 1px solid var(--line);
       border-radius: 9px;
@@ -1285,15 +1299,15 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=profile-3" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=interpretation-4" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=profile-3">Inicio</a>
-      <a href="rasch.html?v=profile-3">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=profile-3">PCM</a>
-      <a href="gpcm.html?v=profile-3">GPCM</a>
+      <a href="index.html?v=interpretation-4">Inicio</a>
+      <a href="rasch.html?v=interpretation-4">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=interpretation-4">PCM</a>
+      <a href="gpcm.html?v=interpretation-4">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
@@ -1495,13 +1509,15 @@
                 <p class="threshold-meaning" id="delta4Interpretation">Frontera para demostrar comunicación avanzada y matizada.</p>
               </div>
 
-              <div class="category-strip" id="categoryStrip" aria-label="Categoría más probable">
+              <p class="category-summary-title" id="categorySummaryTitle">Calificación exacta más probable</p>
+              <div class="category-strip" id="categoryStrip" role="group" aria-labelledby="categorySummaryTitle" aria-describedby="categorySummaryNote">
                 <div class="category-pill">1<br>Inicial</div>
                 <div class="category-pill">2<br>Básico</div>
                 <div class="category-pill">3<br>Funcional</div>
                 <div class="category-pill">4<br>Competente</div>
                 <div class="category-pill">5<br>Avanzado</div>
               </div>
+              <p class="category-summary-note" id="categorySummaryNote">El color destaca la calificación exacta más probable del candidato actual. Puede obtener otras calificaciones.</p>
             </aside>
 
             <div class="lab-main">
@@ -1996,6 +2012,7 @@
           pill.classList.toggle("winner", i === winner);
           pill.style.background = i === winner ? colors[i] : "";
         });
+        $("categorySummaryNote").textContent = `Para el candidato actual, ${categoryNames[winner]} tiene la mayor probabilidad de calificación exacta (${Math.round(certainty * 100)}%). No es un resultado garantizado ni la probabilidad acumulada de alcanzar ese nivel o uno superior.`;
       }
 
       function updateOutputs() {
