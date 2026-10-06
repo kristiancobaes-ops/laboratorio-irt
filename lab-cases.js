@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "separate-labs-8", case: key });
+    const params = new URLSearchParams({ v: "headings-9", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }

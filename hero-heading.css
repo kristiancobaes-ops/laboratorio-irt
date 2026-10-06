@@ -1,0 +1,29 @@
+.hero > div:first-child { min-width: 0; }
+
+.hero .hero-title {
+  max-width: 100%;
+  margin-bottom: 18px;
+  color: var(--ink);
+  font-size: clamp(2.35rem, 4.8vw, 4.3rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: -.04em;
+  overflow-wrap: break-word;
+  text-wrap: balance;
+}
+
+.hero .hero-subtitle {
+  max-width: 40ch;
+  margin: 0 0 20px;
+  color: #28649a;
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -.015em;
+  text-wrap: balance;
+}
+
+@media (max-width: 720px) {
+  .hero .hero-title { font-size: clamp(2.15rem, 8.5vw, 3.3rem); }
+  .hero .hero-subtitle { font-size: clamp(1.25rem, 4.5vw, 1.55rem); }
+}
