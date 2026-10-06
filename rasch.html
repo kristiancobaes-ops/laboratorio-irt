@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=header-move-12">
-  <link rel="stylesheet" href="author-header.css?v=header-move-12">
-  <link rel="stylesheet" href="lab-cases.css?v=header-move-12">
-  <link rel="stylesheet" href="hero-heading.css?v=header-move-12">
-  <link rel="stylesheet" href="page-explorer.css?v=header-move-12">
-  <script src="page-explorer.js?v=header-move-12" defer></script>
+  <link rel="stylesheet" href="lab-common.css?v=rubric-footer-13">
+  <link rel="stylesheet" href="author-header.css?v=rubric-footer-13">
+  <link rel="stylesheet" href="lab-cases.css?v=rubric-footer-13">
+  <link rel="stylesheet" href="hero-heading.css?v=rubric-footer-13">
+  <link rel="stylesheet" href="page-explorer.css?v=rubric-footer-13">
+  <link rel="stylesheet" href="site-footer.css?v=rubric-footer-13">
+  <script src="page-explorer.js?v=rubric-footer-13" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -19,10 +20,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=header-move-12" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: Rasch / 1–3PL</span></a>
+    <a class="brand" href="index.html?v=rubric-footer-13" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: Rasch / 1–3PL</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=header-move-12">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=header-move-12">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=header-move-12">PCM</a><a href="gpcm.html?v=header-move-12">GPCM</a><a href="grm.html?v=header-move-12">GRM</a>
+      <a href="index.html?v=rubric-footer-13">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=rubric-footer-13">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=rubric-footer-13">PCM</a><a href="gpcm.html?v=rubric-footer-13">GPCM</a><a href="grm.html?v=rubric-footer-13">GRM</a>
     </nav>
     </div>
   </header>
@@ -92,13 +93,7 @@
           <section class="case-panel" aria-label="Caso didáctico y criterios metodológicos">
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
-            <section class="response-summary" aria-labelledby="responseSummaryTitle" aria-live="polite">
-              <h4 id="responseSummaryTitle">Respuesta más probable</h4>
-              <p class="response-summary-value" id="responseSummaryValue"></p>
-              <p class="response-summary-note" id="responseSummaryNote"></p>
-            </section>
             <div class="case-method" aria-live="polite"><h4>Elección del modelo para este caso</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
-            <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <div class="lab-grid">
             <aside class="controls">
@@ -138,8 +133,10 @@
               </div>
               <section class="chart-rubric" aria-labelledby="chartRubricTitle">
                 <h4 id="chartRubricTitle">Resultados del ítem: 0 o 1</h4>
-                <p class="chart-rubric-caption">Este ítem tiene dos resultados, no niveles de una rúbrica. El resaltado indica el resultado más probable con los parámetros actuales.</p>
+                <p class="chart-rubric-caption">Este ítem tiene dos resultados, no niveles de una rúbrica. El resaltado indica la mayor probabilidad con los parámetros actuales.</p>
                 <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
+                <p class="rubric-reading" id="rubricReading" aria-live="polite" aria-atomic="true" aria-describedby="rubricNote"></p>
+                <p class="rubric-note" id="rubricNote"></p>
               </section>
               <div class="chart-area">
                 <svg class="chart" id="chart" role="img" aria-label="Curva característica del ítem"></svg>
@@ -178,12 +175,17 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=header-move-12">← Portada</a><a class="button primary" href="pcm.html?v=header-move-12">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=rubric-footer-13">← Portada</a><a class="button primary" href="pcm.html?v=rubric-footer-13">Siguiente: PCM →</a></div>
   </main>
-  <footer>Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</footer>
+  <footer class="site-footer">
+    <div class="wrap site-footer-inner">
+      <div><p class="site-footer-title">Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</p><p class="site-footer-role">Autor y desarrollador</p><strong class="site-footer-author">Dr. Kristian Armando Pineda Castillo</strong></div>
+      <p class="site-footer-note" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
+    </div>
+  </footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=header-move-12"></script>
+  <script src="lab-cases.js?v=rubric-footer-13"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);

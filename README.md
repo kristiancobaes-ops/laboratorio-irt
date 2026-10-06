@@ -15,11 +15,13 @@ Los ejemplos son simulaciones didacticas, no instrumentos validados. El control 
 
 Los enlaces a casos usan `case`, y la pagina logistica admite `model`: por ejemplo, `rasch.html?case=choice&model=3pl#laboratorio` o `grm.html?case=oral#laboratorio`.
 
-Cada laboratorio muestra al inicio la respuesta o calificacion exacta mas probable. Los criterios de puntuacion aparecen encima de la grafica principal y resaltan esa respuesta; si hay empate se muestran todas las opciones igualmente probables. En GRM este resumen se calcula con categorias exactas, incluso al ver curvas acumulativas. Rasch/1PL, 2PL y 3PL muestran dos resultados binarios, no niveles de una rubrica.
+Cada laboratorio reune los criterios de puntuacion y su interpretacion encima de la grafica principal, sin un resumen duplicado al inicio del caso. Las tarjetas resaltan la respuesta mas probable y una unica lectura explica su porcentaje y el significado del puntaje segun el criterio del caso. Si hay empate se muestran todas las opciones igualmente probables. En GRM esta lectura se calcula con categorias exactas, incluso al ver curvas acumulativas. No se presentan predicciones como calificaciones observadas o garantizadas. Rasch/1PL, 2PL y 3PL muestran dos resultados binarios, no niveles de una rubrica.
 
 Las restricciones de parametros se presentan en tarjetas rojas junto a los fundamentos de cada modelo; PCM, GPCM y GRM no repiten la nota de c debajo del caso. La pagina logistica conserva las aclaraciones necesarias sobre la eleccion del modelo segun la tarea. Todas las paginas incluyen un explorador flotante de secciones, con indicador de ubicacion y enlaces internos. En pantallas amplias ocupa el margen lateral; en las demas se inicia plegado. Conserva el desplazamiento normal, respeta movimiento reducido y ajusta el espacio de los destinos a la altura del encabezado. Las comparaciones ocultas no aparecen en el explorador.
 
 El encabezado comparte etiquetas, estilo y estado activo en las cinco paginas, e identifica el laboratorio actual junto al nombre del sitio. El explorador admite arrastre con raton, tacto o lapiz desde Mover, desplazamiento con flechas (Shift aumenta el paso) y Restablecer para recuperar la ubicacion inicial. Escape cancela un arrastre en curso. La posicion se mantiene dentro de la ventana al plegar, ampliar o redimensionar el menu, y se recuerda entre paginas mediante almacenamiento local cuando el navegador lo permite.
+
+La cinta al pie de las cinco paginas repite la autoria del Dr. Kristian Armando Pineda Castillo y contiene una unica nota metodologica general, con enlace a la referencia de los modelos. El selector de casos conserva su descripcion accesible asociada a esa nota aunque ahora se encuentre al final de la pagina.
 
 ## Como verlo
 

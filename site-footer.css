@@ -1,0 +1,19 @@
+.site-footer {
+  padding: 32px 0;
+  border-top: 1px solid #c2d3e6;
+  color: #17233b;
+  background: #e7eff8;
+  font-size: .85rem;
+  line-height: 1.6;
+  text-align: left;
+}
+.site-footer-inner { display: grid; grid-template-columns: .9fr 1.4fr; align-items: start; gap: 24px 40px; }
+.site-footer-title { margin: 0 0 14px; font-weight: 750; }
+.site-footer-role { margin: 0 0 4px; color: #28649a; font-size: .72rem; font-weight: 800; }
+.site-footer-author { display: block; font-size: 1rem; }
+.site-footer-note { margin: 0; color: #526077; font-size: .78rem; }
+.site-footer-note a { color: #28649a; font-weight: 700; text-decoration: underline; }
+.site-footer a:focus-visible { outline: 3px solid #28649a; outline-offset: 3px; }
+@media (max-width: 720px) {
+  .site-footer-inner { grid-template-columns: 1fr; gap: 18px; }
+}

@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "header-move-12", case: key });
+    const params = new URLSearchParams({ v: "rubric-footer-13", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -218,17 +218,16 @@ window.IRTExamples = (() => {
       .filter(item => Math.abs(item.probability - highest) < 1e-12);
     const labels = page === "rasch" ? example.levels.map(item => item.name) : names(example, page === "grm" ? 1 : 0);
     const tied = winners.length > 1;
-    document.getElementById("responseSummaryTitle").textContent = page === "rasch"
-      ? tied ? "Respuestas más probables (empate)" : "Respuesta más probable"
-      : tied ? "Calificaciones exactas más probables (empate)" : "Calificación exacta más probable";
-    document.getElementById("responseSummaryValue").textContent = tied
-      ? `${winners.map(item => labels[item.i]).join(" / ")} (${Math.round(highest * 100)}% cada una)`
-      : `${labels[winners[0].i]} (${Math.round(highest * 100)}%)`;
-    document.getElementById("responseSummaryNote").textContent = page === "grm"
-      ? "Se calcula con la probabilidad de calificación exacta, incluso al ver curvas acumulativas. No es la probabilidad de alcanzar ese nivel o uno superior ni un resultado garantizado."
+    const outcome = page === "rasch" ? "la respuesta" : page === "grm" ? "la calificación exacta" : "el puntaje";
+    const criterion = page === "rasch" ? "Según el criterio del caso" : "Según la rúbrica, ese resultado describe";
+    document.getElementById("rubricReading").textContent = tied
+      ? `Con los parámetros actuales hay un empate: ${winners.map(item => labels[item.i]).join(" / ")} (${Math.round(highest * 100)}% cada uno). No hay un único resultado más probable; consulta los criterios de las tarjetas resaltadas.`
+      : `Con los parámetros actuales, ${outcome} más probable es ${labels[winners[0].i]} (${Math.round(highest * 100)}%). ${criterion}: ${example.levels[winners[0].i].detail}`;
+    document.getElementById("rubricNote").textContent = page === "grm"
+      ? "Es una probabilidad de calificación exacta, incluso al ver curvas acumulativas: no es la probabilidad de alcanzar ese nivel o uno superior, ni una calificación observada o garantizada. No asigna automáticamente un nivel a θ."
       : page === "rasch"
-        ? "Se comparan correcto/incorrecto o criterio logrado/no logrado. La respuesta más probable no es un resultado garantizado ni identifica la causa del acierto o del error."
-        : "Es la probabilidad de obtener exactamente ese puntaje, no de obtenerlo o superarlo. El puntaje más probable no es un resultado garantizado ni equivale a la habilidad del estudiante.";
+        ? "Es una predicción del modelo, no una respuesta observada o garantizada. Se comparan dos resultados binarios; no se identifica la causa de un acierto o de un error."
+        : "El porcentaje corresponde a obtener exactamente ese puntaje, no a obtenerlo o superarlo. Es una predicción del modelo, no un puntaje observado ni un nivel de habilidad garantizado.";
     Array.from(document.getElementById("caseRubric").children).forEach((row, i) => {
       const highlighted = winners.some(item => item.i === i);
       row.classList.toggle("is-most-likely", highlighted);
