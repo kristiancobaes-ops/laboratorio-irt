@@ -13,7 +13,9 @@
   };
   const hover = window.matchMedia("(any-hover: hover)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const mobile = window.matchMedia("(max-width: 760px)");
   const band = document.getElementById("modelNavBand");
+  const mobileToggle = document.getElementById("modelNavToggle");
   const row = document.getElementById("modelNavRow");
   const previous = document.getElementById("modelNavPrevious");
   const next = document.getElementById("modelNavNext");
@@ -24,6 +26,7 @@
   let opened = null;
   let entries = [];
   let framePending = false;
+  let mobileExpanded = false;
 
   const panel = document.createElement("section");
   panel.id = "modelSections";
@@ -46,30 +49,34 @@
   panel.appendChild(list);
   header.appendChild(panel);
 
-  // Real page links remain the fallback when JavaScript is unavailable.
+  // Keep navigation and disclosure as separate link/button actions.
   const models = Array.from(nav.querySelectorAll("a")).map(anchor => {
     const url = new URL(anchor.getAttribute("href"), window.location.href);
     const key = url.pathname.split("/").pop().replace(/\.html$/, "");
+    const label = anchor.textContent;
+    const current = anchor.getAttribute("aria-current") === "page";
+    url.hash = "inicio";
+    anchor.setAttribute("href", current ? "#inicio" : url.href);
+    const item = document.createElement("div");
+    item.classList.add("model-nav-item");
+    if (current) item.classList.add("is-current");
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = anchor.textContent;
     button.setAttribute("aria-expanded", "false");
     button.setAttribute("aria-controls", panel.id);
-    button.setAttribute("aria-label", `Mostrar secciones de ${anchor.textContent}`);
-    const current = anchor.getAttribute("aria-current") === "page";
-    if (current) {
-      button.classList.add("active");
-      button.setAttribute("aria-current", "page");
-    }
+    button.setAttribute("aria-label", `Mostrar secciones de ${label}`);
     const indicator = document.createElement("span");
     indicator.classList.add("model-nav-chevron");
     indicator.setAttribute("aria-hidden", "true");
     indicator.textContent = "▾";
     button.appendChild(indicator);
-    anchor.replaceWith(button);
-    return {key, url, button, current, label: anchor.textContent};
+    anchor.replaceWith(item);
+    item.appendChild(anchor);
+    item.appendChild(button);
+    return {key, url, item, anchor, button, current, label};
   });
-  document.getElementById("modelNavHint").textContent = "Selecciona un modelo para ver sus secciones.";
+  const currentModel = models.find(model => model.current);
+  document.getElementById("modelNavHint").textContent = "El nombre abre la presentación; la flecha despliega las secciones.";
 
   function headerOffset() {
     const offset = Math.ceil(header.getBoundingClientRect().height) + 20;
@@ -80,11 +87,51 @@
   function close(restoreFocus = false) {
     if (!opened) return;
     const button = opened.button;
+    opened.item.classList.remove("is-open");
     opened = null;
     panel.hidden = true;
     button.setAttribute("aria-expanded", "false");
     headerOffset();
     if (restoreFocus) button.focus({preventScroll: true});
+  }
+
+  function positionPanel() {
+    if (!opened) return;
+    const headerRect = header.getBoundingClientRect();
+    const itemRect = opened.item.getBoundingClientRect();
+    const panelWidth = panel.getBoundingClientRect().width;
+    const maxLeft = Math.max(12, headerRect.width - panelWidth - 12);
+    panel.style.left = Math.min(maxLeft, Math.max(12, itemRect.left - headerRect.left)) + "px";
+  }
+
+  function revealCurrentModel() {
+    if (!currentModel || band.hidden) return;
+    const itemRect = currentModel.item.getBoundingClientRect();
+    const navRect = nav.getBoundingClientRect();
+    nav.scrollLeft = Math.max(0, Math.min(nav.scrollWidth - nav.clientWidth,
+      nav.scrollLeft + itemRect.left - navRect.left - (nav.clientWidth - itemRect.width) / 2));
+    updateScroll();
+  }
+
+  function setMobileExpanded(expanded, restoreFocus = false) {
+    if (!expanded) close();
+    mobileExpanded = expanded;
+    band.hidden = mobile.matches && !expanded;
+    mobileToggle.hidden = !mobile.matches;
+    mobileToggle.setAttribute("aria-expanded", String(expanded));
+    mobileToggle.setAttribute("aria-label", expanded ? "Ocultar menú de modelos" : "Mostrar menú de modelos");
+    update();
+    if (!band.hidden) revealCurrentModel();
+    if (restoreFocus) mobileToggle.focus({preventScroll: true});
+  }
+
+  function closeForNavigation(target) {
+    close();
+    if (mobile.matches) setMobileExpanded(false);
+    if (target) {
+      if (!target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
+      target.focus({preventScroll: true});
+    }
   }
 
   function updateSections(offset) {
@@ -123,19 +170,21 @@
       if (target && !target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
       anchor.addEventListener("click", event => {
         if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
-        close();
-        if (target) target.focus({preventScroll: true});
+        closeForNavigation(target);
       });
       item.appendChild(anchor);
       list.appendChild(item);
       return {item, anchor, target};
     });
     panel.hidden = false;
+    model.item.classList.add("is-open");
     model.button.setAttribute("aria-expanded", "true");
     updateSections(headerOffset());
+    positionPanel();
   }
 
   function updateScroll() {
+    if (band.hidden) return;
     const overflow = nav.scrollWidth > row.clientWidth + 1;
     band.classList.toggle("has-overflow", overflow);
     previous.hidden = next.hidden = track.hidden = scrollHint.hidden = !overflow;
@@ -152,6 +201,7 @@
     framePending = false;
     updateScroll();
     updateSections(headerOffset());
+    positionPanel();
   }
 
   function scheduleUpdate() {
@@ -161,34 +211,57 @@
   }
 
   models.forEach(model => {
-    model.button.addEventListener("pointerenter", event => {
+    model.item.addEventListener("pointerenter", event => {
       if (event.pointerType === "mouse" && hover.matches && !panel.contains(document.activeElement)) open(model);
     });
+    model.anchor.addEventListener("click", event => {
+      if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
+      closeForNavigation(model.current ? document.getElementById("inicio") : null);
+    });
     model.button.addEventListener("click", () => opened === model ? close() : open(model));
-    model.button.addEventListener("keydown", event => {
+    const openFromKeyboard = event => {
       if (event.key !== "ArrowDown" || event.ctrlKey || event.metaKey || event.altKey) return;
       event.preventDefault();
       open(model);
       const first = entries.find(entry => !entry.item.hidden);
       if (first) first.anchor.focus({preventScroll: true});
-    });
+    };
+    model.anchor.addEventListener("keydown", openFromKeyboard);
+    model.button.addEventListener("keydown", openFromKeyboard);
   });
   header.addEventListener("pointerleave", event => {
     if (event.pointerType === "mouse" && !header.contains(document.activeElement)) close();
   });
   header.addEventListener("focusout", event => {
-    if (!header.contains(event.relatedTarget)) close();
+    if (!header.contains(event.relatedTarget)) {
+      close();
+      if (mobile.matches && mobileExpanded) setMobileExpanded(false);
+    }
   });
   document.addEventListener("pointerdown", event => {
-    if (!header.contains(event.target)) close();
+    if (!header.contains(event.target)) {
+      close();
+      if (mobile.matches && mobileExpanded) setMobileExpanded(false);
+    }
   });
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && opened) {
       event.preventDefault();
       close(panel.contains(document.activeElement));
+    } else if (event.key === "Escape" && mobile.matches && mobileExpanded) {
+      event.preventDefault();
+      setMobileExpanded(false, true);
     }
   });
   closeButton.addEventListener("click", () => close(true));
+  mobileToggle.addEventListener("click", () => setMobileExpanded(!mobileExpanded));
+  mobile.addEventListener("change", () => {
+    const menuFocused = band.contains(document.activeElement) || panel.contains(document.activeElement);
+    const toggleFocused = document.activeElement === mobileToggle;
+    setMobileExpanded(false);
+    if (mobile.matches && menuFocused) mobileToggle.focus({preventScroll: true});
+    else if (!mobile.matches && toggleFocused && currentModel) currentModel.anchor.focus({preventScroll: true});
+  });
   [[previous, -1], [next, 1]].forEach(([button, direction]) => {
     button.addEventListener("click", () => nav.scrollBy({
       left: direction * Math.max(160, nav.clientWidth * .75),
@@ -207,13 +280,5 @@
   if (window.MutationObserver && main) {
     new MutationObserver(scheduleUpdate).observe(main, {attributes: true, attributeFilter: ["hidden"], subtree: true});
   }
-  update();
-  const currentModel = models.find(model => model.current);
-  if (currentModel) {
-    const buttonRect = currentModel.button.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-    nav.scrollLeft = Math.max(0, Math.min(nav.scrollWidth - nav.clientWidth,
-      nav.scrollLeft + buttonRect.left - navRect.left - (nav.clientWidth - buttonRect.width) / 2));
-    updateScroll();
-  }
+  setMobileExpanded(false);
 })();

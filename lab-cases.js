@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "model-menu-15", case: key });
+    const params = new URLSearchParams({ v: "split-nav-16", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }

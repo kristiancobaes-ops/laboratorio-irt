@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=model-menu-15">
-  <link rel="stylesheet" href="author-header.css?v=model-menu-15">
-  <link rel="stylesheet" href="lab-cases.css?v=model-menu-15">
-  <link rel="stylesheet" href="hero-heading.css?v=model-menu-15">
-  <link rel="stylesheet" href="site-footer.css?v=model-menu-15">
-  <script src="site-navigation.js?v=model-menu-15" defer></script>
+  <link rel="stylesheet" href="lab-common.css?v=split-nav-16">
+  <link rel="stylesheet" href="author-header.css?v=split-nav-16">
+  <link rel="stylesheet" href="lab-cases.css?v=split-nav-16">
+  <link rel="stylesheet" href="hero-heading.css?v=split-nav-16">
+  <link rel="stylesheet" href="site-footer.css?v=split-nav-16">
+  <script src="site-navigation.js?v=split-nav-16" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -19,13 +19,14 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=model-menu-15" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: Rasch / 1–3PL</span></a>
+    <a class="brand" href="index.html?v=split-nav-16" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT<span class="brand-page-name">: Rasch / 1–3PL</span></span></a>
+    <button class="mobile-nav-toggle" id="modelNavToggle" type="button" aria-expanded="false" aria-controls="modelNavBand" aria-label="Mostrar menú de modelos" hidden>Menú</button>
     <div class="model-nav-band" id="modelNavBand">
     <div class="model-nav-row" id="modelNavRow">
     <button class="model-nav-scroll" id="modelNavPrevious" type="button" aria-label="Mostrar modelos anteriores" hidden>‹</button>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=model-menu-15">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=model-menu-15">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=model-menu-15">PCM</a><a href="gpcm.html?v=model-menu-15">GPCM</a><a href="grm.html?v=model-menu-15">GRM</a>
+      <a href="index.html?v=split-nav-16#inicio">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=split-nav-16#inicio">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=split-nav-16#inicio">PCM</a><a href="gpcm.html?v=split-nav-16#inicio">GPCM</a><a href="grm.html?v=split-nav-16#inicio">GRM</a>
     </nav>
     <button class="model-nav-scroll" id="modelNavNext" type="button" aria-label="Mostrar modelos siguientes" hidden>›</button>
     </div>
@@ -38,7 +39,6 @@
   <main>
     <section class="wrap hero" id="inicio">
       <div>
-        <p class="eyebrow">Laboratorio IRT · Respuesta dicotómica</p>
         <h1 class="hero-title">Rasch, 1PL, 2PL y 3PL</h1>
         <p class="hero-subtitle">De Rasch al 3PL, parámetro por parámetro.</p>
         <p class="lede">Un estudiante responde un ítem de álgebra. Empieza con θ (habilidad) y b (dificultad); después libera a (discriminación) y, finalmente, incorpora c (azar o adivinación).</p>
@@ -169,7 +169,7 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=model-menu-15">← Portada</a><a class="button primary" href="pcm.html?v=model-menu-15">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=split-nav-16">← Portada</a><a class="button primary" href="pcm.html?v=split-nav-16">Siguiente: PCM →</a></div>
   </main>
   <footer class="site-footer">
     <div class="wrap site-footer-inner">
@@ -179,7 +179,7 @@
   </footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=model-menu-15"></script>
+  <script src="lab-cases.js?v=split-nav-16"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
