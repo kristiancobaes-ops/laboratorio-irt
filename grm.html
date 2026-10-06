@@ -1262,12 +1262,11 @@
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
   </style>
-  <link rel="stylesheet" href="author-header.css?v=score-language-14">
-  <link rel="stylesheet" href="lab-cases.css?v=score-language-14">
-  <link rel="stylesheet" href="hero-heading.css?v=score-language-14">
-  <link rel="stylesheet" href="page-explorer.css?v=score-language-14">
-  <link rel="stylesheet" href="site-footer.css?v=score-language-14">
-  <script src="page-explorer.js?v=score-language-14" defer></script>
+  <link rel="stylesheet" href="author-header.css?v=model-menu-15">
+  <link rel="stylesheet" href="lab-cases.css?v=model-menu-15">
+  <link rel="stylesheet" href="hero-heading.css?v=model-menu-15">
+  <link rel="stylesheet" href="site-footer.css?v=model-menu-15">
+  <script src="site-navigation.js?v=model-menu-15" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -1276,33 +1275,28 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=score-language-14" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=model-menu-15" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">I</span>
       <span>Laboratorio IRT: GRM</span>
     </a>
+    <div class="model-nav-band" id="modelNavBand">
+    <div class="model-nav-row" id="modelNavRow">
+    <button class="model-nav-scroll" id="modelNavPrevious" type="button" aria-label="Mostrar modelos anteriores" hidden>‹</button>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=score-language-14">Inicio</a>
-      <a href="rasch.html?v=score-language-14">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=score-language-14">PCM</a>
-      <a href="gpcm.html?v=score-language-14">GPCM</a>
-      <a class="active" aria-current="page" href="grm.html?v=score-language-14">GRM</a>
+      <a href="index.html?v=model-menu-15">Inicio</a>
+      <a href="rasch.html?v=model-menu-15">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=model-menu-15">PCM</a>
+      <a href="gpcm.html?v=model-menu-15">GPCM</a>
+      <a class="active" aria-current="page" href="grm.html?v=model-menu-15">GRM</a>
     </nav>
+    <button class="model-nav-scroll" id="modelNavNext" type="button" aria-label="Mostrar modelos siguientes" hidden>›</button>
+    </div>
+    <div class="model-nav-track" id="modelNavScrollTrack" aria-hidden="true" hidden><div class="model-nav-thumb" id="modelNavScrollThumb"></div></div>
+    <p class="model-nav-hint"><span id="modelNavHint">Selecciona un modelo para abrir su página.</span> <span id="modelNavScrollHint" hidden>Más modelos: desplaza la franja o usa las flechas.</span></p>
+    </div>
     </div>
     <div class="progress-shell" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
   </header>
-
-  <nav class="page-explorer" id="pageExplorer" aria-label="Secciones de esta página">
-    <p class="page-explorer-title" id="pageExplorerTitle">Explorar esta página</p>
-    <button class="page-explorer-toggle" id="pageExplorerToggle" type="button" aria-expanded="true" aria-controls="pageExplorerLinks" hidden>Explorar esta página <span id="pageExplorerIndicator" aria-hidden="true">−</span></button>
-    <ol id="pageExplorerLinks">
-      <li><a href="#inicio">Presentación</a></li><li><a href="#fundamentos">Parámetros y alcance</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#laboratorio">Laboratorio</a></li><li><a href="#comparacion-personas">Comparar candidatos</a></li><li><a href="#ejemplos">Aplicaciones</a></li><li><a href="#comparar">Comparar dos ítems</a></li><li><a href="#practica">Autoevaluación</a></li><li><a href="#sintesis">Síntesis</a></li>
-    </ol>
-    <div class="page-explorer-tools" id="pageExplorerTools" hidden>
-      <button type="button" id="pageExplorerMove" aria-describedby="pageExplorerMoveHelp">Mover</button><button type="button" id="pageExplorerReset">Restablecer</button>
-      <span class="page-explorer-help" id="pageExplorerMoveHelp">Arrastra Mover o usa las flechas del teclado.</span>
-      <span class="page-explorer-status" id="pageExplorerStatus" role="status"></span>
-    </div>
-  </nav>
 
   <main>
     <section class="wrap hero" id="inicio">
@@ -1405,7 +1399,7 @@
           <p>Indica qué tan bien la tarea separa candidatos con niveles cercanos de θ (competencia), especialmente alrededor de los umbrales.</p>
           <div class="scale-demo" aria-hidden="true"><span>╱</span><span>⟋</span><span>│</span></div>
         </article>
-        <article class="concept-card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GRM</h3><p>Este parámetro no forma parte del GRM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=score-language-14&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
+        <article class="concept-card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GRM</h3><p>Este parámetro no forma parte del GRM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=model-menu-15&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
       </div>
 
       <div class="big-idea">
@@ -1687,7 +1681,7 @@
     </div>
   </footer>
 
-  <script src="lab-cases.js?v=score-language-14"></script>
+  <script src="lab-cases.js?v=model-menu-15"></script>
   <script>
     (() => {
       "use strict";

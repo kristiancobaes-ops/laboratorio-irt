@@ -5,18 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial (PCM).">
   <title>PCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=score-language-14">
-  <link rel="stylesheet" href="author-header.css?v=score-language-14">
-  <link rel="stylesheet" href="lab-cases.css?v=score-language-14">
+  <link rel="stylesheet" href="lab-common.css?v=model-menu-15">
+  <link rel="stylesheet" href="author-header.css?v=model-menu-15">
+  <link rel="stylesheet" href="lab-cases.css?v=model-menu-15">
   <style>
     .rubric { display:grid; gap:8px; margin-top:20px; width:min(420px,90%); }
     .rubric div { position:relative; z-index:2; padding:10px 13px; border:1px solid rgba(255,255,255,.16); border-radius:11px; background:rgba(255,255,255,.07); font-family:system-ui; font-size:.78rem; text-align:left; }
     .rubric b { color:var(--gold); }
   </style>
-  <link rel="stylesheet" href="hero-heading.css?v=score-language-14">
-  <link rel="stylesheet" href="page-explorer.css?v=score-language-14">
-  <link rel="stylesheet" href="site-footer.css?v=score-language-14">
-  <script src="page-explorer.js?v=score-language-14" defer></script>
+  <link rel="stylesheet" href="hero-heading.css?v=model-menu-15">
+  <link rel="stylesheet" href="site-footer.css?v=model-menu-15">
+  <script src="site-navigation.js?v=model-menu-15" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -25,26 +24,21 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=score-language-14" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: PCM</span></a>
+    <a class="brand" href="index.html?v=model-menu-15" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: PCM</span></a>
+    <div class="model-nav-band" id="modelNavBand">
+    <div class="model-nav-row" id="modelNavRow">
+    <button class="model-nav-scroll" id="modelNavPrevious" type="button" aria-label="Mostrar modelos anteriores" hidden>‹</button>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=score-language-14">Inicio</a><a href="rasch.html?v=score-language-14">Rasch / 1–3PL</a>
-      <a class="active" aria-current="page" href="pcm.html?v=score-language-14">PCM</a><a href="gpcm.html?v=score-language-14">GPCM</a><a href="grm.html?v=score-language-14">GRM</a>
+      <a href="index.html?v=model-menu-15">Inicio</a><a href="rasch.html?v=model-menu-15">Rasch / 1–3PL</a>
+      <a class="active" aria-current="page" href="pcm.html?v=model-menu-15">PCM</a><a href="gpcm.html?v=model-menu-15">GPCM</a><a href="grm.html?v=model-menu-15">GRM</a>
     </nav>
+    <button class="model-nav-scroll" id="modelNavNext" type="button" aria-label="Mostrar modelos siguientes" hidden>›</button>
+    </div>
+    <div class="model-nav-track" id="modelNavScrollTrack" aria-hidden="true" hidden><div class="model-nav-thumb" id="modelNavScrollThumb"></div></div>
+    <p class="model-nav-hint"><span id="modelNavHint">Selecciona un modelo para abrir su página.</span> <span id="modelNavScrollHint" hidden>Más modelos: desplaza la franja o usa las flechas.</span></p>
+    </div>
     </div>
   </header>
-
-  <nav class="page-explorer" id="pageExplorer" aria-label="Secciones de esta página">
-    <p class="page-explorer-title" id="pageExplorerTitle">Explorar esta página</p>
-    <button class="page-explorer-toggle" id="pageExplorerToggle" type="button" aria-expanded="true" aria-controls="pageExplorerLinks" hidden>Explorar esta página <span id="pageExplorerIndicator" aria-hidden="true">−</span></button>
-    <ol id="pageExplorerLinks">
-      <li><a href="#inicio">Presentación</a></li><li><a href="#rubrica">Parámetros y alcance</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#laboratorio">Laboratorio</a></li><li><a href="#comparacion-personas">Comparar estudiantes</a></li>
-    </ol>
-    <div class="page-explorer-tools" id="pageExplorerTools" hidden>
-      <button type="button" id="pageExplorerMove" aria-describedby="pageExplorerMoveHelp">Mover</button><button type="button" id="pageExplorerReset">Restablecer</button>
-      <span class="page-explorer-help" id="pageExplorerMoveHelp">Arrastra Mover o usa las flechas del teclado.</span>
-      <span class="page-explorer-status" id="pageExplorerStatus" role="status"></span>
-    </div>
-  </nav>
 
   <main>
     <section class="wrap hero" id="inicio">
@@ -76,8 +70,8 @@
       <div class="cards">
         <article class="card"><span class="card-tag">Persona</span><h3>θ (habilidad algebraica)</h3><p>Representa el dominio del estudiante en procedimientos algebraicos y justificación matemática.</p></article>
         <article class="card"><span class="card-tag">Pasos</span><h3>δ₁, δ₂ y δ₃ (umbrales de paso)</h3><p>Cada umbral indica la dificultad de avanzar un punto adicional en la rúbrica.</p></article>
-        <article class="card parameter-restriction"><span class="card-tag">No se estima por ítem</span><h3>a (discriminación) = 1</h3><p>El PCM no estima una discriminación distinta para cada ítem; en esta escala se fija en 1. <a href="gpcm.html?v=score-language-14#laboratorio">Explorar a en el laboratorio GPCM</a>.</p></article>
-        <article class="card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en PCM</h3><p>Este parámetro no forma parte del PCM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=score-language-14&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
+        <article class="card parameter-restriction"><span class="card-tag">No se estima por ítem</span><h3>a (discriminación) = 1</h3><p>El PCM no estima una discriminación distinta para cada ítem; en esta escala se fija en 1. <a href="gpcm.html?v=model-menu-15#laboratorio">Explorar a en el laboratorio GPCM</a>.</p></article>
+        <article class="card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en PCM</h3><p>Este parámetro no forma parte del PCM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=model-menu-15&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
       </div>
     </section>
 
@@ -99,7 +93,7 @@
             <h3 id="taskTitle">Ítem: resolver 2x + 6 = 18 y justificar</h3>
             <div class="model-navigation">
               <span class="model-badge">Modelo activo: PCM</span>
-              <a id="otherCreditLab" class="button model-lab-link" href="gpcm.html?v=score-language-14#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio GPCM</a>
+              <a id="otherCreditLab" class="button model-lab-link" href="gpcm.html?v=model-menu-15#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio GPCM</a>
             </div>
           </div>
           <p class="model-note" id="creditModelNote" aria-live="polite">PCM activo: no se estima una a (discriminación) distinta para cada ítem; en esta escala está fijada en 1. Para explorar ese parámetro, abre el laboratorio GPCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página.</p>
@@ -189,7 +183,7 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="rasch.html?v=score-language-14">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=score-language-14">Siguiente: GPCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="rasch.html?v=model-menu-15">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=model-menu-15">Siguiente: GPCM →</a></div>
   </main>
   <footer class="site-footer">
     <div class="wrap site-footer-inner">
@@ -199,7 +193,7 @@
   </footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=score-language-14"></script>
+  <script src="lab-cases.js?v=model-menu-15"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
