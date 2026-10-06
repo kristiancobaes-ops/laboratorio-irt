@@ -1,0 +1,74 @@
+html { scroll-padding-top: 150px; }
+
+.site-header, .topbar {
+  flex-wrap: wrap;
+  gap: 14px 28px;
+  min-height: 90px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+.author-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 0 1 355px;
+  min-width: 0;
+}
+.author-avatar {
+  display: block;
+  flex: 0 0 56px;
+  width: 56px;
+  height: 56px;
+  overflow: hidden;
+  border: 2px solid var(--card);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--line);
+}
+.author-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.55);
+  transform-origin: 50% 26%;
+}
+.site-author {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  font-size: .8rem;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+.author-role { color: var(--muted); font-size: .68rem; font-weight: 500; }
+.site-author strong { color: var(--ink); font-weight: 750; }
+.header-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+  flex: 1 1 0;
+  min-width: 0;
+  padding-left: 24px;
+  border-left: 1px solid var(--line);
+}
+.header-links .brand { flex-shrink: 0; white-space: nowrap; }
+.header-links nav { flex-wrap: nowrap; flex-shrink: 0; white-space: nowrap; }
+
+@media (max-width: 1120px) {
+  .header-links {
+    flex-basis: 100%;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    padding: 2px 0;
+    border-left: 0;
+    scrollbar-width: thin;
+  }
+}
+@media (max-width: 760px) {
+  .site-header, .topbar { align-items: center; gap: 12px; padding-top: 12px; padding-bottom: 12px; }
+  .author-profile { flex-basis: 100%; }
+  .header-links { justify-content: flex-start; }
+  .header-links .site-nav, .header-links .topnav { display: flex; }
+  .site-author { font-size: .78rem; }
+}
