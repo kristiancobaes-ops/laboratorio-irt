@@ -5,14 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial Generalizado (GPCM).">
   <title>GPCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=responses-10">
+  <link rel="stylesheet" href="lab-common.css?v=explore-11">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=responses-10">
+  <link rel="stylesheet" href="lab-cases.css?v=explore-11">
   <style>
     .paragraph-demo { position:relative; z-index:2; width:min(430px,88%); padding:23px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.08); font-family:system-ui; font-size:.9rem; line-height:1.75; text-align:left; }
     .paragraph-demo mark { padding:1px 4px; border-radius:4px; color:var(--navy); background:var(--gold); }
   </style>
-  <link rel="stylesheet" href="hero-heading.css?v=responses-10">
+  <link rel="stylesheet" href="hero-heading.css?v=explore-11">
+  <link rel="stylesheet" href="page-explorer.css?v=explore-11">
+  <script src="page-explorer.js?v=explore-11" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -21,16 +23,24 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=responses-10"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=explore-11"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=responses-10">Inicio</a><a href="rasch.html?v=responses-10">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=responses-10">PCM</a><a class="active" href="gpcm.html?v=responses-10">GPCM</a><a href="grm.html?v=responses-10">GRM</a>
+      <a href="index.html?v=explore-11">Inicio</a><a href="rasch.html?v=explore-11">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=explore-11">PCM</a><a class="active" href="gpcm.html?v=explore-11">GPCM</a><a href="grm.html?v=explore-11">GRM</a>
     </nav>
     </div>
   </header>
 
+  <nav class="page-explorer" aria-label="Secciones de esta página">
+    <p class="page-explorer-title" id="pageExplorerTitle">Explorar esta página</p>
+    <button class="page-explorer-toggle" id="pageExplorerToggle" type="button" aria-expanded="true" aria-controls="pageExplorerLinks" hidden>Explorar esta página <span id="pageExplorerIndicator" aria-hidden="true">−</span></button>
+    <ol id="pageExplorerLinks">
+      <li><a href="#inicio">Presentación</a></li><li><a href="#modelo">Parámetros y alcance</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#laboratorio">Laboratorio</a></li><li><a href="#comparacion-personas">Comparar estudiantes</a></li>
+    </ol>
+  </nav>
+
   <main>
-    <section class="wrap hero">
+    <section class="wrap hero" id="inicio">
       <div>
         <p class="eyebrow">Laboratorio IRT · Crédito parcial</p>
         <h1 class="hero-title">Modelo de Crédito Parcial Generalizado (GPCM)</h1>
@@ -52,10 +62,11 @@
         <article class="card"><span class="card-tag">Constructo</span><h3>θ (habilidad de coherencia)</h3><p>Capacidad para mantener una idea central, conectar proposiciones y organizar una progresión lógica.</p></article>
         <article class="card"><span class="card-tag">Rúbrica</span><h3>δ₁ … δ₄ (umbrales de paso)</h3><p>Dificultad de avanzar desde fragmentos aislados hasta un párrafo cohesivo, desarrollado y fluido.</p></article>
         <article class="card"><span class="card-tag">Generalización</span><h3>a (discriminación)</h3><p>GPCM permite estimar una discriminación propia de cada ítem. Indica cuánto separa la tarea a estudiantes con niveles cercanos del rasgo alrededor de los umbrales. PCM, en cambio, la mantiene fija.</p></article>
+        <article class="card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GPCM</h3><p>Este parámetro no forma parte del GPCM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=explore-11&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
       </div>
     </section>
 
-    <section class="formula-strip">
+    <section class="formula-strip" id="formula">
       <div class="wrap formula-grid">
         <div><p class="kicker">Probabilidad de k puntos</p><h2>El PCM aparece cuando a (discriminación) = 1.</h2><p>Si aumentas a (discriminación), la tarea separa más las probabilidades de autores cercanos a los umbrales. Si la reduces, las categorías se solapan más.</p></div>
         <div class="formula-box">P(X=k|θ) ∝ exp[a Σ<sub>m=1</sub><sup>k</sup>(θ−δ<sub>m</sub>)]</div>
@@ -73,7 +84,7 @@
             <h3 id="taskTitle">Tarea: redactar un párrafo explicativo coherente</h3>
             <div class="model-navigation">
               <span class="model-badge">Modelo activo: GPCM</span>
-              <a id="otherCreditLab" class="button model-lab-link" href="pcm.html?v=responses-10#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio PCM</a>
+              <a id="otherCreditLab" class="button model-lab-link" href="pcm.html?v=explore-11#laboratorio" aria-describedby="creditModelNote">Ir al laboratorio PCM</a>
             </div>
           </div>
           <p class="model-note" id="creditModelNote" aria-live="polite">GPCM activo: permite estimar una a (discriminación) propia de cada ítem. Aquí exploras valores hipotéticos, no estimaciones a partir de datos. Para revisar la discriminación fija, abre el laboratorio PCM. Al navegar se cargan la rúbrica y los valores iniciales de la otra página.</p>
@@ -85,7 +96,6 @@
               <p class="response-summary-value" id="responseSummaryValue"></p>
               <p class="response-summary-note" id="responseSummaryNote"></p>
             </section>
-            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <div class="lab-grid">
@@ -148,7 +158,7 @@
                 </aside>
               </div>
               <p class="probability-note" id="probabilityNote" aria-live="polite"></p>
-              <section class="comparison-lab">
+              <section class="comparison-lab" id="comparacion-personas">
                 <div class="comparison-head">
                   <div>
                     <h3>Comparación visible de dos estudiantes</h3>
@@ -174,12 +184,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="pcm.html?v=responses-10">← PCM</a><a class="button primary" href="grm.html?v=responses-10">Siguiente: GRM →</a></div>
+    <div class="wrap back-next"><a class="button" href="pcm.html?v=explore-11">← PCM</a><a class="button primary" href="grm.html?v=explore-11">Siguiente: GRM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial Generalizado</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=responses-10"></script>
+  <script src="lab-cases.js?v=explore-11"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);

@@ -17,6 +17,8 @@ Los enlaces a casos usan `case`, y la pagina logistica admite `model`: por ejemp
 
 Cada laboratorio muestra al inicio la respuesta o calificacion exacta mas probable. Los criterios de puntuacion aparecen encima de la grafica principal y resaltan esa respuesta; si hay empate se muestran todas las opciones igualmente probables. En GRM este resumen se calcula con categorias exactas, incluso al ver curvas acumulativas. Rasch/1PL, 2PL y 3PL muestran dos resultados binarios, no niveles de una rubrica.
 
+Las restricciones de parametros se presentan en tarjetas rojas junto a los fundamentos de cada modelo; PCM, GPCM y GRM no repiten la nota de c debajo del caso. La pagina logistica conserva las aclaraciones necesarias sobre la eleccion del modelo segun la tarea. Todas las paginas incluyen un explorador flotante de secciones, con indicador de ubicacion y enlaces internos. En pantallas amplias ocupa el margen lateral; en las demas se inicia plegado. Conserva el desplazamiento normal, respeta movimiento reducido y ajusta el espacio de los destinos a la altura del encabezado. Las comparaciones ocultas no aparecen en el explorador.
+
 ## Como verlo
 
 Abre `index.html` en el navegador o publica el repositorio con GitHub Pages desde la rama `main`.

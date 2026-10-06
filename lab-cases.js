@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "responses-10", case: key });
+    const params = new URLSearchParams({ v: "explore-11", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -152,22 +152,17 @@ window.IRTExamples = (() => {
   }
 
   function renderMethod(page, example, model) {
-    const modelName = model === "rasch" ? "Rasch / 1PL" : model.toUpperCase();
-    let note;
-    if (page === "rasch") {
-      note = model === "3pl"
+    if (page !== "rasch") return;
+    let note = model === "3pl"
         ? "El 3PL permite estimar c (pseudoazar), la asíntota inferior de la curva de acierto. No es la probabilidad de que una persona esté adivinando ni una medida de su confianza."
-        : `En ${modelName} no se estima c (pseudoazar): en la ecuación general se mantiene fijado en 0. Esto no significa que sea imposible acertar por suerte; el modelo no identifica la causa de cada acierto.`;
-      note += ` ${example.method}`;
-      if (example.guessing) {
-        note += model === "3pl"
-          ? " Cuatro opciones no implican automáticamente c (pseudoazar) = 0.25."
-          : " Como comparación, el 3PL sí incorpora c (pseudoazar); puedes seleccionarlo para explorar este mismo caso.";
-      } else {
-        note += " El botón 3PL está bloqueado por la definición didáctica de este caso, no por una prohibición universal para las respuestas abiertas. Otras formulaciones para modelar explícitamente la respuesta al azar quedan fuera del alcance de este sitio.";
-      }
+        : "";
+    note += `${note ? " " : ""}${example.method}`;
+    if (example.guessing) {
+      note += model === "3pl"
+        ? " Cuatro opciones no implican automáticamente c (pseudoazar) = 0.25."
+        : " Como comparación, el 3PL sí incorpora c (pseudoazar); puedes seleccionarlo para explorar este mismo caso.";
     } else {
-      note = `En ${modelName} estándar no se estima c (pseudoazar), porque no forma parte de su formulación. ${example.method} Esto no significa que sea imposible obtener una puntuación por suerte; el modelo no identifica si una respuesta concreta se debe al dominio, a la suerte o a otros factores. Para modelar explícitamente la respuesta al azar se requieren otros modelos o extensiones, fuera del alcance de este sitio.`;
+      note += " El botón 3PL está bloqueado por la definición didáctica de este caso, no por una prohibición universal para las respuestas abiertas. Otras formulaciones para modelar explícitamente la respuesta al azar quedan fuera del alcance de este sitio.";
     }
     document.getElementById("caseMethod").textContent = note;
     const anchor = document.getElementById("caseLink");

@@ -24,6 +24,12 @@
 .case-links a { color: #17233b; text-decoration: underline; font-weight: 800; }
 .case-links a[hidden] { display: none; }
 .case-caution { margin: 12px 0 0; color: #66738a; font-size: .72rem; line-height: 1.6; }
+.cards .parameter-exclusion, .concept-grid .parameter-exclusion { grid-column: 1 / -1; min-height: 0; }
+.cards .parameter-exclusion, .cards .parameter-restriction, .concept-grid .parameter-exclusion { border-color: #dfb0b0; border-left: 4px solid #ba3a3a; background: #fff0f0; }
+.parameter-exclusion .card-tag, .parameter-restriction .card-tag { color: #9c2929; font-size: .73rem; font-weight: 900; text-transform: uppercase; }
+.parameter-exclusion h3, .parameter-restriction h3 { color: #9c2929; }
+.parameter-exclusion a, .parameter-restriction a { color: #9c2929; font-size: .85rem; font-weight: 800; text-decoration: underline; }
+.parameter-exclusion > a { display: inline-block; margin-top: 12px; }
 .model-tab:disabled { opacity: .45; cursor: not-allowed; }
 @media (max-width: 720px) {
   .case-panel { padding: 17px; }

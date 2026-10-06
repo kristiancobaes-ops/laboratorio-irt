@@ -5,10 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=responses-10">
+  <link rel="stylesheet" href="lab-common.css?v=explore-11">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=responses-10">
-  <link rel="stylesheet" href="hero-heading.css?v=responses-10">
+  <link rel="stylesheet" href="lab-cases.css?v=explore-11">
+  <link rel="stylesheet" href="hero-heading.css?v=explore-11">
+  <link rel="stylesheet" href="page-explorer.css?v=explore-11">
+  <script src="page-explorer.js?v=explore-11" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -17,16 +19,24 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=responses-10"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=explore-11"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=responses-10">Inicio</a><a class="active" href="rasch.html?v=responses-10">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=responses-10">PCM</a><a href="gpcm.html?v=responses-10">GPCM</a><a href="grm.html?v=responses-10">GRM</a>
+      <a href="index.html?v=explore-11">Inicio</a><a class="active" href="rasch.html?v=explore-11">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=explore-11">PCM</a><a href="gpcm.html?v=explore-11">GPCM</a><a href="grm.html?v=explore-11">GRM</a>
     </nav>
     </div>
   </header>
 
+  <nav class="page-explorer" aria-label="Secciones de esta página">
+    <p class="page-explorer-title" id="pageExplorerTitle">Explorar esta página</p>
+    <button class="page-explorer-toggle" id="pageExplorerToggle" type="button" aria-expanded="true" aria-controls="pageExplorerLinks" hidden>Explorar esta página <span id="pageExplorerIndicator" aria-hidden="true">−</span></button>
+    <ol id="pageExplorerLinks">
+      <li><a href="#inicio">Presentación</a></li><li><a href="#modelo">Modelos y alcance</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#laboratorio">Laboratorio</a></li><li hidden><a href="#personComparison">Comparar estudiantes (2PL/3PL)</a></li>
+    </ol>
+  </nav>
+
   <main>
-    <section class="wrap hero">
+    <section class="wrap hero" id="inicio">
       <div>
         <p class="eyebrow">Laboratorio IRT · Respuesta dicotómica</p>
         <h1 class="hero-title">Rasch, 1PL, 2PL y 3PL</h1>
@@ -48,10 +58,11 @@
         <article class="card"><span class="card-tag">Rasch / 1PL</span><h3>Solo cambia b (dificultad)</h3><p>La dificultad desplaza la curva. a (discriminación) permanece fija en 1 y la probabilidad mínima es 0.</p></article>
         <article class="card"><span class="card-tag">2PL</span><h3>Se libera a (discriminación)</h3><p>Un valor alto separa mejor a estudiantes con θ (habilidad) cercana a b (dificultad); un valor bajo produce probabilidades más parecidas.</p></article>
         <article class="card"><span class="card-tag">3PL</span><h3>Se añade c (azar)</h3><p>Incluso con θ (habilidad) muy baja puede existir una probabilidad basal de acertar por suerte o adivinación, por ejemplo en opción múltiple.</p></article>
+        <article class="card parameter-exclusion"><span class="card-tag">Restricciones de cada versión</span><h3>Parámetros que no se estiman libremente</h3><p>Rasch/1PL: a (discriminación) fija en 1 y c (pseudoazar) fijo en 0. En 2PL se estima a, pero c sigue fijo en 0. Solo 3PL incorpora c como parámetro estimable. Fijar c en 0 no significa que acertar por suerte sea imposible.</p></article>
       </div>
     </section>
 
-    <section class="formula-strip">
+    <section class="formula-strip" id="formula">
       <div class="wrap formula-grid">
         <div><p class="kicker">Ecuación general</p><h2>P(acierto | θ)</h2><p>θ (habilidad matemática) representa el nivel de la persona. Rasch fija a (discriminación) = 1 y c (azar o adivinación) = 0. El 2PL conserva c (azar o adivinación) = 0. El 3PL permite estimar b (dificultad), a (discriminación) y c (azar o adivinación).</p></div>
         <div class="formula-box">P(X=1|θ) = c + (1−c) / [1 + e<sup>−a(θ−b)</sup>]</div>
@@ -81,7 +92,7 @@
               <p class="response-summary-value" id="responseSummaryValue"></p>
               <p class="response-summary-note" id="responseSummaryNote"></p>
             </section>
-            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <div class="case-method" aria-live="polite"><h4>Elección del modelo para este caso</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <div class="lab-grid">
@@ -162,12 +173,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=responses-10">← Portada</a><a class="button primary" href="pcm.html?v=responses-10">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=explore-11">← Portada</a><a class="button primary" href="pcm.html?v=explore-11">Siguiente: PCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=responses-10"></script>
+  <script src="lab-cases.js?v=explore-11"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);

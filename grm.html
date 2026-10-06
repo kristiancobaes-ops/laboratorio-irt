@@ -1263,8 +1263,10 @@
     }
   </style>
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=responses-10">
-  <link rel="stylesheet" href="hero-heading.css?v=responses-10">
+  <link rel="stylesheet" href="lab-cases.css?v=explore-11">
+  <link rel="stylesheet" href="hero-heading.css?v=explore-11">
+  <link rel="stylesheet" href="page-explorer.css?v=explore-11">
+  <script src="page-explorer.js?v=explore-11" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -1273,20 +1275,28 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=responses-10" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=explore-11" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=responses-10">Inicio</a>
-      <a href="rasch.html?v=responses-10">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=responses-10">PCM</a>
-      <a href="gpcm.html?v=responses-10">GPCM</a>
+      <a href="index.html?v=explore-11">Inicio</a>
+      <a href="rasch.html?v=explore-11">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=explore-11">PCM</a>
+      <a href="gpcm.html?v=explore-11">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
     <div class="progress-shell" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
   </header>
+
+  <nav class="page-explorer" aria-label="Secciones de esta página">
+    <p class="page-explorer-title" id="pageExplorerTitle">Explorar esta página</p>
+    <button class="page-explorer-toggle" id="pageExplorerToggle" type="button" aria-expanded="true" aria-controls="pageExplorerLinks" hidden>Explorar esta página <span id="pageExplorerIndicator" aria-hidden="true">−</span></button>
+    <ol id="pageExplorerLinks">
+      <li><a href="#inicio">Presentación</a></li><li><a href="#fundamentos">Parámetros y alcance</a></li><li><a href="#formula">Fórmula</a></li><li><a href="#laboratorio">Laboratorio</a></li><li><a href="#comparacion-personas">Comparar candidatos</a></li><li><a href="#ejemplos">Aplicaciones</a></li><li><a href="#comparar">Comparar dos ítems</a></li><li><a href="#practica">Autoevaluación</a></li><li><a href="#sintesis">Síntesis</a></li>
+    </ol>
+  </nav>
 
   <main>
     <section class="wrap hero" id="inicio">
@@ -1389,6 +1399,7 @@
           <p>Indica qué tan bien la tarea separa candidatos con niveles cercanos de θ (competencia), especialmente alrededor de los umbrales.</p>
           <div class="scale-demo" aria-hidden="true"><span>╱</span><span>⟋</span><span>│</span></div>
         </article>
+        <article class="concept-card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GRM</h3><p>Este parámetro no forma parte del GRM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=explore-11&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
       </div>
 
       <div class="big-idea">
@@ -1460,7 +1471,6 @@
               <p class="response-summary-value" id="responseSummaryValue"></p>
               <p class="response-summary-note" id="responseSummaryNote"></p>
             </section>
-            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <p class="preset-note" id="presetNote" aria-live="polite">Estos botones exploran escenarios del mismo GRM; no cambian de modelo. Discriminación alta o baja modifica solo a (discriminación); exigir más o menos desplaza δ (umbrales). El candidato conserva θ (competencia oral). Ejemplo inicial restablece los controles.</p>
@@ -1526,7 +1536,7 @@
                   </div>
                   <aside class="legend" id="chartLegend" aria-label="Niveles de desempeño y probabilidades"></aside>
                 </div>
-                <section class="person-comparison">
+                <section class="person-comparison" id="comparacion-personas">
                   <div class="person-comparison-head">
                     <div>
                       <h3>Comparación visible de dos candidatos</h3>
@@ -1651,7 +1661,7 @@
       </div>
     </section>
 
-    <section class="recap wrap">
+    <section class="recap wrap" id="sintesis">
       <div class="recap-card">
         <div>
           <p class="kicker">Mapa de bolsillo</p>
@@ -1670,7 +1680,7 @@
 
   <footer>Clase interactiva autocontenida · Modelo de Respuesta Graduada de Samejima</footer>
 
-  <script src="lab-cases.js?v=responses-10"></script>
+  <script src="lab-cases.js?v=explore-11"></script>
   <script>
     (() => {
       "use strict";
