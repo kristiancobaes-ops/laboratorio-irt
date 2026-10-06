@@ -12,50 +12,23 @@
     grm: [["inicio", "Presentación"], ["fundamentos", "Parámetros y alcance"], ["formula", "Fórmula"], ["laboratorio", "Laboratorio"], ["comparacion-personas", "Comparar candidatos"], ["ejemplos", "Aplicaciones"], ["comparar", "Comparar dos ítems"], ["practica", "Autoevaluación"], ["sintesis", "Síntesis"]]
   };
   const hover = window.matchMedia("(any-hover: hover)");
-  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const mobile = window.matchMedia("(max-width: 760px)");
   const band = document.getElementById("modelNavBand");
   const mobileToggle = document.getElementById("modelNavToggle");
-  const row = document.getElementById("modelNavRow");
-  const previous = document.getElementById("modelNavPrevious");
-  const next = document.getElementById("modelNavNext");
-  const track = document.getElementById("modelNavScrollTrack");
-  const thumb = document.getElementById("modelNavScrollThumb");
-  const scrollHint = document.getElementById("modelNavScrollHint");
   const main = document.querySelector("main");
+  band.classList.add("is-enhanced");
   let opened = null;
-  let entries = [];
   let framePending = false;
   let mobileExpanded = false;
 
-  const panel = document.createElement("section");
-  panel.id = "modelSections";
-  panel.classList.add("model-sections");
-  panel.setAttribute("aria-labelledby", "modelSectionsTitle");
-  panel.hidden = true;
-  const panelHead = document.createElement("div");
-  panelHead.classList.add("model-sections-head");
-  const title = document.createElement("h2");
-  title.id = "modelSectionsTitle";
-  const closeButton = document.createElement("button");
-  closeButton.type = "button";
-  closeButton.classList.add("model-sections-close");
-  closeButton.textContent = "Cerrar";
-  closeButton.setAttribute("aria-label", "Cerrar secciones del modelo");
-  const list = document.createElement("ol");
-  panelHead.appendChild(title);
-  panelHead.appendChild(closeButton);
-  panel.appendChild(panelHead);
-  panel.appendChild(list);
-  header.appendChild(panel);
-
-  // Keep navigation and disclosure as separate link/button actions.
+  // Each model owns its dropdown, which becomes an inline accordion on mobile.
   const models = Array.from(nav.querySelectorAll("a")).map(anchor => {
     const url = new URL(anchor.getAttribute("href"), window.location.href);
     const key = url.pathname.split("/").pop().replace(/\.html$/, "");
     const label = anchor.textContent;
     const current = anchor.getAttribute("aria-current") === "page";
     url.hash = "inicio";
+    anchor.id = `modelLink-${key}`;
     anchor.setAttribute("href", current ? "#inicio" : url.href);
     const item = document.createElement("div");
     item.classList.add("model-nav-item");
@@ -63,54 +36,77 @@
     const button = document.createElement("button");
     button.type = "button";
     button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-controls", panel.id);
+    button.setAttribute("aria-controls", `modelSections-${key}`);
     button.setAttribute("aria-label", `Mostrar secciones de ${label}`);
     const indicator = document.createElement("span");
     indicator.classList.add("model-nav-chevron");
     indicator.setAttribute("aria-hidden", "true");
     indicator.textContent = "▾";
     button.appendChild(indicator);
+    const panel = document.createElement("section");
+    panel.id = `modelSections-${key}`;
+    panel.classList.add("model-sections");
+    panel.setAttribute("aria-labelledby", anchor.id);
+    panel.hidden = true;
+    const list = document.createElement("ol");
+    panel.appendChild(list);
     anchor.replaceWith(item);
     item.appendChild(anchor);
     item.appendChild(button);
-    return {key, url, item, anchor, button, current, label};
+    item.appendChild(panel);
+    const entries = sections[key].map(([id, sectionLabel]) => {
+      const entry = document.createElement("li");
+      const link = document.createElement("a");
+      const target = current ? document.getElementById(id) : null;
+      const destination = new URL(url.href);
+      destination.hash = id;
+      // The comparison is hidden in Rasch; remote links open its 2PL variant.
+      if (key === "rasch" && id === "personComparison") destination.searchParams.set("model", "2pl");
+      link.setAttribute("href", current ? `#${id}` : destination.href);
+      link.textContent = sectionLabel;
+      link.addEventListener("click", event => {
+        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
+        closeForNavigation(target);
+      });
+      entry.appendChild(link);
+      list.appendChild(entry);
+      return {item: entry, anchor: link, target};
+    });
+    return {key, item, anchor, button, panel, entries, current, label};
   });
   const currentModel = models.find(model => model.current);
-  document.getElementById("modelNavHint").textContent = "El nombre abre la presentación; la flecha despliega las secciones.";
 
   function headerOffset() {
-    const offset = Math.ceil(header.getBoundingClientRect().height) + 20;
-    document.documentElement.style.setProperty("--page-header-offset", offset + "px");
-    return offset;
+    const height = Math.ceil(header.getBoundingClientRect().height);
+    document.documentElement.style.setProperty("--page-header-height", height + "px");
+    document.documentElement.style.setProperty("--page-header-offset", (height + 20) + "px");
+    return height + 20;
   }
 
   function close(restoreFocus = false) {
     if (!opened) return;
-    const button = opened.button;
-    opened.item.classList.remove("is-open");
+    const model = opened;
     opened = null;
-    panel.hidden = true;
-    button.setAttribute("aria-expanded", "false");
-    headerOffset();
-    if (restoreFocus) button.focus({preventScroll: true});
+    model.item.classList.remove("is-open");
+    model.panel.hidden = true;
+    model.button.setAttribute("aria-expanded", "false");
+    model.button.setAttribute("aria-label", `Mostrar secciones de ${model.label}`);
+    if (restoreFocus) model.button.focus({preventScroll: true});
   }
 
   function positionPanel() {
     if (!opened) return;
-    const headerRect = header.getBoundingClientRect();
+    if (mobile.matches) {
+      opened.panel.style.left = "";
+      opened.panel.style.maxHeight = "";
+      return;
+    }
     const itemRect = opened.item.getBoundingClientRect();
-    const panelWidth = panel.getBoundingClientRect().width;
-    const maxLeft = Math.max(12, headerRect.width - panelWidth - 12);
-    panel.style.left = Math.min(maxLeft, Math.max(12, itemRect.left - headerRect.left)) + "px";
-  }
-
-  function revealCurrentModel() {
-    if (!currentModel || band.hidden) return;
-    const itemRect = currentModel.item.getBoundingClientRect();
-    const navRect = nav.getBoundingClientRect();
-    nav.scrollLeft = Math.max(0, Math.min(nav.scrollWidth - nav.clientWidth,
-      nav.scrollLeft + itemRect.left - navRect.left - (nav.clientWidth - itemRect.width) / 2));
-    updateScroll();
+    const panelWidth = opened.panel.getBoundingClientRect().width;
+    const viewport = document.documentElement;
+    const left = Math.min(0, viewport.clientWidth - 12 - itemRect.left - panelWidth);
+    opened.panel.style.left = Math.max(12 - itemRect.left, left) + "px";
+    opened.panel.style.maxHeight = Math.max(44, viewport.clientHeight - itemRect.bottom - 12) + "px";
   }
 
   function setMobileExpanded(expanded, restoreFocus = false) {
@@ -118,10 +114,10 @@
     mobileExpanded = expanded;
     band.hidden = mobile.matches && !expanded;
     mobileToggle.hidden = !mobile.matches;
+    mobileToggle.textContent = expanded ? "Cerrar" : "Menú";
     mobileToggle.setAttribute("aria-expanded", String(expanded));
     mobileToggle.setAttribute("aria-label", expanded ? "Ocultar menú de modelos" : "Mostrar menú de modelos");
     update();
-    if (!band.hidden) revealCurrentModel();
     if (restoreFocus) mobileToggle.focus({preventScroll: true});
   }
 
@@ -135,19 +131,20 @@
   }
 
   function updateSections(offset) {
-    if (!opened) return;
-    const visible = entries.filter(entry => {
-      const available = !opened.current || (entry.target && !entry.target.closest("[hidden]"));
-      entry.item.hidden = !available;
-      return available;
-    });
-    let current = opened.current ? visible[0] : null;
-    visible.forEach(entry => {
-      if (entry.target && entry.target.getBoundingClientRect().top <= offset + 24) current = entry;
-    });
-    entries.forEach(entry => {
-      if (entry === current) entry.anchor.setAttribute("aria-current", "location");
-      else entry.anchor.removeAttribute("aria-current");
+    models.forEach(model => {
+      const visible = model.entries.filter(entry => {
+        const available = !model.current || (entry.target && !entry.target.closest("[hidden]"));
+        entry.item.hidden = !available;
+        return available;
+      });
+      let current = model.current ? visible[0] : null;
+      visible.forEach(entry => {
+        if (entry.target && entry.target.getBoundingClientRect().top <= offset + 24) current = entry;
+      });
+      model.entries.forEach(entry => {
+        if (entry === current) entry.anchor.setAttribute("aria-current", "location");
+        else entry.anchor.removeAttribute("aria-current");
+      });
     });
   }
 
@@ -155,51 +152,15 @@
     if (opened === model) return;
     close();
     opened = model;
-    list.replaceChildren();
-    title.textContent = `${model.label}: secciones`;
-    entries = sections[model.key].map(([id, label]) => {
-      const item = document.createElement("li");
-      const anchor = document.createElement("a");
-      const target = model.current ? document.getElementById(id) : null;
-      const destination = new URL(model.url.href);
-      destination.hash = id;
-      // The comparison is hidden in Rasch; remote links open its 2PL variant.
-      if (model.key === "rasch" && id === "personComparison") destination.searchParams.set("model", "2pl");
-      anchor.setAttribute("href", model.current ? `#${id}` : destination.href);
-      anchor.textContent = label;
-      if (target && !target.hasAttribute("tabindex")) target.setAttribute("tabindex", "-1");
-      anchor.addEventListener("click", event => {
-        if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
-        closeForNavigation(target);
-      });
-      item.appendChild(anchor);
-      list.appendChild(item);
-      return {item, anchor, target};
-    });
-    panel.hidden = false;
+    model.panel.hidden = false;
     model.item.classList.add("is-open");
     model.button.setAttribute("aria-expanded", "true");
-    updateSections(headerOffset());
-    positionPanel();
-  }
-
-  function updateScroll() {
-    if (band.hidden) return;
-    const overflow = nav.scrollWidth > row.clientWidth + 1;
-    band.classList.toggle("has-overflow", overflow);
-    previous.hidden = next.hidden = track.hidden = scrollHint.hidden = !overflow;
-    const maxScroll = Math.max(0, nav.scrollWidth - nav.clientWidth);
-    const progress = maxScroll ? Math.min(1, Math.max(0, nav.scrollLeft / maxScroll)) : 0;
-    const fraction = Math.min(1, nav.clientWidth / Math.max(1, nav.scrollWidth));
-    previous.disabled = nav.scrollLeft <= 1;
-    next.disabled = nav.scrollLeft >= maxScroll - 1;
-    thumb.style.width = fraction * 100 + "%";
-    thumb.style.marginLeft = progress * (1 - fraction) * 100 + "%";
+    model.button.setAttribute("aria-label", `Ocultar secciones de ${model.label}`);
+    update();
   }
 
   function update() {
     framePending = false;
-    updateScroll();
     updateSections(headerOffset());
     positionPanel();
   }
@@ -212,7 +173,15 @@
 
   models.forEach(model => {
     model.item.addEventListener("pointerenter", event => {
-      if (event.pointerType === "mouse" && hover.matches && !panel.contains(document.activeElement)) open(model);
+      if (!mobile.matches && event.pointerType === "mouse" && hover.matches &&
+          !(opened && opened.panel.contains(document.activeElement))) open(model);
+    });
+    model.item.addEventListener("pointerleave", event => {
+      if (!mobile.matches && event.pointerType === "mouse" && opened === model &&
+          !model.item.contains(document.activeElement)) close();
+    });
+    model.item.addEventListener("focusout", event => {
+      if (!mobile.matches && opened === model && !model.item.contains(event.relatedTarget)) close();
     });
     model.anchor.addEventListener("click", event => {
       if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button > 0) return;
@@ -223,14 +192,14 @@
       if (event.key !== "ArrowDown" || event.ctrlKey || event.metaKey || event.altKey) return;
       event.preventDefault();
       open(model);
-      const first = entries.find(entry => !entry.item.hidden);
+      const first = model.entries.find(entry => !entry.item.hidden);
       if (first) first.anchor.focus({preventScroll: true});
     };
     model.anchor.addEventListener("keydown", openFromKeyboard);
     model.button.addEventListener("keydown", openFromKeyboard);
   });
   header.addEventListener("pointerleave", event => {
-    if (event.pointerType === "mouse" && !header.contains(document.activeElement)) close();
+    if (!mobile.matches && event.pointerType === "mouse" && !header.contains(document.activeElement)) close();
   });
   header.addEventListener("focusout", event => {
     if (!header.contains(event.relatedTarget)) {
@@ -247,35 +216,29 @@
   document.addEventListener("keydown", event => {
     if (event.key === "Escape" && opened) {
       event.preventDefault();
-      close(panel.contains(document.activeElement));
+      close(opened.panel.contains(document.activeElement));
     } else if (event.key === "Escape" && mobile.matches && mobileExpanded) {
       event.preventDefault();
       setMobileExpanded(false, true);
     }
   });
-  closeButton.addEventListener("click", () => close(true));
   mobileToggle.addEventListener("click", () => setMobileExpanded(!mobileExpanded));
   mobile.addEventListener("change", () => {
-    const menuFocused = band.contains(document.activeElement) || panel.contains(document.activeElement);
+    const focusedModel = models.find(model => model.item.contains(document.activeElement));
+    const sectionFocused = focusedModel && focusedModel.panel.contains(document.activeElement);
     const toggleFocused = document.activeElement === mobileToggle;
     setMobileExpanded(false);
-    if (mobile.matches && menuFocused) mobileToggle.focus({preventScroll: true});
+    if (mobile.matches && focusedModel) mobileToggle.focus({preventScroll: true});
     else if (!mobile.matches && toggleFocused && currentModel) currentModel.anchor.focus({preventScroll: true});
+    else if (!mobile.matches && sectionFocused) focusedModel.button.focus({preventScroll: true});
   });
-  [[previous, -1], [next, 1]].forEach(([button, direction]) => {
-    button.addEventListener("click", () => nav.scrollBy({
-      left: direction * Math.max(160, nav.clientWidth * .75),
-      behavior: reducedMotion.matches ? "auto" : "smooth"
-    }));
-  });
-  nav.addEventListener("scroll", scheduleUpdate, {passive: true});
   window.addEventListener("scroll", scheduleUpdate, {passive: true});
   window.addEventListener("resize", scheduleUpdate);
   window.addEventListener("hashchange", scheduleUpdate);
   if (window.ResizeObserver) {
     const observer = new ResizeObserver(scheduleUpdate);
     observer.observe(header);
-    observer.observe(row);
+    observer.observe(nav);
   }
   if (window.MutationObserver && main) {
     new MutationObserver(scheduleUpdate).observe(main, {attributes: true, attributeFilter: ["hidden"], subtree: true});
