@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial (PCM).">
   <title>PCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=author-photo-2">
+  <link rel="stylesheet" href="lab-common.css?v=model-buttons-5">
   <link rel="stylesheet" href="author-header.css?v=2">
   <style>
     .rubric { display:grid; gap:8px; margin-top:20px; width:min(420px,90%); }
@@ -20,10 +20,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=interpretation-4"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=model-buttons-5"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=interpretation-4">Inicio</a><a href="rasch.html?v=interpretation-4">Rasch / 1–3PL</a>
-      <a class="active" href="pcm.html?v=interpretation-4">PCM</a><a href="gpcm.html?v=interpretation-4">GPCM</a><a href="grm.html?v=interpretation-4">GRM</a>
+      <a href="index.html?v=model-buttons-5">Inicio</a><a href="rasch.html?v=model-buttons-5">Rasch / 1–3PL</a>
+      <a class="active" href="pcm.html?v=model-buttons-5">PCM</a><a href="gpcm.html?v=model-buttons-5">GPCM</a><a href="grm.html?v=model-buttons-5">GRM</a>
     </nav>
     </div>
   </header>
@@ -72,10 +72,17 @@
       <div class="wrap">
         <div class="section-head">
           <div><p class="kicker">Laboratorio PCM</p><h2>Mueve al estudiante o rediseña la rúbrica.</h2></div>
-          <p class="section-copy">Los pasos pueden quedar desordenados. Si ocurre, el laboratorio lo señalará: puede indicar que una categoría intermedia no funciona como se esperaba.</p>
+          <p class="section-copy">Compara PCM y GPCM con el mismo estudiante y la misma rúbrica. Los botones fijan o liberan a (discriminación); los demás controles conservan sus valores. Si desordenas los pasos, el laboratorio lo señalará.</p>
         </div>
         <div class="lab-shell">
-          <div class="lab-head"><h3>Ítem: resolver 2x + 6 = 18 y justificar</h3><span class="model-tab active">PCM · a (discriminación) fija en 1</span></div>
+          <div class="lab-head">
+            <h3>Ítem: resolver 2x + 6 = 18 y justificar</h3>
+            <div class="model-tabs" role="group" aria-label="Modelo para la misma tarea matemática" aria-describedby="creditModelNote">
+              <button type="button" class="model-tab active" data-credit-model="pcm" aria-pressed="true">PCM · discriminación fija</button>
+              <button type="button" class="model-tab" data-credit-model="gpcm" aria-pressed="false">GPCM · discriminación libre</button>
+            </div>
+          </div>
+          <p class="model-note" id="creditModelNote" aria-live="polite"></p>
           <div class="lab-grid">
             <aside class="controls">
               <div class="control">
@@ -84,6 +91,13 @@
                 <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
                 <div class="ticks"><span>incipiente</span><span>medio</span><span>alto</span></div>
                 <p class="control-reading" id="thetaRead"></p>
+              </div>
+              <div class="control">
+                <label for="disc">a (discriminación) <output id="discOut">1.00</output></label>
+                <p class="control-help">En PCM permanece en 1. Elige GPCM para explorar cuánto distingue la tarea a estudiantes de habilidad cercana.</p>
+                <input id="disc" type="range" min=".25" max="3.2" step=".05" value="1" disabled aria-describedby="discRead">
+                <div class="ticks"><span>baja</span><span>moderada</span><span>alta</span></div>
+                <p class="control-reading" id="discRead"></p>
               </div>
               <div class="control">
                 <label for="d1">δ₁ (umbral del paso 1) <output id="d1Out">−1.20</output></label>
@@ -119,13 +133,33 @@
                 </aside>
               </div>
               <p class="probability-note" id="probabilityNote" aria-live="polite"></p>
+              <section class="comparison-lab">
+                <div class="comparison-head">
+                  <div>
+                    <h3>Comparación visible de dos estudiantes</h3>
+                    <p>La curva muestra el puntaje esperado. A y B tienen habilidades cercanas. Compara PCM con GPCM y después mueve a (discriminación), conservando la misma rúbrica.</p>
+                  </div>
+                  <div class="comparison-control">
+                    <label for="personGap">Δθ (distancia entre habilidades) <output id="personGapOut">0.50</output></label>
+                    <input id="personGap" type="range" min=".10" max="2" step=".10" value=".50">
+                  </div>
+                </div>
+                <div class="comparison-grid">
+                  <svg class="comparison-chart" id="personChart" role="img" aria-label="Comparación del puntaje esperado de dos estudiantes"></svg>
+                  <div class="person-results">
+                    <div class="person-card a"><small>Estudiante A</small><strong id="personAResult"></strong><span id="personATheta"></span></div>
+                    <div class="person-card b"><small>Estudiante B</small><strong id="personBResult"></strong><span id="personBTheta"></span></div>
+                    <div class="comparison-difference" id="personDifference"></div>
+                  </div>
+                </div>
+              </section>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="rasch.html?v=interpretation-4">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=interpretation-4">Siguiente: GPCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="rasch.html?v=model-buttons-5">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=model-buttons-5">Siguiente: GPCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial</footer>
 
@@ -134,35 +168,50 @@
     (() => {
       const $ = id => document.getElementById(id);
       const theta = $("theta");
+      const disc = $("disc");
+      const personGap = $("personGap");
       const deltas = [$("d1"),$("d2"),$("d3")];
+      let model = "pcm";
+      let freeDiscrimination = 1.3;
       let changed = "theta";
       const labels = ["0 · Sin avance","1 · Procedimiento","2 · Solución","3 · Justificación"];
 
-      function probabilities(t, ds) {
+      function probabilities(t, ds, a) {
         const logits = [0];
         let accumulated = 0;
-        ds.forEach(delta => { accumulated += t - delta; logits.push(accumulated); });
+        ds.forEach(delta => { accumulated += a * (t - delta); logits.push(accumulated); });
         return IRT.softmax(logits);
       }
 
-      function state() { return { t:+theta.value, ds:deltas.map(input => +input.value) }; }
+      function state() { return { t:+theta.value, a:model === "pcm" ? 1 : +disc.value, ds:deltas.map(input => +input.value) }; }
 
-      function stepText(index, delta, t) {
+      function stepText(index, delta, t, a) {
         const actions = ["iniciar un procedimiento pertinente","obtener x = 6","justificar cada transformación"];
         const demand = delta < -.8 ? "muy accesible" : delta > .8 ? "exigente" : "de dificultad media";
-        const adjacent = IRT.logistic(t - delta);
+        const adjacent = IRT.logistic(a * (t - delta));
         const relation = t > delta + .05 ? "está por encima" : t < delta - .05 ? "está por debajo" : "está justo en";
         return `El paso para ${actions[index]} es ${demand}. θ (habilidad) ${relation} de δ${index+1} (umbral del paso); al comparar solo los dos puntajes vecinos, avanzar tiene ${Math.round(adjacent*100)}% de probabilidad. Cuando θ (habilidad) = δ${index+1} (umbral), ambos son igualmente probables.`;
       }
 
       function render() {
         const s = state();
-        const probs = probabilities(s.t,s.ds);
+        const probs = probabilities(s.t,s.ds,s.a);
+        const modelName = model.toUpperCase();
         const mode = probs.indexOf(Math.max(...probs));
         const expected = probs.reduce((sum,p,i) => sum+p*i,0);
         const ordered = s.ds.every((d,i) => i === 0 || d > s.ds[i-1]);
         $("thetaOut").textContent = IRT.fmt(s.t);
-        deltas.forEach((input,i) => { $(`d${i+1}Out`).textContent = IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent = stepText(i,s.ds[i],s.t); });
+        $("discOut").textContent = IRT.fmt(s.a);
+        $("creditModelNote").textContent = model === "pcm"
+          ? "PCM activo: a (discriminación) está fijada en 1 y su control está bloqueado. Al elegir GPCM, se habilita ese parámetro sin cambiar θ (habilidad algebraica) ni δ (umbrales de paso)."
+          : "GPCM activo: puedes modificar a (discriminación) para esta misma tarea matemática. θ (habilidad algebraica), δ (umbrales de paso) y la rúbrica se conservan. Con a (discriminación) = 1, las probabilidades coinciden con las del PCM.";
+        const thetaA = Math.max(-4,s.t-+personGap.value/2);
+        const thetaB = Math.min(4,s.t+ +personGap.value/2);
+        const difference = expectedScore(thetaB,s.a,s.ds)-expectedScore(thetaA,s.a,s.ds);
+        $("discRead").textContent = model === "pcm"
+          ? "a (discriminación) = 1 es una restricción del PCM, no un valor que puedas ajustar en este modelo. El gráfico inferior permite comparar dos estudiantes con esa discriminación fija."
+          : `a (discriminación) = ${IRT.fmt(s.a)}: los estudiantes A y B del gráfico inferior difieren ${difference.toFixed(2)} puntos esperados. Modificar este parámetro cambia la separación cerca de los umbrales, no la habilidad de los estudiantes.`;
+        deltas.forEach((input,i) => { $(`d${i+1}Out`).textContent = IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent = stepText(i,s.ds[i],s.t,s.a); });
         $("thetaRead").textContent = `${s.t < -1 ? "El estudiante necesita apoyo para organizar el procedimiento." : s.t > 1 ? "El estudiante coordina solución y justificación con solvencia." : "El estudiante domina lo esencial, pero la calidad de la justificación aún puede variar."} Con esta rúbrica, su puntaje esperado es ${expected.toFixed(2)} de 3.`;
         $("expectedMetric").textContent = `${expected.toFixed(2)} / 3`;
         $("modeMetric").textContent = `${mode} ${mode === 1 ? "punto" : "puntos"}`;
@@ -176,12 +225,16 @@
         const upperScore = mode + 1;
         const lower = mode > 0 ? `${lowerScore} ${lowerScore === 1 ? "punto" : "puntos"} (${Math.round(probs[lowerScore] * 100)}%)` : "ningún puntaje inferior";
         const upper = mode < probs.length - 1 ? `${upperScore} ${upperScore === 1 ? "punto" : "puntos"} (${Math.round(probs[upperScore] * 100)}%)` : "ningún puntaje superior";
-        $("probabilityNote").innerHTML = `<strong>Comparación adyacente y resultado observado:</strong> el PCM construye cada paso comparando dos puntajes vecinos, pero al final asigna probabilidad a todos los puntajes de 0 a 3. Para este estudiante, el puntaje más probable es ${mode}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, los puntajes cercanos suelen ser más probables que los saltos lejanos. Una respuesta menor puede ser compatible con variaciones como cansancio, olvido o un error accidental, pero el modelo no identifica cuál fue la causa.`;
+        $("probabilityNote").innerHTML = `<strong>Comparación adyacente y resultado observado:</strong> el ${modelName} construye cada paso comparando dos puntajes vecinos, pero al final asigna probabilidad a todos los puntajes de 0 a 3. Para este estudiante, el puntaje más probable es ${mode}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, los puntajes cercanos suelen ser más probables que los saltos lejanos. Una respuesta menor puede ser compatible con variaciones como cansancio, olvido o un error accidental, pero el modelo no identifica cuál fue la causa.`;
         $("changeText").textContent = changed === "theta"
           ? "Cambiaste θ (habilidad): observas a otro estudiante; los criterios de puntuación permanecen iguales."
+          : changed === "model" ? `Elegiste ${modelName}: ${model === "pcm" ? "a (discriminación) queda fijada en 1" : "a (discriminación) puede variar"}. El estudiante y los umbrales no cambiaron; compara las curvas y los puntajes esperados de A y B.`
+          : changed === "a" ? "Cambiaste a (discriminación): observa cómo varían las probabilidades y la separación entre A y B, sin cambiar sus habilidades ni los pasos de la rúbrica."
+          : changed === "gap" ? "Cambiaste Δθ (distancia entre habilidades): acercaste o separaste a los estudiantes A y B, sin modificar la rúbrica."
           : `Cambiaste δ${changed} (umbral del paso): modificaste la dificultad de ganar el punto ${changed}, sin cambiar al estudiante ni los otros pasos.`;
         renderProbs(probs);
         renderChart(s);
+        renderPersonComparison(s);
       }
 
       function renderProbs(probs) {
@@ -192,16 +245,58 @@
 
       function renderChart(s) {
         const svg = $("chart");
+        svg.setAttribute("aria-label",`Curvas de categorías del ${model.toUpperCase()} para la tarea matemática`);
         const chart = IRT.setupChart(svg,{xLabel:"θ (habilidad algebraica)"});
         const xs = Array.from({length:241},(_,i)=>-4+i*8/240);
-        for (let k=0;k<4;k++) IRT.drawLine(chart.plot,xs.map(x=>({x,y:probabilities(x,s.ds)[k]})),chart,IRT.colors[k]);
+        for (let k=0;k<4;k++) IRT.drawLine(chart.plot,xs.map(x=>({x,y:probabilities(x,s.ds,s.a)[k]})),chart,IRT.colors[k]);
         s.ds.forEach((delta,i)=>IRT.drawVertical(chart,delta,`δ${i+1}`,IRT.colors[i+1],true));
         IRT.drawVertical(chart,s.t,"θ");
-        probabilities(s.t,s.ds).forEach((p,i)=>chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(s.t),cy:chart.yScale(p),r:5,fill:IRT.colors[i],stroke:"white","stroke-width":2})));
+        probabilities(s.t,s.ds,s.a).forEach((p,i)=>chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(s.t),cy:chart.yScale(p),r:5,fill:IRT.colors[i],stroke:"white","stroke-width":2})));
+      }
+
+      function expectedScore(t,a,ds) {
+        return probabilities(t,ds,a).reduce((sum,p,i)=>sum+p*i,0);
+      }
+
+      function renderPersonComparison(s) {
+        const gap = +personGap.value;
+        const thetaA = Math.max(-4,s.t-gap/2);
+        const thetaB = Math.min(4,s.t+gap/2);
+        const scoreA = expectedScore(thetaA,s.a,s.ds);
+        const scoreB = expectedScore(thetaB,s.a,s.ds);
+        $("personGapOut").textContent = IRT.fmt(thetaB-thetaA);
+        $("personAResult").textContent = `${scoreA.toFixed(2)} / 3`;
+        $("personBResult").textContent = `${scoreB.toFixed(2)} / 3`;
+        $("personATheta").textContent = `θA (habilidad algebraica) = ${IRT.fmt(thetaA)}`;
+        $("personBTheta").textContent = `θB (habilidad algebraica) = ${IRT.fmt(thetaB)}`;
+        $("personDifference").textContent = `Diferencia visible: ${(scoreB-scoreA).toFixed(2)} puntos esperados con a (discriminación) = ${IRT.fmt(s.a)} en ${model.toUpperCase()}.`;
+        const chart = IRT.setupChart($("personChart"),{xLabel:"θ (habilidad algebraica)",yMax:3,yTicks:[0,1,2,3]});
+        const xs = Array.from({length:241},(_,i)=>-4+i*8/240);
+        IRT.drawLine(chart.plot,xs.map(x=>({x,y:expectedScore(x,s.a,s.ds)})),chart,"#7b6be8");
+        IRT.drawVertical(chart,thetaA,"A","#438bd2");
+        IRT.drawVertical(chart,thetaB,"B","#f46f5f");
+        [{t:thetaA,y:scoreA,color:"#438bd2"},{t:thetaB,y:scoreB,color:"#f46f5f"}].forEach(person=>chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(person.t),cy:chart.yScale(person.y),r:6,fill:person.color,stroke:"white","stroke-width":2})));
+      }
+
+      function selectModel(next) {
+        if (model === "gpcm") freeDiscrimination = +disc.value;
+        model = next;
+        disc.disabled = model === "pcm";
+        disc.value = model === "pcm" ? 1 : freeDiscrimination;
+        document.querySelectorAll("[data-credit-model]").forEach(button=>{
+          const active = button.dataset.creditModel === model;
+          button.classList.toggle("active",active);
+          button.setAttribute("aria-pressed",String(active));
+        });
+        changed = "model";
+        render();
       }
 
       theta.addEventListener("input",()=>{changed="theta";render();});
+      disc.addEventListener("input",()=>{changed="a";render();});
+      personGap.addEventListener("input",()=>{changed="gap";render();});
       deltas.forEach((input,i)=>input.addEventListener("input",()=>{changed=String(i+1);render();}));
+      document.querySelectorAll("[data-credit-model]").forEach(button=>button.addEventListener("click",()=>selectModel(button.dataset.creditModel)));
       window.addEventListener("resize",render);
       render();
     })();

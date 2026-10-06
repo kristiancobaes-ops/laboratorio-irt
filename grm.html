@@ -540,6 +540,16 @@
       gap: 7px;
     }
 
+    .preset-note {
+      margin: 0;
+      padding: 14px 25px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      background: #f7f5ef;
+      font-size: .82rem;
+      line-height: 1.6;
+    }
+
     .chip {
       padding: 7px 11px;
       border: 1px solid var(--line);
@@ -1299,15 +1309,15 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=interpretation-4" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=model-buttons-5" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=interpretation-4">Inicio</a>
-      <a href="rasch.html?v=interpretation-4">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=interpretation-4">PCM</a>
-      <a href="gpcm.html?v=interpretation-4">GPCM</a>
+      <a href="index.html?v=model-buttons-5">Inicio</a>
+      <a href="rasch.html?v=model-buttons-5">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=model-buttons-5">PCM</a>
+      <a href="gpcm.html?v=model-buttons-5">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
@@ -1468,14 +1478,16 @@
         <div class="lab">
           <div class="lab-top">
             <h3 class="lab-title"><span class="live-dot"></span> Tarea oral: mantener una conversación sobre un tema cotidiano</h3>
-            <div class="preset-row" aria-label="Escenarios predefinidos">
-              <button class="chip active" data-preset="balanced">Equilibrado</button>
-              <button class="chip" data-preset="sharp">Discriminación alta</button>
-              <button class="chip" data-preset="fuzzy">Discriminación baja</button>
-              <button class="chip" data-preset="hard">Examen exigente</button>
-              <button class="chip" data-preset="crowded">Niveles poco diferenciados</button>
+            <div class="preset-row" role="group" aria-label="Escenarios del mismo modelo GRM" aria-describedby="presetNote">
+              <button type="button" class="chip active" data-preset="balanced" aria-pressed="true">Ejemplo inicial</button>
+              <button type="button" class="chip" data-preset="sharp" aria-pressed="false">Discriminación alta</button>
+              <button type="button" class="chip" data-preset="fuzzy" aria-pressed="false">Discriminación baja</button>
+              <button type="button" class="chip" data-preset="hard" aria-pressed="false">Exigir más</button>
+              <button type="button" class="chip" data-preset="easy" aria-pressed="false">Exigir menos</button>
+              <button type="button" class="chip" data-preset="crowded" aria-pressed="false">Umbrales próximos</button>
             </div>
           </div>
+          <p class="preset-note" id="presetNote" aria-live="polite">Estos botones exploran escenarios del mismo GRM; no cambian de modelo. Discriminación alta o baja modifica solo a (discriminación); exigir más o menos desplaza δ (umbrales). El candidato conserva θ (competencia oral). Ejemplo inicial restablece los controles.</p>
 
           <div class="lab-body">
             <aside class="controls" aria-label="Controles del modelo">
@@ -1718,10 +1730,11 @@
 
       const presets = {
         balanced: { theta: 0, a: 1.4, bs: [-1.5, -.5, .5, 1.5] },
-        sharp: { theta: 0, a: 3.1, bs: [-1.5, -.5, .5, 1.5] },
-        fuzzy: { theta: 0, a: .45, bs: [-1.5, -.5, .5, 1.5] },
-        hard: { theta: 0, a: 1.5, bs: [.2, 1.1, 2, 2.9] },
-        crowded: { theta: 0, a: 1.8, bs: [-.45, -.15, .15, .45] }
+        sharp: { a: 3.1 },
+        fuzzy: { a: .45 },
+        hard: { shift: .4 },
+        easy: { shift: -.4 },
+        crowded: { bs: [-.45, -.15, .15, .45] }
       };
 
       function fmt(value, digits = 2) {
@@ -2079,22 +2092,55 @@
 
       function applyPreset(name) {
         const preset = presets[name];
-        thetaInput.value = preset.theta;
-        discInput.value = preset.a;
-        thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
+        let explanation;
+        if (name === "balanced") {
+          thetaInput.value = preset.theta;
+          discInput.value = preset.a;
+          personGapInput.value = .5;
+          thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
+          explanation = "Restableciste el ejemplo inicial: θ (competencia oral) = 0, a (discriminación) = 1.40, δ (umbrales) = −1.50, −0.50, 0.50 y 1.50, y Δθ (distancia entre competencias) = 0.50. Este botón sí reinicia el caso completo del laboratorio.";
+        } else if (preset.a !== undefined) {
+          discInput.value = preset.a;
+          explanation = `Cambiaste únicamente a (discriminación) a ${fmt(preset.a)}. El candidato conserva θ (competencia oral) y el examen conserva δ (umbrales). Compara la pendiente de las curvas acumulativas y la separación entre A y B: no significa que todas las calificaciones suban.`;
+        } else if (preset.shift !== undefined) {
+          const values = thresholdInputs.map(input => Number(input.value));
+          const shift = preset.shift > 0
+            ? Math.min(preset.shift, ...thresholdInputs.map((input, i) => Number(input.max) - values[i]))
+            : Math.max(preset.shift, ...thresholdInputs.map((input, i) => Number(input.min) - values[i]));
+          thresholdInputs.forEach((input, i) => input.value = (values[i] + shift).toFixed(2));
+          explanation = Math.abs(shift) < .001
+            ? "Los umbrales ya alcanzaron el límite de los controles: no se desplazaron. El candidato y la discriminación tampoco cambiaron."
+            : `Desplazaste todos los δ (umbrales) ${fmt(Math.abs(shift))} unidades hacia ${shift > 0 ? "la derecha: ahora el examen exige más competencia para alcanzar cada nivel" : "la izquierda: ahora el examen exige menos competencia para alcanzar cada nivel"}. θ (competencia oral), a (discriminación) y las distancias entre umbrales no cambiaron.`;
+        } else {
+          thresholdInputs.forEach((input, i) => input.value = preset.bs[i]);
+          explanation = "Situaste δ (umbrales) en −0.45, −0.15, 0.15 y 0.45: las transiciones se concentran en una zona estrecha de competencia. θ (competencia oral) y a (discriminación) no cambiaron. Observa qué ocurre con las probabilidades de las categorías intermedias.";
+        }
+        $("presetNote").textContent = explanation;
         lastChanged = name === "sharp" || name === "fuzzy" ? "disc" : name === "balanced" ? "preset" : "thresholds";
-        document.querySelectorAll(".chip").forEach(chip => chip.classList.toggle("active", chip.dataset.preset === name));
+        document.querySelectorAll(".chip").forEach(chip => {
+          const active = chip.dataset.preset === name;
+          chip.classList.toggle("active", active);
+          chip.setAttribute("aria-pressed", String(active));
+        });
         updateAll();
       }
 
-      thetaInput.addEventListener("input", () => { lastChanged = "theta"; document.querySelectorAll(".chip").forEach(c => c.classList.remove("active")); updateAll(); });
-      discInput.addEventListener("input", () => { lastChanged = "disc"; document.querySelectorAll(".chip").forEach(c => c.classList.remove("active")); updateAll(); });
-      personGapInput.addEventListener("input", () => { lastChanged = "gap"; updateAll(); });
+      function clearPreset() {
+        document.querySelectorAll(".chip").forEach(chip => {
+          chip.classList.remove("active");
+          chip.setAttribute("aria-pressed", "false");
+        });
+        $("presetNote").textContent = "Ajuste manual: la interpretación junto a cada control y el resumen general describen el caso actual. Puedes usar un botón para cambiar solo a (discriminación) o δ (umbrales), o restablecer el ejemplo inicial.";
+      }
+
+      thetaInput.addEventListener("input", () => { lastChanged = "theta"; clearPreset(); updateAll(); });
+      discInput.addEventListener("input", () => { lastChanged = "disc"; clearPreset(); updateAll(); });
+      personGapInput.addEventListener("input", () => { lastChanged = "gap"; clearPreset(); updateAll(); });
       thresholdInputs.forEach((input, i) => {
         input.addEventListener("input", () => {
           keepThresholdsOrdered(i);
           lastChanged = `b${i + 1}`;
-          document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+          clearPreset();
           updateAll();
         });
       });

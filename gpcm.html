@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial Generalizado (GPCM).">
   <title>GPCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=author-photo-2">
+  <link rel="stylesheet" href="lab-common.css?v=model-buttons-5">
   <link rel="stylesheet" href="author-header.css?v=2">
   <style>
     .paragraph-demo { position:relative; z-index:2; width:min(430px,88%); padding:23px; border:1px solid rgba(255,255,255,.18); border-radius:18px; background:rgba(255,255,255,.08); font-family:system-ui; font-size:.9rem; line-height:1.75; text-align:left; }
@@ -19,10 +19,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=interpretation-4"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=model-buttons-5"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=interpretation-4">Inicio</a><a href="rasch.html?v=interpretation-4">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=interpretation-4">PCM</a><a class="active" href="gpcm.html?v=interpretation-4">GPCM</a><a href="grm.html?v=interpretation-4">GRM</a>
+      <a href="index.html?v=model-buttons-5">Inicio</a><a href="rasch.html?v=model-buttons-5">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=model-buttons-5">PCM</a><a class="active" href="gpcm.html?v=model-buttons-5">GPCM</a><a href="grm.html?v=model-buttons-5">GRM</a>
     </nav>
     </div>
   </header>
@@ -63,10 +63,17 @@
       <div class="wrap">
         <div class="section-head">
           <div><p class="kicker">Laboratorio GPCM</p><h2>Diseña una rúbrica que diferencie niveles de coherencia.</h2></div>
-          <p class="section-copy">Cada control tiene una lectura sustantiva. La interpretación general combina la habilidad del autor, la discriminación del ítem y las cuatro exigencias de la rúbrica.</p>
+          <p class="section-copy">Compara GPCM y PCM sin cambiar el párrafo, la habilidad del autor ni los cuatro pasos de la rúbrica. Los botones liberan o fijan a (discriminación), y la interpretación explica el cambio.</p>
         </div>
         <div class="lab-shell">
-          <div class="lab-head"><h3>Tarea: redactar un párrafo explicativo coherente</h3><span class="model-tab active">GPCM · 0 a 4 puntos</span></div>
+          <div class="lab-head">
+            <h3>Tarea: redactar un párrafo explicativo coherente</h3>
+            <div class="model-tabs" role="group" aria-label="Modelo para la misma tarea de escritura" aria-describedby="creditModelNote">
+              <button type="button" class="model-tab" data-credit-model="pcm" aria-pressed="false">PCM · discriminación fija</button>
+              <button type="button" class="model-tab active" data-credit-model="gpcm" aria-pressed="true">GPCM · discriminación libre</button>
+            </div>
+          </div>
+          <p class="model-note" id="creditModelNote" aria-live="polite"></p>
           <div class="lab-grid">
             <aside class="controls">
               <div class="control">
@@ -78,8 +85,8 @@
               </div>
               <div class="control">
                 <label for="disc">a (discriminación) <output id="discOut">1.30</output></label>
-                <p class="control-help">Capacidad de esta tarea para diferenciar niveles cercanos de coherencia.</p>
-                <input id="disc" type="range" min=".25" max="3.2" step=".05" value="1.3">
+                <p class="control-help">Capacidad de esta tarea para diferenciar niveles cercanos de coherencia. En PCM se fija en 1; en GPCM puedes modificarla.</p>
+                <input id="disc" type="range" min=".25" max="3.2" step=".05" value="1.3" aria-describedby="discRead">
                 <div class="ticks"><span>baja</span><span>moderada</span><span>alta</span></div>
                 <p class="control-reading" id="discRead"></p>
               </div>
@@ -149,7 +156,7 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="pcm.html?v=interpretation-4">← PCM</a><a class="button primary" href="grm.html?v=interpretation-4">Siguiente: GRM →</a></div>
+    <div class="wrap back-next"><a class="button" href="pcm.html?v=model-buttons-5">← PCM</a><a class="button primary" href="grm.html?v=model-buttons-5">Siguiente: GRM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial Generalizado</footer>
 
@@ -161,6 +168,8 @@
       const disc = $("disc");
       const personGap = $("personGap");
       const deltas = [$("d1"),$("d2"),$("d3"),$("d4")];
+      let model = "gpcm";
+      let freeDiscrimination = +disc.value;
       let changed = "theta";
       const levelNames = ["0 · Fragmentario","1 · Idea reconocible","2 · Idea central","3 · Desarrollo conectado","4 · Cohesión fluida"];
 
@@ -170,7 +179,7 @@
         ds.forEach(delta => { accumulated += a * (t-delta); logits.push(accumulated); });
         return IRT.softmax(logits);
       }
-      function state() { return {t:+theta.value,a:+disc.value,ds:deltas.map(input=>+input.value)}; }
+      function state() { return {t:+theta.value,a:model === "pcm" ? 1 : +disc.value,ds:deltas.map(input=>+input.value)}; }
 
       function authorText(t) {
         if (t < -1.4) return "El autor produce enunciados aislados y pierde con facilidad el hilo temático.";
@@ -183,8 +192,8 @@
       }
       function discText(a,t,ds) {
         const gap = +personGap.value;
-        const lower = expectedScore(t-gap/2,a,ds);
-        const upper = expectedScore(t+gap/2,a,ds);
+        const lower = expectedScore(Math.max(-4,t-gap/2),a,ds);
+        const upper = expectedScore(Math.min(4,t+gap/2),a,ds);
         const difference = upper-lower;
         const level = a < .7 ? "baja" : a < 1.8 ? "moderada" : "alta";
         return `a (discriminación) ${level}: los autores A y B visibles en el comparador difieren ${difference.toFixed(2)} puntos esperados. Un valor mayor separa más claramente niveles cercanos a los umbrales; no eleva automáticamente todas las calificaciones.`;
@@ -197,18 +206,24 @@
 
       function render() {
         const s=state();
+        const modelName=model.toUpperCase();
         const probs=probabilities(s.t,s.a,s.ds);
         const mode=probs.indexOf(Math.max(...probs));
         const expected=probs.reduce((sum,p,i)=>sum+p*i,0);
         const ordered=s.ds.every((d,i)=>i===0||d>s.ds[i-1]);
         $("thetaOut").textContent=IRT.fmt(s.t);
         $("discOut").textContent=IRT.fmt(s.a);
+        $("creditModelNote").textContent=model === "pcm"
+          ? "PCM activo: a (discriminación) está fijada en 1 y su control está bloqueado. La tarea sigue siendo el mismo párrafo, con θ (habilidad de coherencia) y δ (umbrales de paso) sin cambios."
+          : "GPCM activo: puedes modificar a (discriminación) de esta tarea. Al alternar con PCM se conservan el autor y la rúbrica. Con a (discriminación) = 1, ambos modelos producen las mismas probabilidades.";
         $("thetaRead").textContent=`${authorText(s.t)} Con los parámetros actuales, su puntaje esperado es ${expected.toFixed(2)} de 4.`;
-        $("discRead").textContent=discText(s.a,s.t,s.ds);
+        $("discRead").textContent=model === "pcm"
+          ? "a (discriminación) = 1 es una restricción del PCM. El comparador sigue mostrando a los mismos autores A y B con esa discriminación fija; elige GPCM para modificarla."
+          : discText(s.a,s.t,s.ds);
         deltas.forEach((input,i)=>{ $(`d${i+1}Out`).textContent=IRT.fmt(s.ds[i]); $(`d${i+1}Read`).textContent=stepText(i,s.ds[i],s.t,s.a); });
         $("expectedMetric").textContent=`${expected.toFixed(2)} / 4`;
         $("modeMetric").textContent=levelNames[mode];
-        $("discMetric").textContent=s.a<.7?"Baja":s.a<1.8?"Moderada":"Alta";
+        $("discMetric").textContent=model === "pcm"?"Fija en 1":s.a<.7?"Baja":s.a<1.8?"Moderada":"Alta";
         $("generalTitle").innerHTML=`La calificación más probable es <b>${levelNames[mode]}</b> (${Math.round(probs[mode]*100)}%).`;
         $("generalText").textContent=ordered
           ? `El autor tiene un puntaje esperado de ${expected.toFixed(2)}. La rúbrica avanza en orden desde una idea reconocible hasta cohesión fluida.`
@@ -217,8 +232,9 @@
         const upperScore=mode+1;
         const lower=mode>0?`${lowerScore} ${lowerScore===1?"punto":"puntos"} (${Math.round(probs[lowerScore]*100)}%)`:"ningún puntaje inferior";
         const upper=mode<probs.length-1?`${upperScore} ${upperScore===1?"punto":"puntos"} (${Math.round(probs[upperScore]*100)}%)`:"ningún puntaje superior";
-        $("probabilityNote").innerHTML=`<strong>Comparación adyacente y resultado observado:</strong> el GPCM compara la ventaja de avanzar entre puntajes vecinos, pero calcula probabilidades para todos los puntajes de 0 a 4. Para este autor, el nivel más probable es ${levelNames[mode]}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, las categorías cercanas suelen concentrar más probabilidad que un salto lejano. Un desempeño menor puede ser compatible con cansancio, olvido o un error accidental, pero el modelo representa la incertidumbre y no diagnostica su causa.`;
+        $("probabilityNote").innerHTML=`<strong>Comparación adyacente y resultado observado:</strong> el ${modelName} compara la ventaja de avanzar entre puntajes vecinos, pero calcula probabilidades para todos los puntajes de 0 a 4. Para este autor, el nivel más probable es ${levelNames[mode]}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, las categorías cercanas suelen concentrar más probabilidad que un salto lejano. Un desempeño menor puede ser compatible con cansancio, olvido o un error accidental, pero el modelo representa la incertidumbre y no diagnostica su causa.`;
         $("changeText").textContent=changed==="theta"?"Cambiaste θ (habilidad de coherencia): ahora calificas el texto de otro autor con la misma rúbrica."
+          :changed==="model"?`Elegiste ${modelName}: ${model === "pcm" ? "a (discriminación) queda fijada en 1" : "a (discriminación) puede variar"}. Los autores A y B y los umbrales no cambiaron; observa qué sucede con sus puntajes esperados.`
           :changed==="a"?`Cambiaste a (discriminación): observa en el segundo gráfico cómo se modifica la distancia vertical entre A y B.`
           :changed==="gap"?"Cambiaste Δθ (distancia entre habilidades): acercaste o separaste a los autores A y B sin modificar la tarea."
           :`Cambiaste δ${changed} (umbral del paso): alteraste la exigencia para pasar del nivel ${+changed-1} al nivel ${changed}.`;
@@ -229,6 +245,7 @@
 
       function renderChart(s) {
         const svg=$("chart");
+        svg.setAttribute("aria-label",`Curvas de categorías del ${model.toUpperCase()} para la tarea de escritura`);
         const chart=IRT.setupChart(svg,{xLabel:"θ (habilidad de coherencia)"});
         const xs=Array.from({length:241},(_,i)=>-4+i*8/240);
         for(let k=0;k<5;k++) IRT.drawLine(chart.plot,xs.map(x=>({x,y:probabilities(x,s.a,s.ds)[k]})),chart,IRT.colors[k]);
@@ -248,7 +265,7 @@
         $("personBResult").textContent=`${scoreB.toFixed(2)} / 4`;
         $("personATheta").textContent=`θA (habilidad) = ${IRT.fmt(thetaA)}`;
         $("personBTheta").textContent=`θB (habilidad) = ${IRT.fmt(thetaB)}`;
-        $("personDifference").textContent=`Diferencia visible: ${(scoreB-scoreA).toFixed(2)} puntos esperados con a (discriminación) = ${IRT.fmt(s.a)}.`;
+        $("personDifference").textContent=`Diferencia visible: ${(scoreB-scoreA).toFixed(2)} puntos esperados con a (discriminación) = ${IRT.fmt(s.a)} en ${model.toUpperCase()}.`;
         const svg=$("personChart");
         const chart=IRT.setupChart(svg,{xLabel:"θ (habilidad de coherencia)",yMax:4,yTicks:[0,1,2,3,4]});
         const xs=Array.from({length:241},(_,i)=>-4+i*8/240);
@@ -259,10 +276,25 @@
         chart.plot.appendChild(IRT.svgEl("circle",{cx:chart.xScale(thetaB),cy:chart.yScale(scoreB),r:6,fill:"#f46f5f",stroke:"white","stroke-width":2}));
       }
 
+      function selectModel(next) {
+        if (model === "gpcm") freeDiscrimination = +disc.value;
+        model = next;
+        disc.disabled = model === "pcm";
+        disc.value = model === "pcm" ? 1 : freeDiscrimination;
+        document.querySelectorAll("[data-credit-model]").forEach(button=>{
+          const active = button.dataset.creditModel === model;
+          button.classList.toggle("active",active);
+          button.setAttribute("aria-pressed",String(active));
+        });
+        changed = "model";
+        render();
+      }
+
       theta.addEventListener("input",()=>{changed="theta";render();});
       disc.addEventListener("input",()=>{changed="a";render();});
       personGap.addEventListener("input",()=>{changed="gap";render();});
       deltas.forEach((input,i)=>input.addEventListener("input",()=>{changed=String(i+1);render();}));
+      document.querySelectorAll("[data-credit-model]").forEach(button=>button.addEventListener("click",()=>selectModel(button.dataset.creditModel)));
       window.addEventListener("resize",render);
       render();
     })();
