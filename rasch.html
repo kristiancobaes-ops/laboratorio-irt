@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="author-header.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="lab-cases.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="hero-heading.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="page-explorer.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="site-footer.css?v=rubric-footer-13">
-  <script src="page-explorer.js?v=rubric-footer-13" defer></script>
+  <link rel="stylesheet" href="lab-common.css?v=score-language-14">
+  <link rel="stylesheet" href="author-header.css?v=score-language-14">
+  <link rel="stylesheet" href="lab-cases.css?v=score-language-14">
+  <link rel="stylesheet" href="hero-heading.css?v=score-language-14">
+  <link rel="stylesheet" href="page-explorer.css?v=score-language-14">
+  <link rel="stylesheet" href="site-footer.css?v=score-language-14">
+  <script src="page-explorer.js?v=score-language-14" defer></script>
 </head>
 <body>
   <header class="site-header">
@@ -20,10 +20,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=rubric-footer-13" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: Rasch / 1–3PL</span></a>
+    <a class="brand" href="index.html?v=score-language-14" aria-label="Ir a la portada de Laboratorio IRT"><span class="brand-mark">I</span><span>Laboratorio IRT: Rasch / 1–3PL</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=rubric-footer-13">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=rubric-footer-13">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=rubric-footer-13">PCM</a><a href="gpcm.html?v=rubric-footer-13">GPCM</a><a href="grm.html?v=rubric-footer-13">GRM</a>
+      <a href="index.html?v=score-language-14">Inicio</a><a class="active" aria-current="page" href="rasch.html?v=score-language-14">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=score-language-14">PCM</a><a href="gpcm.html?v=score-language-14">GPCM</a><a href="grm.html?v=score-language-14">GRM</a>
     </nav>
     </div>
   </header>
@@ -99,9 +99,9 @@
             <aside class="controls">
               <div class="control">
                 <label for="theta"><span id="thetaName">θ (habilidad matemática)</span> <output id="thetaOut">0.00</output></label>
-                <p class="control-help" id="thetaContext">Nivel del estudiante en razonamiento algebraico.</p>
-                <input id="theta" type="range" min="-4" max="4" step=".05" value="0">
-                <div class="ticks"><span>incipiente</span><span>medio</span><span>alto</span></div>
+                <p class="control-help" id="thetaContext">θ usa una escala distinta de los puntajes. θ = 0 es un punto de referencia, no ausencia de habilidad ni un puntaje de 0.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0" aria-describedby="thetaContext">
+                <div class="ticks"><span>−4 menor</span><span>0 referencia</span><span>+4 mayor</span></div>
                 <p class="control-reading" id="thetaRead"></p>
               </div>
               <div class="control">
@@ -142,7 +142,7 @@
                 <svg class="chart" id="chart" role="img" aria-label="Curva característica del ítem"></svg>
                 <aside class="side-readout">
                   <div class="metric"><small>Modelo activo</small><strong id="modelMetric">Rasch</strong></div>
-                  <div class="metric"><small>Probabilidad de acierto</small><strong id="probMetric">38%</strong></div>
+                  <div class="metric"><small>Probabilidad de obtener 1 punto</small><strong id="probMetric">38%</strong></div>
                   <div class="prob-list">
                     <div class="prob-row"><span>Incorrecto</span><div class="track"><div class="fill" id="wrongBar" style="background:#f46f5f"></div></div><span id="wrongPct"></span></div>
                     <div class="prob-row"><span>Correcto</span><div class="track"><div class="fill" id="rightBar" style="background:#2aa89a"></div></div><span id="rightPct"></span></div>
@@ -175,7 +175,7 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=rubric-footer-13">← Portada</a><a class="button primary" href="pcm.html?v=rubric-footer-13">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=score-language-14">← Portada</a><a class="button primary" href="pcm.html?v=score-language-14">Siguiente: PCM →</a></div>
   </main>
   <footer class="site-footer">
     <div class="wrap site-footer-inner">
@@ -185,7 +185,7 @@
   </footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=rubric-footer-13"></script>
+  <script src="lab-cases.js?v=score-language-14"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -225,8 +225,8 @@
             ? "Como θ (habilidad) está por debajo de b (dificultad), aumentar a (discriminación) reduce la probabilidad hacia el piso del modelo."
             : "Como θ (habilidad) está prácticamente en b (dificultad), cambiar a (discriminación) apenas modifica su probabilidad central.";
 
-        $("thetaRead").textContent = `${thetaDescription(s.theta)} Con los parámetros actuales, su probabilidad de acierto es ${Math.round(p * 100)}%.`;
-        $("difficultyRead").textContent = `${s.b < -.7 ? "El ítem es fácil para la población de referencia." : s.b > .7 ? "El ítem exige habilidad superior al promedio." : "El ítem está centrado cerca del nivel medio."} Cuando θ (habilidad) = b (dificultad), la probabilidad es ${Math.round(centerProbability * 100)}%${s.c > 0 ? " porque c (azar) eleva el punto central" : ""}.`;
+        $("thetaRead").textContent = `Descripción ilustrativa de la habilidad seleccionada: ${thetaDescription(s.theta)}`;
+        $("difficultyRead").textContent = `${s.b < -.7 ? "La dificultad del ítem está por debajo de θ = 0, el punto de referencia de esta escala." : s.b > .7 ? "La dificultad del ítem está por encima de θ = 0, el punto de referencia de esta escala." : "La dificultad del ítem está cerca de θ = 0, el punto de referencia de esta escala."} Cuando θ (habilidad) = b (dificultad), la probabilidad es ${Math.round(centerProbability * 100)}%${s.c > 0 ? " porque c (azar) eleva el punto central" : ""}.`;
         $("discRead").textContent = model === "rasch"
           ? "Rasch fija a (discriminación) = 1. Activa 2PL o 3PL para manipularla y comparar dos estudiantes."
           : `${s.a < .8 ? "a (discriminación) baja" : s.a > 2 ? "a (discriminación) alta" : "a (discriminación) moderada"}: en el gráfico comparativo, A y B difieren ${Math.round(localSeparation * 100)} puntos porcentuales. ${sideEffect}`;
@@ -245,7 +245,7 @@
         $("rightBar").style.width = `${p*100}%`;
         $("wrongPct").textContent = `${Math.round((1-p)*100)}%`;
         $("rightPct").textContent = `${Math.round(p*100)}%`;
-        $("generalTitle").innerHTML = `Este estudiante tiene <b>${Math.round(p*100)}%</b> de probabilidad de responder correctamente.`;
+        $("generalTitle").innerHTML = `Con la habilidad y los parámetros seleccionados, el modelo predice <b>${Math.round(p*100)}%</b> de probabilidad de obtener 1 punto.`;
         const gap = s.theta - s.b;
         $("generalText").textContent = gap >= 0
           ? `Su ${example.construct} está ${IRT.fmt(gap)} unidades por encima de la dificultad. ${s.c > 0 ? "El modelo también incorpora una asíntota inferior de pseudoazar." : "El modelo no incorpora un piso de pseudoazar; no identifica la causa de cada acierto."}`

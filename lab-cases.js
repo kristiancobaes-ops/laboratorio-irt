@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "rubric-footer-13", case: key });
+    const params = new URLSearchParams({ v: "score-language-14", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -151,6 +151,12 @@ window.IRTExamples = (() => {
     return example.readings[index];
   }
 
+  function expectedReading(page, example, expected) {
+    const first = page === "grm" ? 1 : 0;
+    const last = first + example.levels.length - 1;
+    return `Para la habilidad seleccionada y los parámetros actuales, el modelo predice un puntaje promedio de ${expected.toFixed(2)} puntos, en una escala de ${first} a ${last}.`;
+  }
+
   function renderMethod(page, example, model) {
     if (page !== "rasch") return;
     let note = model === "3pl"
@@ -180,7 +186,9 @@ window.IRTExamples = (() => {
     document.getElementById("caseDescription").textContent = example.description;
     document.getElementById("thetaName").textContent = `θ (${example.construct})`;
     const help = document.getElementById("thetaContext");
-    if (help) help.textContent = `Cambia al estudiante hipotético en ${example.construct}, no su seguridad subjetiva.`;
+    if (help) help.textContent = `Ajusta θ (${example.construct}) en una escala distinta de los puntajes del caso. θ = 0 es un punto de referencia: no significa ausencia de habilidad ni un puntaje de 0. No mide la seguridad subjetiva al responder.`;
+    const accessibleHelp = document.getElementById("thetaHelp");
+    if (accessibleHelp) accessibleHelp.textContent = `Nivel de ${example.construct} del estudiante hipotético.`;
     example.levels.slice(1).forEach((item, i) => {
       const step = document.getElementById(`d${i + 1}Context`);
       if (step) step.textContent = `${i}→${i + 1}: ${item.detail}`;
@@ -224,10 +232,10 @@ window.IRTExamples = (() => {
       ? `Con los parámetros actuales hay un empate: ${winners.map(item => labels[item.i]).join(" / ")} (${Math.round(highest * 100)}% cada uno). No hay un único resultado más probable; consulta los criterios de las tarjetas resaltadas.`
       : `Con los parámetros actuales, ${outcome} más probable es ${labels[winners[0].i]} (${Math.round(highest * 100)}%). ${criterion}: ${example.levels[winners[0].i].detail}`;
     document.getElementById("rubricNote").textContent = page === "grm"
-      ? "Es una probabilidad de calificación exacta, incluso al ver curvas acumulativas: no es la probabilidad de alcanzar ese nivel o uno superior, ni una calificación observada o garantizada. No asigna automáticamente un nivel a θ."
+      ? "Es una probabilidad de calificación exacta, incluso al ver curvas acumulativas: no es la probabilidad de alcanzar ese nivel o uno superior, ni una calificación observada o garantizada. El puntaje promedio esperado pondera los valores de las categorías por sus probabilidades; puede tener decimales y no es necesariamente la calificación más probable. No asigna automáticamente un nivel a θ."
       : page === "rasch"
-        ? "Es una predicción del modelo, no una respuesta observada o garantizada. Se comparan dos resultados binarios; no se identifica la causa de un acierto o de un error."
-        : "El porcentaje corresponde a obtener exactamente ese puntaje, no a obtenerlo o superarlo. Es una predicción del modelo, no un puntaje observado ni un nivel de habilidad garantizado.";
+        ? "El porcentaje es la probabilidad del resultado indicado, no un porcentaje de habilidad. Es una predicción del modelo, no una respuesta observada o garantizada. Se comparan dos resultados binarios; no se identifica la causa de un acierto o de un error."
+        : "El porcentaje corresponde a obtener exactamente ese puntaje, no a obtenerlo o superarlo. El puntaje promedio esperado pondera todos los puntajes por sus probabilidades; puede tener decimales y no es necesariamente el puntaje más probable. Es una predicción del modelo, no un puntaje observado ni un nivel de habilidad garantizado.";
     Array.from(document.getElementById("caseRubric").children).forEach((row, i) => {
       const highlighted = winners.some(item => item.i === i);
       row.classList.toggle("is-most-likely", highlighted);
@@ -237,5 +245,5 @@ window.IRTExamples = (() => {
     });
   }
 
-  return { cases, setup, initial, names, describe, render, renderMethod, renderResponse, link };
+  return { cases, setup, initial, names, describe, expectedReading, render, renderMethod, renderResponse, link };
 })();

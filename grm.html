@@ -1262,12 +1262,12 @@
       *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
     }
   </style>
-  <link rel="stylesheet" href="author-header.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="lab-cases.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="hero-heading.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="page-explorer.css?v=rubric-footer-13">
-  <link rel="stylesheet" href="site-footer.css?v=rubric-footer-13">
-  <script src="page-explorer.js?v=rubric-footer-13" defer></script>
+  <link rel="stylesheet" href="author-header.css?v=score-language-14">
+  <link rel="stylesheet" href="lab-cases.css?v=score-language-14">
+  <link rel="stylesheet" href="hero-heading.css?v=score-language-14">
+  <link rel="stylesheet" href="page-explorer.css?v=score-language-14">
+  <link rel="stylesheet" href="site-footer.css?v=score-language-14">
+  <script src="page-explorer.js?v=score-language-14" defer></script>
 </head>
 <body>
   <header class="topbar">
@@ -1276,16 +1276,16 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=rubric-footer-13" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=score-language-14" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">I</span>
       <span>Laboratorio IRT: GRM</span>
     </a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=rubric-footer-13">Inicio</a>
-      <a href="rasch.html?v=rubric-footer-13">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=rubric-footer-13">PCM</a>
-      <a href="gpcm.html?v=rubric-footer-13">GPCM</a>
-      <a class="active" aria-current="page" href="grm.html?v=rubric-footer-13">GRM</a>
+      <a href="index.html?v=score-language-14">Inicio</a>
+      <a href="rasch.html?v=score-language-14">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=score-language-14">PCM</a>
+      <a href="gpcm.html?v=score-language-14">GPCM</a>
+      <a class="active" aria-current="page" href="grm.html?v=score-language-14">GRM</a>
     </nav>
     </div>
     <div class="progress-shell" aria-hidden="true"><div class="progress-bar" id="progressBar"></div></div>
@@ -1405,7 +1405,7 @@
           <p>Indica qué tan bien la tarea separa candidatos con niveles cercanos de θ (competencia), especialmente alrededor de los umbrales.</p>
           <div class="scale-demo" aria-hidden="true"><span>╱</span><span>⟋</span><span>│</span></div>
         </article>
-        <article class="concept-card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GRM</h3><p>Este parámetro no forma parte del GRM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=rubric-footer-13&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
+        <article class="concept-card parameter-exclusion"><span class="card-tag">Fuera de la formulación estándar</span><h3>c (pseudoazar): no se estima en GRM</h3><p>Este parámetro no forma parte del GRM estándar. Esto no descarta respuestas afortunadas: el modelo no identifica su causa. Las extensiones para modelar explícitamente el azar quedan fuera de este sitio.</p><a href="rasch.html?v=score-language-14&amp;case=choice&amp;model=3pl#laboratorio">Ver c en 3PL (otro modelo, con puntuación binaria)</a></article>
       </div>
 
       <div class="big-idea">
@@ -1479,9 +1479,9 @@
             <aside class="controls" aria-label="Controles del modelo">
               <div class="control-group">
                 <label class="control-label" for="theta"><span id="thetaName">θ (competencia oral)</span> <output id="thetaOut">0.00</output></label>
-                <p class="control-help" id="thetaContext">Representa su competencia comunicativa oral en inglés.</p>
-                <input id="theta" type="range" min="-4" max="4" step=".05" value="0" aria-describedby="thetaHelp">
-                <div class="ticks"><span>−4 bajo</span><span>0 medio</span><span>+4 alto</span></div>
+                <p class="control-help" id="thetaContext">θ usa una escala distinta de los puntajes. θ = 0 es un punto de referencia, no ausencia de habilidad ni un puntaje de 0.</p>
+                <input id="theta" type="range" min="-4" max="4" step=".05" value="0" aria-describedby="thetaContext thetaHelp">
+                <div class="ticks"><span>−4 menor</span><span>0 referencia</span><span>+4 mayor</span></div>
                 <p class="control-interpretation" id="thetaInterpretation">El candidato puede sostener intercambios funcionales, aunque todavía muestra algunas limitaciones.</p>
                 <span id="thetaHelp" class="sr-only">Nivel de competencia comunicativa oral del candidato</span>
               </div>
@@ -1687,7 +1687,7 @@
     </div>
   </footer>
 
-  <script src="lab-cases.js?v=rubric-footer-13"></script>
+  <script src="lab-cases.js?v=score-language-14"></script>
   <script>
     (() => {
       "use strict";
@@ -1950,9 +1950,7 @@
       }
 
       function updateControlInterpretations(theta, a, bs) {
-        const currentProbs = probabilities(theta, a, bs);
-        const currentExpected = currentProbs.reduce((sum, p, i) => sum + p * (i + 1), 0);
-        $("thetaInterpretation").innerHTML = `En este ejemplo: <strong>${competenceDescription(theta)}</strong> Con esta tarea, su nivel esperado es <strong>${currentExpected.toFixed(2)} de 5</strong>. Al mover θ (${example.construct}) cambias al candidato, no la tarea ni su seguridad subjetiva.`;
+        $("thetaInterpretation").innerHTML = `Descripción ilustrativa de la habilidad seleccionada: <strong>${competenceDescription(theta)}</strong> Al mover θ (${example.construct}) cambias al candidato, no la tarea.`;
         $("discInterpretation").textContent = taskSensitivityDescription(a, theta, bs);
 
         bs.forEach((delta, i) => {
@@ -1974,7 +1972,7 @@
 
         IRTExamples.renderResponse("grm",example,probs);
         $("dynamicReading").innerHTML = `Para un candidato con θ (${example.construct}) = <b>${fmt(theta)}</b>, las curvas muestran cómo se distribuyen sus posibles calificaciones.`;
-        $("generalSummary").innerHTML = `Su calificación esperada es <b>${expectedScore.toFixed(2)} de 5</b>. Tiene <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior y <b>${Math.round(advanced * 100)}%</b> de llegar a «${example.levels[4].name}».`;
+        $("generalSummary").innerHTML = `${IRTExamples.expectedReading("grm",example,expectedScore)} El modelo también predice <b>${Math.round(competentOrMore * 100)}%</b> de probabilidad de alcanzar «${example.levels[3].name}» o un nivel superior y <b>${Math.round(advanced * 100)}%</b> de llegar a «${example.levels[4].name}».`;
 
         let tip;
         if (lastChanged === "case") {
