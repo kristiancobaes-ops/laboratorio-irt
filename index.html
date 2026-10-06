@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio IRT: clases interactivas de GRM, Rasch, PCM y GPCM.">
   <title>Laboratorio IRT · Modelos interactivos</title>
-  <link rel="stylesheet" href="lab-common.css?v=cases-6">
+  <link rel="stylesheet" href="lab-common.css?v=scope-7">
   <link rel="stylesheet" href="author-header.css?v=2">
   <style>
     .home-hero { min-height: 690px; }
@@ -159,13 +159,13 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=cases-6"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=scope-7"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a class="active" href="index.html?v=cases-6">Inicio</a>
-      <a href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=cases-6">PCM</a>
-      <a href="gpcm.html?v=cases-6">GPCM</a>
-      <a href="grm.html?v=cases-6">GRM</a>
+      <a class="active" href="index.html?v=scope-7">Inicio</a>
+      <a href="rasch.html?v=scope-7">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=scope-7">PCM</a>
+      <a href="gpcm.html?v=scope-7">GPCM</a>
+      <a href="grm.html?v=scope-7">GRM</a>
     </nav>
     </div>
   </header>
@@ -178,7 +178,7 @@
         <p class="lede">Un sitio para aprender IRT manipulando personas, ítems, pasos y categorías. Cada laboratorio traduce los parámetros técnicos a una situación de evaluación concreta.</p>
         <div class="hero-actions">
           <a class="button primary" href="#modelos">Explorar modelos</a>
-          <a class="button" href="rasch.html?v=cases-6">Empezar por Rasch</a>
+          <a class="button" href="rasch.html?v=scope-7">Empezar por Rasch</a>
         </div>
       </div>
       <div class="hero-art" aria-label="Mapa de modelos IRT">
@@ -197,9 +197,9 @@
         <p class="section-copy">Cada laboratorio incluye tres casos seleccionables. Elige cómo se registra la respuesta: correcto/incorrecto, crédito parcial o categorías de una rúbrica. El contexto orienta la interpretación, pero no valida por sí solo el modelo.</p>
       </div>
       <div class="cards">
-        <article class="card"><span class="card-tag">Opción múltiple</span><h3>Una respuesta correcta entre alternativas</h3><p>Explora c (pseudoazar) en 3PL. Tener cuatro opciones no fija automáticamente ese parámetro en 0.25.</p><a class="button" href="rasch.html?v=cases-6&amp;case=choice&amp;model=3pl#laboratorio">Ver opción múltiple</a></article>
-        <article class="card"><span class="card-tag">Rúbrica oral</span><h3>Comunicación en inglés</h3><p>Explora la probabilidad de cada categoría o de alcanzar un nivel o uno superior. Dudar al hablar no equivale a un parámetro de adivinanza.</p><a class="button" href="grm.html?v=cases-6&amp;case=oral#laboratorio">Ver examen oral</a></article>
-        <article class="card"><span class="card-tag">Crédito parcial</span><h3>Procedimiento y justificación matemática</h3><p>Explora cómo se distribuyen los puntajes de una solución. Compara PCM y GPCM con la misma rúbrica.</p><a class="button" href="pcm.html?v=cases-6&amp;case=math#laboratorio">Ver solución matemática</a></article>
+        <article class="card"><span class="card-tag">Opción múltiple</span><h3>Una respuesta correcta entre alternativas</h3><p>Explora c (pseudoazar) en 3PL. Tener cuatro opciones no fija automáticamente ese parámetro en 0.25.</p><a class="button" href="rasch.html?v=scope-7&amp;case=choice&amp;model=3pl#laboratorio">Ver opción múltiple</a></article>
+        <article class="card"><span class="card-tag">Rúbrica oral</span><h3>Comunicación en inglés</h3><p>Explora la probabilidad de cada categoría o de alcanzar un nivel o uno superior. Dudar al hablar no equivale a un parámetro de adivinanza.</p><a class="button" href="grm.html?v=scope-7&amp;case=oral#laboratorio">Ver examen oral</a></article>
+        <article class="card"><span class="card-tag">Crédito parcial</span><h3>Procedimiento y justificación matemática</h3><p>Explora cómo se distribuyen los puntajes de una solución. Compara PCM y GPCM con la misma rúbrica.</p><a class="button" href="pcm.html?v=scope-7&amp;case=math#laboratorio">Ver solución matemática</a></article>
       </div>
     </section>
 
@@ -239,7 +239,7 @@
             <div>
               <h3>c (pseudoazar)</h3>
               <p>Representa la asíntota inferior de la curva de acierto del 3PL. Puede reflejar aciertos sin dominio suficiente; no es la probabilidad de que una persona esté adivinando ni una medida de su seguridad.</p>
-              <p class="academic-example"><b>Ejemplo académico:</b> una pregunta de opción múltiple ofrece un mecanismo plausible de acierto por elección al azar. El valor de c (pseudoazar) no se fija automáticamente por el número de alternativas. En las versiones estándar de PCM, GPCM y GRM este parámetro no aparece.</p>
+              <p class="academic-example"><b>Ejemplo académico:</b> una pregunta de opción múltiple ofrece un mecanismo plausible de acierto por elección al azar. El valor de c (pseudoazar) no se fija automáticamente por el número de alternativas. En Rasch/1PL y 2PL no se estima c (pseudoazar): en la ecuación general se fija en 0. En PCM, GPCM y GRM estándar tampoco se estima c (pseudoazar), porque no forma parte de su formulación. Esto no significa que una respuesta afortunada sea imposible. Otros modelos o extensiones para representar explícitamente la respuesta al azar quedan fuera del alcance de este sitio.</p>
             </div>
           </article>
         </div>
@@ -298,28 +298,28 @@
           <h2>Rasch, 1PL, 2PL y 3PL</h2>
           <p>Compara dificultad, discriminación y azar mediante un ítem de álgebra con una única respuesta correcta.</p>
           <div class="model-meta"><span>θ (habilidad matemática)</span><span>b (dificultad)</span><span>a (discriminación)</span><span>c (azar)</span></div>
-          <a class="button primary" href="rasch.html?v=cases-6">Abrir laboratorio</a>
+          <a class="button primary" href="rasch.html?v=scope-7">Abrir laboratorio</a>
         </article>
         <article class="model-card">
           <span class="model-code">Puntaje por pasos</span>
           <h2>PCM</h2>
           <p>Observa cómo una solución matemática recibe crédito parcial por alcanzar pasos sucesivos, con discriminación fija.</p>
           <div class="model-meta"><span>0–3 puntos</span><span>δ (umbrales de paso)</span><span>a (discriminación) fija</span></div>
-          <a class="button primary" href="pcm.html?v=cases-6">Abrir laboratorio</a>
+          <a class="button primary" href="pcm.html?v=scope-7">Abrir laboratorio</a>
         </article>
         <article class="model-card">
           <span class="model-code">Rúbrica analítica</span>
           <h2>GPCM</h2>
           <p>Modela la coherencia de un párrafo y descubre qué cambia cuando los pasos comparten una discriminación ajustable.</p>
           <div class="model-meta"><span>0–4 puntos</span><span>δ (umbrales de paso)</span><span>a (discriminación) libre</span></div>
-          <a class="button primary" href="gpcm.html?v=cases-6">Abrir laboratorio</a>
+          <a class="button primary" href="gpcm.html?v=scope-7">Abrir laboratorio</a>
         </article>
         <article class="model-card">
           <span class="model-code">Categorías ordenadas</span>
           <h2>GRM</h2>
           <p>Interpreta niveles de competencia comunicativa en un examen oral mediante curvas acumulativas y categorías exactas.</p>
           <div class="model-meta"><span>5 niveles</span><span>δ (umbrales de categoría)</span><span>a (discriminación)</span></div>
-          <a class="button primary" href="grm.html?v=cases-6">Abrir laboratorio</a>
+          <a class="button primary" href="grm.html?v=scope-7">Abrir laboratorio</a>
         </article>
       </div>
     </section>

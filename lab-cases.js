@@ -52,21 +52,21 @@ window.IRTExamples = (() => {
     task: "Examen oral: explicar un plan y responder preguntas en inglés",
     description: "El estudiante explica qué hará el fin de semana y responde preguntas de seguimiento. Se evalúa su competencia comunicativa oral con una rúbrica, no si se siente seguro.",
     levels: oralLevels, readings: oralReadings,
-    method: "Un estudiante puede ensayar una expresión sin estar seguro y formularla bien. Eso no permite identificar adivinanza ni medir su confianza. Aquí las categorías califican su desempeño comunicativo."
+    method: "Un estudiante puede ensayar una expresión sin estar seguro y formularla bien. Aquí las categorías califican su desempeño comunicativo, no su confianza al responder."
   };
   const writing = {
     key: "writing", label: "Coherencia de un párrafo", construct: "habilidad de coherencia escrita",
     task: "Escritura: explicar por qué el transporte público reduce la congestión",
     description: "El estudiante redacta un párrafo con una idea central, un desarrollo y conexiones. La rúbrica evalúa coherencia escrita; no cuenta respuestas correctas de opción múltiple.",
     levels: writingLevels, readings: writingReadings,
-    method: "Una frase afortunada no garantiza un párrafo coherente. Se valora la organización del texto completo; el modelo no identifica si una buena calificación provino del dominio, de un intento afortunado o de otros factores."
+    method: "La rúbrica valora la organización del párrafo completo, no solamente una frase bien formulada."
   };
   const poster = {
     key: "poster", label: "Cartel explicativo de ciencias", construct: "habilidad de explicación científica",
     task: "Cartel: explicar las relaciones entre las etapas del ciclo del agua",
     description: "El estudiante elabora un cartel con texto e imágenes. Esta rúbrica se centra en la calidad de la explicación de un proceso, no en la belleza del diseño ni en múltiples rasgos independientes.",
     levels: posterLevels, readings: posterReadings,
-    method: "Se califican relaciones explicadas en un producto elaborado, no la elección de una alternativa correcta. Un detalle acertado por casualidad no equivale a un piso de probabilidad de obtener la categoría máxima."
+    method: "La rúbrica valora la explicación de las relaciones del proceso completo, no solamente la presencia de un dato correcto."
   };
   const math = {
     key: "math", label: "Solución matemática con crédito parcial", construct: "habilidad algebraica",
@@ -79,7 +79,7 @@ window.IRTExamples = (() => {
       level("Solución correcta", "Obtiene x = 6."),
       level("Justificación completa", "Resuelve y justifica correctamente las transformaciones.")
     ], readings: algebraReadings,
-    method: "Escribir x = 6 por suerte no da automáticamente la puntuación máxima: también se requiere evidencia del procedimiento y de la justificación. El modelo estándar no añade un piso de acierto por elección al azar."
+    method: "La rúbrica otorga crédito por el procedimiento, el resultado y la justificación. Escribir x = 6 sin mostrar esos avances no da automáticamente la puntuación máxima."
   };
   const cases = {
     rasch: [
@@ -97,7 +97,7 @@ window.IRTExamples = (() => {
         description: "El estudiante escribe su respuesta. Este caso asigna 1 punto a x = 6 y 0 a cualquier otro resultado; no otorga crédito parcial por el procedimiento.",
         levels: [level("0 · Incorrecto", "No obtiene x = 6."), level("1 · Correcto", "Escribe x = 6.")],
         readings: algebraReadings, guessing: false,
-        method: "Para esta simulación no se ha especificado un mecanismo de elección al azar ni justificado una asíntota inferior. Por ello comparamos Rasch y 2PL. No significa que sea imposible acertar por casualidad. Para puntuar avances del procedimiento, conviene el ejemplo matemático de PCM."
+        method: "En esta simulación comparamos Rasch y 2PL para una respuesta abierta con puntuación binaria. Para puntuar avances del procedimiento, conviene el ejemplo matemático de PCM."
       },
       {
         key: "listening", label: "Comprensión oral: criterio binario", construct: "habilidad de comprensión oral",
@@ -106,7 +106,7 @@ window.IRTExamples = (() => {
         levels: [level("0 · Criterio no logrado", "No identifica la idea principal."), level("1 · Criterio logrado", "Identifica la idea principal esperada.")],
         readings: ["El estudiante reconoce palabras aisladas, pero pierde el sentido global.", "El estudiante identifica información explícita, aunque puede confundir la idea central con un detalle.", "El estudiante integra la información relevante para reconocer el sentido global.", "El estudiante comprende el sentido global y distingue los detalles secundarios."],
         guessing: false,
-        method: "La respuesta se evalúa con un criterio binario, sin opciones ofrecidas. En este caso no se modela un piso de acierto por pseudoazar. Dudar al responder no demuestra adivinanza. Para explorar niveles de producción oral, consulta la rúbrica de GRM."
+        method: "La respuesta se evalúa con un criterio binario, sin opciones ofrecidas. Para explorar niveles de producción oral, consulta la rúbrica de GRM."
       }
     ],
     pcm: [
@@ -119,7 +119,7 @@ window.IRTExamples = (() => {
   };
 
   function link(page, key, model) {
-    const params = new URLSearchParams({ v: "cases-6", case: key });
+    const params = new URLSearchParams({ v: "scope-7", case: key });
     if (model) params.set("model", model);
     return `${page}.html?${params.toString()}#laboratorio`;
   }
@@ -152,20 +152,27 @@ window.IRTExamples = (() => {
   }
 
   function renderMethod(page, example, model) {
-    let note = example.method;
+    const modelName = model === "rasch" ? "Rasch / 1PL" : model.toUpperCase();
+    let note;
     if (page === "rasch") {
-      note += example.guessing
-        ? model === "3pl"
-          ? " En 3PL, c (pseudoazar) describe el piso de la curva, no la probabilidad de que una persona esté adivinando. Cuatro opciones no implican automáticamente c (pseudoazar) = 0.25."
-          : " El modelo activo no incluye c (pseudoazar). Elige 3PL para explorar una asíntota inferior en este mismo caso."
-        : " El botón 3PL está bloqueado por la definición didáctica de este caso, no por una prohibición universal para las respuestas abiertas.";
+      note = model === "3pl"
+        ? "El 3PL permite estimar c (pseudoazar), la asíntota inferior de la curva de acierto. No es la probabilidad de que una persona esté adivinando ni una medida de su confianza."
+        : `En ${modelName} no se estima c (pseudoazar): en la ecuación general se mantiene fijado en 0. Esto no significa que sea imposible acertar por suerte; el modelo no identifica la causa de cada acierto.`;
+      note += ` ${example.method}`;
+      if (example.guessing) {
+        note += model === "3pl"
+          ? " Cuatro opciones no implican automáticamente c (pseudoazar) = 0.25."
+          : " Como comparación, el 3PL sí incorpora c (pseudoazar); puedes seleccionarlo para explorar este mismo caso.";
+      } else {
+        note += " El botón 3PL está bloqueado por la definición didáctica de este caso, no por una prohibición universal para las respuestas abiertas. Otras formulaciones para modelar explícitamente la respuesta al azar quedan fuera del alcance de este sitio.";
+      }
     } else {
-      note += ` ${model.toUpperCase()} estándar no incluye c (pseudoazar): la distribución entre puntajes de una rúbrica no es un parámetro de adivinanza. Para explorar un piso de acierto, utiliza el caso de opción múltiple con 3PL.`;
+      note = `En ${modelName} estándar no se estima c (pseudoazar), porque no forma parte de su formulación. ${example.method} Esto no significa que sea imposible obtener una puntuación por suerte; el modelo no identifica si una respuesta concreta se debe al dominio, a la suerte o a otros factores. Para modelar explícitamente la respuesta al azar se requieren otros modelos o extensiones, fuera del alcance de este sitio.`;
     }
     document.getElementById("caseMethod").textContent = note;
     const anchor = document.getElementById("caseLink");
     anchor.setAttribute("href", link("rasch", "choice", "3pl"));
-    anchor.textContent = "Ver opción múltiple con 3PL";
+    anchor.textContent = "Comparar con 3PL: correcto/incorrecto";
     anchor.hidden = page === "rasch" && example.guessing && model === "3pl";
     const related = document.getElementById("caseRelated");
     related.hidden = page !== "rasch" || example.guessing;

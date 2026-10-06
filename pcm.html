@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo del Modelo de Crédito Parcial (PCM).">
   <title>PCM · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=cases-6">
+  <link rel="stylesheet" href="lab-common.css?v=scope-7">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=cases-6">
+  <link rel="stylesheet" href="lab-cases.css?v=scope-7">
   <style>
     .rubric { display:grid; gap:8px; margin-top:20px; width:min(420px,90%); }
     .rubric div { position:relative; z-index:2; padding:10px 13px; border:1px solid rgba(255,255,255,.16); border-radius:11px; background:rgba(255,255,255,.07); font-family:system-ui; font-size:.78rem; text-align:left; }
@@ -21,10 +21,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=cases-6"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=scope-7"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=cases-6">Inicio</a><a href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
-      <a class="active" href="pcm.html?v=cases-6">PCM</a><a href="gpcm.html?v=cases-6">GPCM</a><a href="grm.html?v=cases-6">GRM</a>
+      <a href="index.html?v=scope-7">Inicio</a><a href="rasch.html?v=scope-7">Rasch / 1–3PL</a>
+      <a class="active" href="pcm.html?v=scope-7">PCM</a><a href="gpcm.html?v=scope-7">GPCM</a><a href="grm.html?v=scope-7">GRM</a>
     </nav>
     </div>
   </header>
@@ -87,7 +87,7 @@
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
             <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
-            <div class="case-method" aria-live="polite"><h4>¿Corresponde c (pseudoazar) en este caso?</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <p class="model-note" id="creditModelNote" aria-live="polite"></p>
@@ -167,12 +167,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="rasch.html?v=cases-6">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=cases-6">Siguiente: GPCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="rasch.html?v=scope-7">← Rasch / 1–3PL</a><a class="button primary" href="gpcm.html?v=scope-7">Siguiente: GPCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Modelo de Crédito Parcial</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=cases-6"></script>
+  <script src="lab-cases.js?v=scope-7"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -238,7 +238,7 @@
         $("probabilityNote").innerHTML = `<strong>Comparación adyacente y resultado observado:</strong> el ${modelName} construye cada paso comparando dos puntajes vecinos, pero al final asigna probabilidad a todos los puntajes de 0 a 3. Para este estudiante, el puntaje más probable es ${mode}; sus vecinos son ${lower} y ${upper}. Con umbrales ordenados, los puntajes cercanos suelen ser más probables que los saltos lejanos. Una respuesta menor puede ser compatible con variaciones como cansancio, olvido o un error accidental, pero el modelo no identifica cuál fue la causa.`;
         $("changeText").textContent = changed === "theta"
           ? `Cambiaste θ (${example.construct}): observas a otro estudiante; los criterios de puntuación permanecen iguales.`
-          : changed === "case" ? `Elegiste «${example.label}»: la tarea y la rúbrica cambiaron, y los parámetros hipotéticos se restablecieron. Cada paso compara puntajes vecinos; este modelo no estima seguridad ni adivinanza.`
+          : changed === "case" ? `Elegiste «${example.label}»: la tarea y la rúbrica cambiaron, y los parámetros hipotéticos se restablecieron. Cada paso compara puntajes vecinos; ${model.toUpperCase()} estándar no estima c (pseudoazar) ni la confianza al responder.`
           : changed === "model" ? `Elegiste ${modelName}: ${model === "pcm" ? "a (discriminación) queda fijada en 1" : "a (discriminación) puede variar"}. El estudiante y los umbrales no cambiaron; compara las curvas y los puntajes esperados de A y B.`
           : changed === "a" ? "Cambiaste a (discriminación): observa cómo varían las probabilidades y la separación entre A y B, sin cambiar sus habilidades ni los pasos de la rúbrica."
           : changed === "gap" ? "Cambiaste Δθ (distancia entre habilidades): acercaste o separaste a los estudiantes A y B, sin modificar la rúbrica."

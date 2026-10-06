@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Laboratorio interactivo de los modelos Rasch, 1PL, 2PL y 3PL.">
   <title>Rasch y modelos 1PL–3PL · Laboratorio IRT</title>
-  <link rel="stylesheet" href="lab-common.css?v=cases-6">
+  <link rel="stylesheet" href="lab-common.css?v=scope-7">
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=cases-6">
+  <link rel="stylesheet" href="lab-cases.css?v=scope-7">
 </head>
 <body>
   <header class="site-header">
@@ -16,10 +16,10 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=cases-6"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
+    <a class="brand" href="index.html?v=scope-7"><span class="brand-mark">I</span><span>Laboratorio IRT</span></a>
     <nav class="site-nav" aria-label="Modelos">
-      <a href="index.html?v=cases-6">Inicio</a><a class="active" href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=cases-6">PCM</a><a href="gpcm.html?v=cases-6">GPCM</a><a href="grm.html?v=cases-6">GRM</a>
+      <a href="index.html?v=scope-7">Inicio</a><a class="active" href="rasch.html?v=scope-7">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=scope-7">PCM</a><a href="gpcm.html?v=scope-7">GPCM</a><a href="grm.html?v=scope-7">GRM</a>
     </nav>
     </div>
   </header>
@@ -40,7 +40,7 @@
     <section class="section wrap" id="modelo">
       <div class="section-head">
         <div><p class="kicker">La familia logística</p><h2>La misma curva, distintos grados de libertad.</h2></div>
-        <p class="section-copy">Rasch y 1PL fijan la discriminación y no incluyen un parámetro de pseudoazar. Eso no prueba que nadie acierte por casualidad. El 2PL permite variar la discriminación; el 3PL añade una asíntota inferior.</p>
+        <p class="section-copy">En Rasch/1PL y 2PL no se estima c (pseudoazar): en la ecuación general se fija en 0. Esto no significa que sea imposible acertar por suerte. Rasch/1PL fija a (discriminación); el 2PL permite que varíe y el 3PL incorpora c (pseudoazar).</p>
       </div>
       <div class="cards">
         <article class="card"><span class="card-tag">Rasch / 1PL</span><h3>Solo cambia b (dificultad)</h3><p>La dificultad desplaza la curva. a (discriminación) permanece fija en 1 y la probabilidad mínima es 0.</p></article>
@@ -75,7 +75,7 @@
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
             <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
-            <div class="case-method" aria-live="polite"><h4>¿Corresponde c (pseudoazar) en este caso?</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <div class="lab-grid">
@@ -105,7 +105,7 @@
                 <label for="guess">c (pseudoazar) <output id="guessOut">0.00</output></label>
                 <p class="control-help">Asíntota inferior de la probabilidad de acierto. En este laboratorio se explora con 3PL y opción múltiple; no mide la seguridad subjetiva.</p>
                 <input id="guess" type="range" min="0" max=".4" step=".01" value="0" disabled>
-                <div class="ticks"><span>sin azar</span><span>40%</span></div>
+                <div class="ticks"><span>c (pseudoazar) = 0</span><span>40%</span></div>
                 <p class="control-reading" id="guessRead"></p>
               </div>
             </aside>
@@ -152,12 +152,12 @@
       </div>
     </section>
 
-    <div class="wrap back-next"><a class="button" href="index.html?v=cases-6">← Portada</a><a class="button primary" href="pcm.html?v=cases-6">Siguiente: PCM →</a></div>
+    <div class="wrap back-next"><a class="button" href="index.html?v=scope-7">← Portada</a><a class="button primary" href="pcm.html?v=scope-7">Siguiente: PCM →</a></div>
   </main>
   <footer>Laboratorio IRT · Rasch, 1PL, 2PL y 3PL</footer>
 
   <script src="lab-utils.js"></script>
-  <script src="lab-cases.js?v=cases-6"></script>
+  <script src="lab-cases.js?v=scope-7"></script>
   <script>
     (() => {
       const $ = id => document.getElementById(id);
@@ -203,9 +203,9 @@
           ? "Rasch fija a (discriminación) = 1. Activa 2PL o 3PL para manipularla y comparar dos estudiantes."
           : `${s.a < .8 ? "a (discriminación) baja" : s.a > 2 ? "a (discriminación) alta" : "a (discriminación) moderada"}: en el gráfico comparativo, A y B difieren ${Math.round(localSeparation * 100)} puntos porcentuales. ${sideEffect}`;
         $("guessRead").textContent = !example.guessing
-          ? "c (pseudoazar) no se usa en este caso: no se ha justificado un piso de acierto por elección al azar. Esto no demuestra que acertar por casualidad sea imposible. Consulta el enlace al ejemplo de opción múltiple."
+          ? "En el modelo activo no se estima c (pseudoazar): en la ecuación general se fija en 0. La simulación de este caso compara Rasch y 2PL; eso no significa que sea imposible acertar por suerte. Consulta la nota sobre el alcance del modelo."
           : model !== "3pl"
-            ? "El caso permite explorar pseudoazar, pero el modelo activo fija c (pseudoazar) = 0. Elige 3PL para habilitar este parámetro."
+            ? "En el modelo activo no se estima c (pseudoazar): se fija en 0. Esto no descarta respuestas afortunadas. Elige 3PL para explorar este parámetro en el mismo caso."
             : `c (pseudoazar) fija un piso de ${Math.round(s.c * 100)}% en la curva. No es la probabilidad de que este estudiante esté adivinando ni se fija automáticamente en 25% por tener cuatro alternativas.`;
         IRTExamples.renderMethod("rasch",example,model);
 

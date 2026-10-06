@@ -1301,7 +1301,7 @@
     }
   </style>
   <link rel="stylesheet" href="author-header.css?v=2">
-  <link rel="stylesheet" href="lab-cases.css?v=cases-6">
+  <link rel="stylesheet" href="lab-cases.css?v=scope-7">
 </head>
 <body>
   <header class="topbar">
@@ -1310,15 +1310,15 @@
       <div class="site-author"><span class="author-role">Desarrollador (autor)</span><strong>Dr. Kristian Armando Pineda Castillo</strong></div>
     </div>
     <div class="header-links">
-    <a class="brand" href="index.html?v=cases-6" aria-label="Ir a la portada de Laboratorio IRT">
+    <a class="brand" href="index.html?v=scope-7" aria-label="Ir a la portada de Laboratorio IRT">
       <span class="brand-mark">G</span>
       <span>Laboratorio IRT · GRM</span>
     </a>
     <nav class="topnav" aria-label="Navegación del sitio">
-      <a href="index.html?v=cases-6">Inicio</a>
-      <a href="rasch.html?v=cases-6">Rasch / 1–3PL</a>
-      <a href="pcm.html?v=cases-6">PCM</a>
-      <a href="gpcm.html?v=cases-6">GPCM</a>
+      <a href="index.html?v=scope-7">Inicio</a>
+      <a href="rasch.html?v=scope-7">Rasch / 1–3PL</a>
+      <a href="pcm.html?v=scope-7">PCM</a>
+      <a href="gpcm.html?v=scope-7">GPCM</a>
       <a href="#laboratorio">Laboratorio GRM</a>
     </nav>
     </div>
@@ -1492,7 +1492,7 @@
             <div class="case-picker"><label for="caseSelect">Elige un caso para explorar</label><select id="caseSelect" aria-describedby="caseCaution"></select></div>
             <p class="case-description" id="caseDescription"></p>
             <ul class="case-rubric" id="caseRubric" aria-label="Criterios de puntuación del caso"></ul>
-            <div class="case-method" aria-live="polite"><h4>¿Corresponde c (pseudoazar) en este caso?</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
+            <div class="case-method" aria-live="polite"><h4>c (pseudoazar): alcance del modelo</h4><p id="caseMethod"></p><div class="case-links"><a id="caseLink"></a><a id="caseRelated" hidden></a></div></div>
             <p class="case-caution" id="caseCaution">Simulación didáctica, no instrumento validado. Al cambiar de caso se restablecen los parámetros hipotéticos. θ (habilidad o rasgo) no es comparable entre constructos sin una escala común. La selección del modelo requiere datos y evaluación de sus supuestos. <a href="https://philchalmers.github.io/mirt/reference/mirt.html">Referencia de los modelos</a>.</p>
           </section>
           <p class="preset-note" id="presetNote" aria-live="polite">Estos botones exploran escenarios del mismo GRM; no cambian de modelo. Discriminación alta o baja modifica solo a (discriminación); exigir más o menos desplaza δ (umbrales). El candidato conserva θ (competencia oral). Ejemplo inicial restablece los controles.</p>
@@ -1706,7 +1706,7 @@
 
   <footer>Clase interactiva autocontenida · Modelo de Respuesta Graduada de Samejima</footer>
 
-  <script src="lab-cases.js?v=cases-6"></script>
+  <script src="lab-cases.js?v=scope-7"></script>
   <script>
     (() => {
       "use strict";
@@ -1998,7 +1998,7 @@
 
         let tip;
         if (lastChanged === "case") {
-          tip = `Elegiste «${example.label}»: la tarea y la rúbrica cambiaron, y los parámetros hipotéticos se restablecieron. GRM conserva su lógica acumulativa; no incluye c (pseudoazar) ni estima la seguridad al responder.`;
+          tip = `Elegiste «${example.label}»: la tarea y la rúbrica cambiaron, y los parámetros hipotéticos se restablecieron. GRM estándar conserva su lógica acumulativa; no estima c (pseudoazar) ni la confianza al responder. Otros modelos o extensiones para representar explícitamente la respuesta al azar quedan fuera del alcance de este sitio.`;
         } else if (lastChanged === "gap") {
           tip = "Cambiaste Δθ (distancia entre competencias): acercaste o separaste a los candidatos A y B sin modificar la tarea, sus umbrales ni su discriminación.";
         } else if (lastChanged === "disc") {
